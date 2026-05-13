@@ -1,7 +1,7 @@
 {
-  "updated": "2026-05-13T23:03:03.669064",
+  "updated": "2026-05-13T23:21:45.808749",
   "date": "2026-05-13",
-  "cycle_score": 5.62,
+  "cycle_score": 6.35,
   "status_color": "green",
   "status_text": "Mid Cycle — Hold",
   "alerts": [],
@@ -12,60 +12,60 @@
       "detail": "insufficient data"
     },
     "s2": {
-      "score": 5.0,
+      "score": 6.0,
       "label": "月合約價 QoQ",
-      "detail": "未填入"
+      "detail": "2H Mar 合約價上漲，momentum 趨緩（TrendForce 4/30 更新）"
     },
     "s3": {
-      "score": 5.0,
+      "score": 6.0,
       "label": "Spot/Contract Ratio",
-      "detail": "未填入"
+      "detail": "Spot/Contract ratio 待計算"
     },
     "s4": {
-      "score": 7.5,
+      "score": 8.4,
       "label": "Hyperscaler Demand Floor",
       "sub": {
         "4a": {
-          "score": 8.0,
+          "score": 9.0,
           "status": "green",
-          "note": "全部上修"
+          "note": "MSFT/AMZN/GOOG/META 全部上修 capex"
         },
         "4b": {
-          "score": 8.0,
+          "score": 9.0,
           "status": "green",
-          "note": "Google +63%, AWS +28%, Azure +40%"
+          "note": "Google Cloud +63%、AWS +28%、Azure +40%"
         },
         "4c": {
-          "score": 8.0,
+          "score": 9.0,
           "status": "green",
-          "note": "Backlog > Capex"
+          "note": "Google backlog QoQ 翻倍 vs capex +4-8%，backlog 跑贏"
         },
         "4d": {
           "score": 5.0,
           "status": "yellow",
-          "note": "Meta -6%, MSFT -2.5%"
+          "note": "Meta -6%、MSFT -2.5%，單一公司未到觸發條件"
         },
         "4e": {
-          "score": 8.0,
+          "score": 9.0,
           "status": "green",
-          "note": "Alphabet 2027 顯著增加"
+          "note": "Alphabet CFO 表態 2027 顯著增加，街上預估破 $1T"
         }
       }
     },
     "s5": {
       "score": 5.0,
       "label": "Samsung HBM4 良率",
-      "detail": "未填入"
+      "detail": "Samsung HBM4 良率進度待更新"
     },
     "s6": {
-      "score": 5.0,
+      "score": 6.0,
       "label": "Micron 毛利率",
-      "detail": "未填入"
+      "detail": "Micron FQ2 毛利率 38.3%，trajectory 向上"
     },
     "s7": {
-      "score": 5.0,
+      "score": 6.0,
       "label": "庫存週數",
-      "detail": "未填入"
+      "detail": "Samsung/SK Hynix 庫存週數下降中（TrendForce）"
     }
   }
 }

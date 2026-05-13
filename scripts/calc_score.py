@@ -94,11 +94,11 @@ def compute_cycle_score(signals):
     return round(total, 2)
 
 def score_to_status(score):
-    if score <= 3:   return "green",  "Early Cycle — Hold / 可加碼"
-    if score <= 6:   return "green",  "Mid Cycle — Hold"
-    if score <= 7:   return "yellow", "Late Cycle — 停止加碼"
-    if score <= 8:   return "yellow", "Late Cycle — 設移動停利、減 1/3 部位"
-    if score <= 9:   return "red",    "Peak — 減半部位"
+    if score < 4:    return "green",  "Early Cycle — Hold / 可加碼"
+    if score < 7:    return "green",  "Mid Cycle — Hold"
+    if score < 8:    return "yellow", "Late Cycle — 停止加碼"
+    if score < 9:    return "yellow", "Late Cycle — 設移動停利、減 1/3 部位"
+    if score < 10:   return "red",    "Peak — 減半部位"
     return "red", "Peak — 出清主要部位"
 
 def main():

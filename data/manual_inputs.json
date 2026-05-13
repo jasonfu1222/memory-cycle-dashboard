@@ -1,0 +1,49 @@
+{
+  "s2": {
+    "score": 6.0,
+    "note": "2H Mar 合約價上漲，momentum 趨緩（TrendForce 4/30 更新）"
+  },
+  "s3": {
+    "score": 6.0,
+    "note": "Spot/Contract ratio 待計算"
+  },
+  "s4": {
+    "4a": {
+      "score": 9.0,
+      "status": "green",
+      "note": "MSFT/AMZN/GOOG/META 全部上修 capex"
+    },
+    "4b": {
+      "score": 9.0,
+      "status": "green",
+      "note": "Google Cloud +63%、AWS +28%、Azure +40%"
+    },
+    "4c": {
+      "score": 9.0,
+      "status": "green",
+      "note": "Google backlog QoQ 翻倍 vs capex +4-8%，backlog 跑贏"
+    },
+    "4d": {
+      "score": 5.0,
+      "status": "yellow",
+      "note": "Meta -6%、MSFT -2.5%，單一公司未到觸發條件"
+    },
+    "4e": {
+      "score": 9.0,
+      "status": "green",
+      "note": "Alphabet CFO 表態 2027 顯著增加，街上預估破 $1T"
+    }
+  },
+  "s5": {
+    "score": 5.0,
+    "note": "Samsung HBM4 良率進度待更新"
+  },
+  "s6": {
+    "score": 6.0,
+    "note": "Micron FQ2 毛利率 38.3%，trajectory 向上"
+  },
+  "s7": {
+    "score": 6.0,
+    "note": "Samsung/SK Hynix 庫存週數下降中（TrendForce）"
+  }
+}
