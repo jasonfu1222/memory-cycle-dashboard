@@ -45,6 +45,13 @@
   .section-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 12px; font-weight: 600; }
   canvas { max-height: 200px; }
   #loading { text-align: center; padding: 40px; color: var(--muted); }
+  .signal-explain { display: flex; flex-direction: column; gap: 0; }
+  .explain-item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .explain-item:last-child { border-bottom: none; }
+  .explain-num { font-size: 0.75rem; font-weight: 700; color: var(--accent); background: rgba(99,102,241,0.12); border-radius: 6px; padding: 2px 8px; height: fit-content; white-space: nowrap; margin-top: 2px; }
+  .explain-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 5px; }
+  .explain-body { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+  .weight-tag { font-size: 0.72rem; color: var(--accent); font-weight: 400; margin-left: 4px; }
 </style>
 </head>
 <body>
@@ -103,6 +110,71 @@
       <tbody></tbody>
     </table>
   </div>
+
+  <!-- Signal Explanations -->
+  <div class="card">
+    <div class="section-title">7 個訊號說明</div>
+    <div class="signal-explain">
+
+      <div class="explain-item">
+        <div class="explain-num">S1</div>
+        <div>
+          <div class="explain-title">Daily 記憶體現貨報價 <span class="weight-tag">15%</span></div>
+          <div class="explain-body">每日從 TrendForce 自動抓取 DDR5 / DDR4 原廠現貨晶片價格。現貨價是最領先的週期指標，通常領先合約價 3–6 個月轉向。系統計算 5 日均線（5MA）與 20 日均線（20MA），當價格站上均線且 5MA 穿越 20MA 時訊號偏多。</div>
+        </div>
+      </div>
+
+      <div class="explain-item">
+        <div class="explain-num">S2</div>
+        <div>
+          <div class="explain-title">DRAM / NAND 月合約價 QoQ <span class="weight-tag">15%</span></div>
+          <div class="explain-body">TrendForce 每月公布的模組廠採購合約均價，以季增率（QoQ）方向判斷動能。合約價反映品牌廠與原廠的實際成交，領先市場認知約 6–9 個月。連續兩季上漲代表供需緊俏，進入週期高點。</div>
+        </div>
+      </div>
+
+      <div class="explain-item">
+        <div class="explain-num">S3</div>
+        <div>
+          <div class="explain-title">Spot ÷ Contract Ratio <span class="weight-tag">15%</span></div>
+          <div class="explain-body">現貨價除以合約價的比值。比值 &gt; 1 代表現貨溢價，意味市場短缺、需求旺盛，是週期加速的早期信號；比值 &lt; 1 代表現貨折價，供過於求。此比值領先週期轉折約 3–6 個月。</div>
+        </div>
+      </div>
+
+      <div class="explain-item">
+        <div class="explain-num">S4</div>
+        <div>
+          <div class="explain-title">Hyperscaler Demand Floor（複合）<span class="weight-tag">25%</span></div>
+          <div class="explain-body">追蹤 Microsoft、Amazon、Google、Meta 四大超大規模雲端業者的資本支出意願，是記憶體需求的最根本支撐。由五個子訊號加權組成：capex 修正方向（30%）、雲端營收成長（20%）、Backlog vs Capex（20%）、capex 公告後股價反應（15%）、2027 guidance 方向（15%）。</div>
+        </div>
+      </div>
+
+      <div class="explain-item">
+        <div class="explain-num">S5</div>
+        <div>
+          <div class="explain-title">Samsung HBM4 良率進度 <span class="weight-tag">10%</span></div>
+          <div class="explain-body">追蹤三星 HBM4 高頻寬記憶體的量產良率。良率提升代表三星進入 AI 記憶體市場，將與 SK Hynix 直接競爭，對 HBM ASP 造成結構性壓力；良率停滯則維持 SK Hynix 的供給壟斷優勢。屬結構性訊號，不看短期波動。</div>
+        </div>
+      </div>
+
+      <div class="explain-item">
+        <div class="explain-num">S6</div>
+        <div>
+          <div class="explain-title">Micron 毛利率 Trajectory <span class="weight-tag">10%</span></div>
+          <div class="explain-body">Micron 是唯一在美國上市的 DRAM 原廠，季報毛利率趨勢是整體記憶體定價能力最直接的財務呈現，領先週期轉向約一季。毛利率持續爬升代表供給紀律良好、需求支撐 ASP；轉向下修是週期高點的早期財務信號。</div>
+        </div>
+      </div>
+
+      <div class="explain-item">
+        <div class="explain-num">S7</div>
+        <div>
+          <div class="explain-title">Samsung / SK Hynix 庫存週數 <span class="weight-tag">10%</span></div>
+          <div class="explain-body">TrendForce 追蹤的原廠成品庫存週數。庫存週數下降（&lt;8 週）代表去化健康、供需平衡；庫存回升（&gt;10 週）是供過於求的同步指標。此訊號與週期同步，用於確認其他領先訊號的方向，而非預測轉折。</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 </div>
 
 <script>

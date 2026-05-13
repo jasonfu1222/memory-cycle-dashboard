@@ -2,7 +2,7 @@ name: Daily Signal Update
 
 on:
   schedule:
-    - cron: "0 22 * * *"  # 06:00 UTC+8 (台灣時間)
+    - cron: "0 7 * * *"  # 15:00 UTC+8 (台灣時間)
   workflow_dispatch:
 
 jobs:
