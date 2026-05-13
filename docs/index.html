@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory Cycle Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0f1117; --card: #1a1d27; --border: #2a2d3e;
+    --text: #e2e8f0; --muted: #94a3b8;
+    --green: #22c55e; --yellow: #f59e0b; --red: #ef4444;
+    --accent: #6366f1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; padding: 16px; max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: var(--muted); font-size: 0.8rem; margin-bottom: 20px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+  .score-big { font-size: 4rem; font-weight: 800; line-height: 1; }
+  .score-label { font-size: 0.9rem; color: var(--muted); margin-top: 4px; }
+  .status-row { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
+  .badge { padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+  .badge.green { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+  .badge.yellow { background: rgba(245,158,11,0.15); color: var(--yellow); border: 1px solid rgba(245,158,11,0.3); }
+  .badge.red { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } }
+  .signal-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .signal-row:last-child { border-bottom: none; }
+  .signal-name { font-size: 0.85rem; color: var(--muted); }
+  .signal-score { font-size: 1.1rem; font-weight: 700; }
+  .signal-bar-wrap { height: 4px; background: var(--border); border-radius: 2px; margin-top: 4px; }
+  .signal-bar { height: 4px; border-radius: 2px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+  .dot.green { background: var(--green); }
+  .dot.yellow { background: var(--yellow); }
+  .dot.red { background: var(--red); }
+  .alert-box { padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 8px; }
+  .alert-box.yellow { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); color: var(--yellow); }
+  .alert-box.red { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: var(--red); }
+  .sub-table { width: 100%; font-size: 0.82rem; }
+  .sub-table td { padding: 6px 4px; border-bottom: 1px solid var(--border); }
+  .sub-table tr:last-child td { border-bottom: none; }
+  .section-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 12px; font-weight: 600; }
+  canvas { max-height: 200px; }
+  #loading { text-align: center; padding: 40px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div id="loading">載入資料中…</div>
+<div id="app" style="display:none">
+  <h1>Memory Cycle Dashboard</h1>
+  <div class="subtitle" id="updated-time"></div>
+
+  <!-- Alerts -->
+  <div id="alerts"></div>
+
+  <!-- Main Score -->
+  <div class="card">
+    <div class="section-title">Cycle Position Score</div>
+    <div style="display:flex; align-items:flex-end; gap:20px; flex-wrap:wrap;">
+      <div>
+        <div class="score-big" id="cycle-score">—</div>
+        <div class="score-label">/ 10</div>
+      </div>
+      <div>
+        <div class="status-row">
+          <span class="badge" id="status-badge">—</span>
+        </div>
+        <div style="margin-top:8px; font-size:0.9rem;" id="status-text"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Score History Chart -->
+  <div class="card">
+    <div class="section-title">Cycle Score 歷史走勢</div>
+    <canvas id="scoreChart"></canvas>
+  </div>
+
+  <!-- Spot Price Chart -->
+  <div class="card">
+    <div class="section-title">DDR5 16Gb Spot Price（美元）</div>
+    <canvas id="spotChart"></canvas>
+  </div>
+
+  <!-- 7 Signals -->
+  <div class="card">
+    <div class="section-title">7 個訊號</div>
+    <div id="signals-list"></div>
+  </div>
+
+  <!-- Signal 4 Sub-metrics -->
+  <div class="card">
+    <div class="section-title">Signal 4 — Hyperscaler Demand Floor 拆解</div>
+    <table class="sub-table" id="s4-table">
+      <thead>
+        <tr style="color:var(--muted)">
+          <td>Sub-metric</td><td>狀態</td><td>分數</td><td>備註</td>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+const DATA_BASE = "./data/";
+
+function scoreColor(s) {
+  if (s <= 6) return "#22c55e";
+  if (s <= 8) return "#f59e0b";
+  return "#ef4444";
+}
+
+function barColor(s) { return scoreColor(s); }
+
+async function loadJSON(file) {
+  const r = await fetch(DATA_BASE + file + "?t=" + Date.now());
+  if (!r.ok) throw new Error("Cannot load " + file);
+  return r.json();
+}
+
+async function init() {
+  try {
+    const [sig, spotHist, scoreHist] = await Promise.all([
+      loadJSON("signals.json"),
+      loadJSON("spot_history.json"),
+      loadJSON("score_history.json"),
+    ]);
+
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("app").style.display = "block";
+
+    // Updated time
+    const d = new Date(sig.updated);
+    document.getElementById("updated-time").textContent =
+      "最後更新：" + d.toLocaleString("zh-TW");
+
+    // Alerts
+    const alertsEl = document.getElementById("alerts");
+    (sig.alerts || []).forEach(a => {
+      const div = document.createElement("div");
+      div.className = "alert-box " + a.level;
+      div.textContent = "⚠ " + a.msg;
+      alertsEl.appendChild(div);
+    });
+
+    // Cycle score
+    const score = sig.cycle_score;
+    document.getElementById("cycle-score").textContent = score.toFixed(1);
+    document.getElementById("cycle-score").style.color = scoreColor(score);
+    const badge = document.getElementById("status-badge");
+    badge.textContent = sig.status_color === "green" ? "● Green" : sig.status_color === "yellow" ? "● Yellow" : "● Red";
+    badge.className = "badge " + sig.status_color;
+    document.getElementById("status-text").textContent = sig.status_text;
+
+    // Signals list
+    const sigList = document.getElementById("signals-list");
+    const weights = { s1:15, s2:15, s3:15, s4:25, s5:10, s6:10, s7:10 };
+    Object.entries(sig.signals).forEach(([k, v]) => {
+      const row = document.createElement("div");
+      row.className = "signal-row";
+      const pct = (v.score / 10 * 100).toFixed(0);
+      row.innerHTML = `
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:6px">
+            <span class="dot ${v.score<=6?'green':v.score<=8?'yellow':'red'}"></span>
+            <span style="font-size:0.9rem">${v.label}</span>
+            <span style="font-size:0.75rem;color:var(--muted)">(${weights[k]}%)</span>
+          </div>
+          <div class="signal-bar-wrap" style="margin-top:6px">
+            <div class="signal-bar" style="width:${pct}%;background:${barColor(v.score)}"></div>
+          </div>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:3px">${v.detail||''}</div>
+        </div>
+        <div class="signal-score" style="color:${scoreColor(v.score)};margin-left:12px">${v.score.toFixed(1)}</div>
+      `;
+      sigList.appendChild(row);
+    });
+
+    // Signal 4 sub-metrics
+    const s4Labels = {
+      "4a": "Capex Revision 方向",
+      "4b": "Cloud 營收成長",
+      "4c": "Backlog vs Capex",
+      "4d": "Capex 公告股價反應",
+      "4e": "2027 Guidance",
+    };
+    const tbody = document.querySelector("#s4-table tbody");
+    Object.entries(sig.signals.s4.sub).forEach(([k, v]) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${s4Labels[k] || k}</td>
+        <td><span class="dot ${v.status||'green'}"></span>${(v.status||'').toUpperCase()}</td>
+        <td style="color:${scoreColor(v.score)};font-weight:700">${v.score}</td>
+        <td style="color:var(--muted)">${v.note||''}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // Score history chart
+    const scoreEntries = scoreHist.entries || [];
+    if (scoreEntries.length > 0) {
+      new Chart(document.getElementById("scoreChart"), {
+        type: "line",
+        data: {
+          labels: scoreEntries.map(e => e.date),
+          datasets: [{
+            label: "Cycle Score",
+            data: scoreEntries.map(e => e.score),
+            borderColor: "#6366f1",
+            backgroundColor: "rgba(99,102,241,0.1)",
+            borderWidth: 2, pointRadius: 2, tension: 0.3, fill: true,
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: "#94a3b8", maxTicksLimit: 8 }, grid: { color: "#2a2d3e" } },
+            y: { min: 0, max: 10, ticks: { color: "#94a3b8" }, grid: { color: "#2a2d3e" } }
+          }
+        }
+      });
+    }
+
+    // Spot price chart
+    const ddr5Key = "DDR5 16Gb (2Gx8) 4800/5600";
+    const spotSeries = (spotHist.series || {})[ddr5Key] || [];
+    if (spotSeries.length > 0) {
+      const last90 = spotSeries.slice(-90);
+      new Chart(document.getElementById("spotChart"), {
+        type: "line",
+        data: {
+          labels: last90.map(e => e.date),
+          datasets: [{
+            label: "DDR5 16Gb Spot $",
+            data: last90.map(e => e.price),
+            borderColor: "#22c55e",
+            backgroundColor: "rgba(34,197,94,0.08)",
+            borderWidth: 2, pointRadius: 2, tension: 0.3, fill: true,
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: "#94a3b8", maxTicksLimit: 8 }, grid: { color: "#2a2d3e" } },
+            y: { ticks: { color: "#94a3b8", callback: v => "$"+v }, grid: { color: "#2a2d3e" } }
+          }
+        }
+      });
+    }
+
+  } catch(e) {
+    document.getElementById("loading").textContent = "資料載入失敗：" + e.message;
+  }
+}
+
+init();
+</script>
+</body>
+</html>
