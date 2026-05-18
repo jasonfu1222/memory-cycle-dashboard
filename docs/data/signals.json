@@ -1,20 +1,20 @@
 {
-  "updated": "2026-05-17T10:57:44.900200",
-  "date": "2026-05-17",
-  "cycle_score": 6.5,
+  "updated": "2026-05-18T17:19:44.258859",
+  "date": "2026-05-18",
+  "cycle_score": 6.97,
   "status_color": "green",
   "status_text": "Mid Cycle — Hold",
   "alerts": [],
   "signals": {
     "s1": {
-      "score": 6.0,
+      "score": 6.5,
       "label": "Daily Spot Price",
-      "detail": "price > 5MA ↑"
+      "detail": "price > 5MA ↑ | daily +1.0%"
     },
     "s2": {
       "score": 6.0,
       "label": "月合約價 QoQ",
-      "detail": "2H Mar 合約價上漲，momentum 趨緩（TrendForce 4/30 更新）"
+      "detail": "[manual] 2H Mar 合約價上漲，momentum 趨緩（TrendForce 4/30 更新）"
     },
     "s3": {
       "score": 6.0,
@@ -58,9 +58,9 @@
       "detail": "Samsung HBM4 良率進度待更新"
     },
     "s6": {
-      "score": 6.0,
+      "score": 10.0,
       "label": "Micron 毛利率",
-      "detail": "Micron FQ2 毛利率 38.3%，trajectory 向上"
+      "detail": "[auto] GM 74.4% (2026-02) ↑ +18.4pp"
     },
     "s7": {
       "score": 6.0,
