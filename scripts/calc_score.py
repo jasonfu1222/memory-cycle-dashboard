@@ -73,6 +73,111 @@ def score_signal_1(history):
     score = max(0.0, min(10.0, score))
     return round(score, 1), " | ".join(detail)
 
+def score_signal_2(contract_history):
+    """Contract price QoQ momentum (0-10). Returns (score, detail) or (None, reason)."""
+    series = contract_history.get("series", {})
+    ddr5_key = next((k for k in series if "DDR5 16Gb" in k), None)
+    if not ddr5_key or len(series[ddr5_key]) < 4:
+        return None, "insufficient data"
+
+    entries = series[ddr5_key]
+    current = entries[-1]["price"]
+
+    try:
+        from datetime import date as _date, timedelta
+
+        current_dt = _date.fromisoformat(entries[-1]["date"])
+        target = current_dt - timedelta(days=90)
+        past_entry = next(
+            (
+                e
+                for e in reversed(entries[:-1])
+                if _date.fromisoformat(e["date"]) <= target
+            ),
+            entries[0],
+        )
+    except (ValueError, IndexError):
+        return None, "date parse error"
+
+    past = past_entry["price"]
+    qoq = (current - past) / past * 100
+
+    if qoq > 20:
+        base = 9.0
+    elif qoq > 10:
+        base = 7.5
+    elif qoq > 3:
+        base = 6.5
+    elif qoq > -3:
+        base = 5.0
+    elif qoq > -10:
+        base = 3.5
+    elif qoq > -20:
+        base = 2.0
+    else:
+        base = 1.0
+
+    if len(entries) >= 10:
+        p = [e["price"] for e in entries[-10:]]
+        if p[-1] > p[-5]:
+            base = min(10.0, base + 0.5)
+            mom = "↑"
+        elif p[-1] < p[-5]:
+            base = max(0.0, base - 0.5)
+            mom = "↓"
+        else:
+            mom = "→"
+        detail = f"QoQ {qoq:+.1f}% | DDR5 ${current} | {mom}"
+    else:
+        detail = f"QoQ {qoq:+.1f}% | DDR5 ${current}"
+
+    return round(base, 1), detail
+
+
+def score_signal_6(micron_gross):
+    """Micron gross margin signal (0-10). Returns (score, detail) or (None, reason)."""
+    entries = micron_gross.get("entries", [])
+    if not entries:
+        return None, "no data"
+
+    latest = entries[-1]
+    margin = latest["margin_pct"]
+    period = latest["date"][:7]
+
+    if margin > 55:
+        base = 9.5
+    elif margin > 45:
+        base = 8.5
+    elif margin > 35:
+        base = 7.0
+    elif margin > 25:
+        base = 5.5
+    elif margin > 15:
+        base = 3.5
+    elif margin > 5:
+        base = 2.0
+    elif margin >= 0:
+        base = 1.0
+    else:
+        base = 0.0
+
+    if len(entries) >= 2:
+        delta = margin - entries[-2]["margin_pct"]
+        if delta > 3:
+            base = min(10.0, base + 0.5)
+            trend = f"↑ +{delta:.1f}pp"
+        elif delta < -3:
+            base = max(0.0, base - 0.5)
+            trend = f"↓ {delta:.1f}pp"
+        else:
+            trend = f"→ {delta:+.1f}pp"
+        detail = f"GM {margin:.1f}% ({period}) {trend}"
+    else:
+        detail = f"GM {margin:.1f}% ({period})"
+
+    return round(base, 1), detail
+
+
 def calc_signal_4_composite(s4):
     """Signal 4 composite from sub-metrics (0-10 each, weighted)"""
     weights = {"4a": 0.30, "4b": 0.20, "4c": 0.20, "4d": 0.15, "4e": 0.15}
@@ -104,6 +209,8 @@ def score_to_status(score):
 def main():
     today = date.today().isoformat()
     spot_history = load_json(DATA_DIR / "spot_history.json", {"series": {}})
+    contract_history = load_json(DATA_DIR / "contract_history.json", {"series": {}})
+    micron_gross = load_json(DATA_DIR / "micron_gross.json", {"entries": []})
     manual = load_json(DATA_DIR / "manual_inputs.json", {
         "s2": {"score": 5.0, "note": "未填入"},
         "s3": {"score": 5.0, "note": "未填入"},
@@ -120,15 +227,30 @@ def main():
     })
 
     s1_score, s1_detail = score_signal_1(spot_history)
+
+    s2_auto, s2_auto_detail = score_signal_2(contract_history)
+    if s2_auto is not None:
+        s2_score, s2_detail = s2_auto, f"[auto] {s2_auto_detail}"
+    else:
+        s2_score = manual["s2"]["score"]
+        s2_detail = f"[manual] {manual['s2']['note']}"
+
+    s6_auto, s6_auto_detail = score_signal_6(micron_gross)
+    if s6_auto is not None:
+        s6_score, s6_detail = s6_auto, f"[auto] {s6_auto_detail}"
+    else:
+        s6_score = manual["s6"]["score"]
+        s6_detail = f"[manual] {manual['s6']['note']}"
+
     s4_composite = calc_signal_4_composite(manual["s4"])
 
     signal_scores = {
         "s1": s1_score,
-        "s2": manual["s2"]["score"],
+        "s2": s2_score,
         "s3": manual["s3"]["score"],
         "s4": s4_composite,
         "s5": manual["s5"]["score"],
-        "s6": manual["s6"]["score"],
+        "s6": s6_score,
         "s7": manual["s7"]["score"],
     }
 
@@ -158,14 +280,14 @@ def main():
         "alerts": alerts,
         "signals": {
             "s1": {"score": s1_score, "label": "Daily Spot Price", "detail": s1_detail},
-            "s2": {"score": manual["s2"]["score"], "label": "月合約價 QoQ", "detail": manual["s2"]["note"]},
+            "s2": {"score": s2_score, "label": "月合約價 QoQ", "detail": s2_detail},
             "s3": {"score": manual["s3"]["score"], "label": "Spot/Contract Ratio", "detail": manual["s3"]["note"]},
             "s4": {
                 "score": s4_composite, "label": "Hyperscaler Demand Floor",
                 "sub": manual["s4"]
             },
             "s5": {"score": manual["s5"]["score"], "label": "Samsung HBM4 良率", "detail": manual["s5"]["note"]},
-            "s6": {"score": manual["s6"]["score"], "label": "Micron 毛利率", "detail": manual["s6"]["note"]},
+            "s6": {"score": s6_score, "label": "Micron 毛利率", "detail": s6_detail},
             "s7": {"score": manual["s7"]["score"], "label": "庫存週數", "detail": manual["s7"]["note"]},
         }
     }

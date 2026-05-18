@@ -28,6 +28,14 @@ jobs:
       - name: Fetch spot prices
         run: python scripts/fetch_spot.py
 
+      - name: Fetch contract prices
+        continue-on-error: true
+        run: python scripts/fetch_contract.py
+
+      - name: Fetch Micron gross margin
+        continue-on-error: true
+        run: python scripts/fetch_micron_gross.py
+
       - name: Calculate scores
         run: python scripts/calc_score.py
 
