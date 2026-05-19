@@ -1,15 +1,15 @@
 {
-  "updated": "2026-05-18T17:19:44.258859",
-  "date": "2026-05-18",
-  "cycle_score": 6.97,
+  "updated": "2026-05-19T17:30:59.014589",
+  "date": "2026-05-19",
+  "cycle_score": 6.9,
   "status_color": "green",
   "status_text": "Mid Cycle — Hold",
   "alerts": [],
   "signals": {
     "s1": {
-      "score": 6.5,
+      "score": 6.0,
       "label": "Daily Spot Price",
-      "detail": "price > 5MA ↑ | daily +1.0%"
+      "detail": "price > 5MA ↑"
     },
     "s2": {
       "score": 6.0,
