@@ -1,20 +1,20 @@
 {
-  "updated": "2026-05-20T18:01:48.932234",
-  "date": "2026-05-20",
-  "cycle_score": 6.9,
+  "updated": "2026-05-21T16:50:01.844081",
+  "date": "2026-05-21",
+  "cycle_score": 6.38,
   "status_color": "green",
   "status_text": "Mid Cycle — Hold",
   "alerts": [],
   "signals": {
     "s1": {
-      "score": 6.0,
+      "score": 3.5,
       "label": "Daily Spot Price",
-      "detail": "price > 5MA ↑"
+      "detail": "price < 5MA ↓ | daily -0.9%"
     },
     "s2": {
-      "score": 6.0,
+      "score": 5.0,
       "label": "月合約價 QoQ",
-      "detail": "[manual] 2H Mar 合約價上漲，momentum 趨緩（TrendForce 4/30 更新）"
+      "detail": "[auto] QoQ -0.9% | DDR5 $52.5"
     },
     "s3": {
       "score": 6.0,
