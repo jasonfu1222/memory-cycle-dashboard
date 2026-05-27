@@ -94,24 +94,23 @@
     <div class="section-title">分數區間解讀</div>
     <div class="zone-grid">
       <div class="zone-item z-early">
-        <div class="zone-range">0 – 3</div>
+        <div class="zone-range">0% – 30%</div>
         <div class="zone-label">Early Cycle</div>
         <div class="zone-desc">基本面強勁，多數訊號仍在上行軌道，可持有或加碼</div>
       </div>
       <div class="zone-item z-mid">
-        <div class="zone-range">4 – 6</div>
+        <div class="zone-range">30% – 60%</div>
         <div class="zone-label">Mid Cycle</div>
         <div class="zone-desc">部分訊號開始放緩，持有為主，密切監控關鍵觸發點</div>
       </div>
       <div class="zone-item z-late">
-        <div class="zone-range">7 – 8</div>
+        <div class="zone-range">60% – 80%</div>
         <div class="zone-label">Late Cycle</div>
         <div class="zone-desc">訊號明顯惡化，停止加碼，設移動停利，準備分批出脫</div>
       </div>
       <div class="zone-item z-peak">
-        <div class="zone-range">9 – 10</div>
-        <div class="zone-label">Peak</div>
-        <div class="zone-label">分批出清</div>
+        <div class="zone-range">80% – 100%</div>
+        <div class="zone-label">Peak / 分批出清</div>
         <div class="zone-desc">週期高點訊號確立，8 週內逐步降至 25% 部位</div>
       </div>
     </div>
@@ -124,7 +123,7 @@
     <div style="display:flex; align-items:flex-end; gap:20px; flex-wrap:wrap;">
       <div>
         <div class="score-big" id="cycle-score">—</div>
-        <div class="score-label">/ 10</div>
+        <div class="score-label">距週期高峰</div>
       </div>
       <div>
         <div class="status-row">
@@ -361,7 +360,7 @@ async function init() {
     if (ver === "V3") {
       const note = document.getElementById("v3-note");
       note.style.display = "block";
-      note.textContent = "V3 於 2026-05-27 升級：新增 Signal 8（中國擴產）、Signal 9（時間軸校準），評分方向修正（低分=早期/安全），舊分數 6.45 → 新方法論 3.6，屬方法論差異，非週期惡化。";
+      note.textContent = "V3 於 2026-05-27 升級：新增 Signal 8（中國擴產）、Signal 9（時間軸校準），評分方向修正（低分=早期/安全），舊分數 6.45 → 新方法論 35.5%，屬方法論差異，非週期惡化。分數以「距週期高峰比例」顯示（0% = 完全早期，100% = 週期高峰）。";
     }
 
     // Alerts
@@ -375,7 +374,7 @@ async function init() {
 
     // Cycle score
     const score = sig.cycle_score;
-    document.getElementById("cycle-score").textContent = score.toFixed(1);
+    document.getElementById("cycle-score").textContent = (score * 10).toFixed(1) + "%";
     document.getElementById("cycle-score").style.color = scoreColor(score);
     const badge = document.getElementById("status-badge");
     const color = sig.status_color;
@@ -494,7 +493,7 @@ async function init() {
     const v3Start = scoreHist.v3_start;
     if (scoreEntries.length > 0) {
       const labels = scoreEntries.map(e => e.date.slice(5));
-      const dataPoints = scoreEntries.map(e => e.score);
+      const dataPoints = scoreEntries.map(e => +(e.score * 10).toFixed(1));
       const v3Idx = v3Start ? scoreEntries.findIndex(e => e.date >= v3Start) : -1;
       new Chart(document.getElementById("scoreChart"), {
         type: "line",
@@ -516,15 +515,8 @@ async function init() {
           },
           scales: {
             x: { ticks: { color: "#94a3b8", maxTicksLimit: 8 }, grid: { color: "#2a2d3e" } },
-            y: { min: 0, max: 10,
-              ticks: { color: "#94a3b8",
-                callback: v => {
-                  if (v === 3) return "── Early";
-                  if (v === 6) return "── Mid";
-                  if (v === 8) return "── Late";
-                  return v;
-                }
-              },
+            y: { min: 0, max: 100,
+              ticks: { color: "#94a3b8", stepSize: 20, callback: v => v + "%" },
               grid: { color: "#2a2d3e" }
             }
           }
