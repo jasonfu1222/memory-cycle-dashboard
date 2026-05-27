@@ -3,69 +3,124 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Memory Cycle Dashboard</title>
+<title>Memory Cycle Dashboard V3</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
   :root {
     --bg: #0f1117; --card: #1a1d27; --border: #2a2d3e;
     --text: #e2e8f0; --muted: #94a3b8;
     --green: #22c55e; --yellow: #f59e0b; --red: #ef4444;
-    --accent: #6366f1;
+    --accent: #6366f1; --accent2: #8b5cf6;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; padding: 16px; max-width: 900px; margin: 0 auto; }
-  h1 { font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; padding: 16px; max-width: 960px; margin: 0 auto; }
+  h1 { font-size: 1.3rem; font-weight: 700; margin-bottom: 2px; }
   .subtitle { color: var(--muted); font-size: 0.8rem; margin-bottom: 20px; }
   .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
   .score-big { font-size: 4rem; font-weight: 800; line-height: 1; }
   .score-label { font-size: 0.9rem; color: var(--muted); margin-top: 4px; }
   .status-row { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
   .badge { padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
-  .badge.green { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+  .badge.green  { background: rgba(34,197,94,0.15);  color: var(--green);  border: 1px solid rgba(34,197,94,0.3); }
   .badge.yellow { background: rgba(245,158,11,0.15); color: var(--yellow); border: 1px solid rgba(245,158,11,0.3); }
-  .badge.red { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } }
+  .badge.red    { background: rgba(239,68,68,0.15);  color: var(--red);    border: 1px solid rgba(239,68,68,0.3); }
+  .badge.pending { background: rgba(99,102,241,0.15); color: var(--accent); border: 1px solid rgba(99,102,241,0.3); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 560px) { .grid-2 { grid-template-columns: 1fr; } }
   .signal-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
   .signal-row:last-child { border-bottom: none; }
-  .signal-name { font-size: 0.85rem; color: var(--muted); }
-  .signal-score { font-size: 1.1rem; font-weight: 700; }
   .signal-bar-wrap { height: 4px; background: var(--border); border-radius: 2px; margin-top: 4px; }
   .signal-bar { height: 4px; border-radius: 2px; }
   .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
-  .dot.green { background: var(--green); }
+  .dot.green  { background: var(--green); }
   .dot.yellow { background: var(--yellow); }
-  .dot.red { background: var(--red); }
+  .dot.red    { background: var(--red); }
+  .dot.pending { background: var(--accent); }
   .alert-box { padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 8px; }
   .alert-box.yellow { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); color: var(--yellow); }
-  .alert-box.red { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: var(--red); }
-  .sub-table { width: 100%; font-size: 0.82rem; }
-  .sub-table td { padding: 6px 4px; border-bottom: 1px solid var(--border); }
+  .alert-box.red    { background: rgba(239,68,68,0.1);  border: 1px solid rgba(239,68,68,0.3);  color: var(--red); }
+  .sub-table { width: 100%; font-size: 0.82rem; border-collapse: collapse; }
+  .sub-table td { padding: 7px 6px; border-bottom: 1px solid var(--border); vertical-align: top; }
   .sub-table tr:last-child td { border-bottom: none; }
+  .sub-table .note-col { color: var(--muted); font-size: 0.78rem; }
   .section-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 12px; font-weight: 600; }
   canvas { max-height: 200px; }
   #loading { text-align: center; padding: 40px; color: var(--muted); }
-  .signal-explain { display: flex; flex-direction: column; gap: 0; }
+  /* Score zone legend */
+  .zone-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  @media (max-width: 560px) { .zone-grid { grid-template-columns: repeat(2, 1fr); } }
+  .zone-item { border-radius: 8px; padding: 10px 12px; border: 1px solid; }
+  .zone-item.z-early  { background: rgba(34,197,94,0.08);  border-color: rgba(34,197,94,0.25); }
+  .zone-item.z-mid    { background: rgba(34,197,94,0.05);  border-color: rgba(34,197,94,0.15); }
+  .zone-item.z-late   { background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.25); }
+  .zone-item.z-peak   { background: rgba(239,68,68,0.08);  border-color: rgba(239,68,68,0.25); }
+  .zone-range { font-size: 1.2rem; font-weight: 800; }
+  .zone-label { font-size: 0.78rem; font-weight: 600; margin: 2px 0; }
+  .zone-desc  { font-size: 0.72rem; color: var(--muted); line-height: 1.4; }
+  .z-early  .zone-range, .z-early  .zone-label { color: var(--green); }
+  .z-mid    .zone-range, .z-mid    .zone-label { color: #4ade80; }
+  .z-late   .zone-range, .z-late   .zone-label { color: var(--yellow); }
+  .z-peak   .zone-range, .z-peak   .zone-label { color: var(--red); }
+  /* Event calendar */
+  .event-row { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .event-row:last-child { border-bottom: none; }
+  .event-date-badge { background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); color: var(--accent); border-radius: 6px; padding: 4px 8px; font-size: 0.75rem; font-weight: 600; white-space: nowrap; min-width: 86px; text-align: center; }
+  .event-date-badge.lock-soon { background: rgba(245,158,11,0.15); border-color: rgba(245,158,11,0.3); color: var(--yellow); }
+  .event-name { font-size: 0.88rem; font-weight: 500; }
+  .event-note { font-size: 0.76rem; color: var(--muted); margin-top: 2px; }
+  /* Signal explanation */
   .explain-item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
   .explain-item:last-child { border-bottom: none; }
   .explain-num { font-size: 0.75rem; font-weight: 700; color: var(--accent); background: rgba(99,102,241,0.12); border-radius: 6px; padding: 2px 8px; height: fit-content; white-space: nowrap; margin-top: 2px; }
   .explain-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 5px; }
-  .explain-body { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+  .explain-body  { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
   .weight-tag { font-size: 0.72rem; color: var(--accent); font-weight: 400; margin-left: 4px; }
+  .meta-tag { font-size: 0.7rem; color: var(--accent2); background: rgba(139,92,246,0.1); border-radius: 4px; padding: 1px 6px; margin-left: 4px; }
+  .v3-note { font-size: 0.75rem; color: var(--muted); background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.2); border-radius: 6px; padding: 8px 12px; margin-bottom: 12px; }
 </style>
 </head>
 <body>
 <div id="loading">載入資料中…</div>
 <div id="app" style="display:none">
+
   <h1>Memory Cycle Dashboard</h1>
   <div class="subtitle" id="updated-time"></div>
 
   <!-- Alerts -->
   <div id="alerts"></div>
 
+  <!-- Score Zone Legend -->
+  <div class="card">
+    <div class="section-title">分數區間解讀</div>
+    <div class="zone-grid">
+      <div class="zone-item z-early">
+        <div class="zone-range">0 – 3</div>
+        <div class="zone-label">Early Cycle</div>
+        <div class="zone-desc">基本面強勁，多數訊號仍在上行軌道，可持有或加碼</div>
+      </div>
+      <div class="zone-item z-mid">
+        <div class="zone-range">4 – 6</div>
+        <div class="zone-label">Mid Cycle</div>
+        <div class="zone-desc">部分訊號開始放緩，持有為主，密切監控關鍵觸發點</div>
+      </div>
+      <div class="zone-item z-late">
+        <div class="zone-range">7 – 8</div>
+        <div class="zone-label">Late Cycle</div>
+        <div class="zone-desc">訊號明顯惡化，停止加碼，設移動停利，準備分批出脫</div>
+      </div>
+      <div class="zone-item z-peak">
+        <div class="zone-range">9 – 10</div>
+        <div class="zone-label">Peak</div>
+        <div class="zone-label">分批出清</div>
+        <div class="zone-desc">週期高點訊號確立，8 週內逐步降至 25% 部位</div>
+      </div>
+    </div>
+  </div>
+
   <!-- Main Score -->
   <div class="card">
-    <div class="section-title">Cycle Position Score</div>
+    <div class="section-title">Cycle Position Score — V3</div>
+    <div id="v3-note" class="v3-note" style="display:none"></div>
     <div style="display:flex; align-items:flex-end; gap:20px; flex-wrap:wrap;">
       <div>
         <div class="score-big" id="cycle-score">—</div>
@@ -80,71 +135,120 @@
     </div>
   </div>
 
-  <!-- Score History Chart -->
-  <div class="card">
-    <div class="section-title">Cycle Score 歷史走勢</div>
-    <canvas id="scoreChart"></canvas>
+  <!-- Charts row -->
+  <div class="grid-2">
+    <div class="card">
+      <div class="section-title">Cycle Score 歷史走勢</div>
+      <canvas id="scoreChart"></canvas>
+    </div>
+    <div class="card">
+      <div class="section-title">DDR5 16Gb Spot Price（美元）</div>
+      <canvas id="spotChart"></canvas>
+    </div>
   </div>
 
-  <!-- Spot Price Chart -->
+  <!-- DDR5/DDR4 ratio chart -->
   <div class="card">
-    <div class="section-title">DDR5 16Gb Spot Price（美元）</div>
-    <canvas id="spotChart"></canvas>
+    <div class="section-title">DDR5 / DDR4 價格比值（Signal 1c）</div>
+    <div style="font-size:0.78rem; color:var(--muted); margin-bottom:8px;">
+      健康區間 1.8–2.5x｜黃線 = 1.8x 警示線｜比值縮窄代表 DDR5 溢價流失
+    </div>
+    <canvas id="ratioChart"></canvas>
   </div>
 
-  <!-- 7 Signals -->
+  <!-- Event Calendar -->
   <div class="card">
-    <div class="section-title">7 個訊號</div>
+    <div class="section-title">重大事件日曆</div>
+    <div id="events-list">
+      <div style="color:var(--muted);font-size:0.85rem">無資料</div>
+    </div>
+  </div>
+
+  <!-- 9 Signals -->
+  <div class="card">
+    <div class="section-title">9 個訊號（V3 權重）</div>
     <div id="signals-list"></div>
   </div>
 
-  <!-- Signal 4 Sub-metrics -->
+  <!-- Signal 4 sub-metrics -->
   <div class="card">
-    <div class="section-title">Signal 4 — Hyperscaler Demand Floor 拆解</div>
+    <div class="section-title">Signal 4 — Hyperscaler Demand Floor（6 個子訊號）</div>
     <table class="sub-table" id="s4-table">
       <thead>
         <tr style="color:var(--muted)">
-          <td>Sub-metric</td><td>狀態</td><td>分數</td><td>備註</td>
+          <td style="width:28%">Sub-metric</td><td style="width:12%">狀態</td><td style="width:10%">分數</td><td>備註</td>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
   </div>
 
+  <!-- Signal 6 sub-metrics -->
+  <div class="card">
+    <div class="section-title">Signal 6 — Micron 財務指標（3 個子訊號）</div>
+    <table class="sub-table" id="s6-table">
+      <thead>
+        <tr style="color:var(--muted)">
+          <td style="width:28%">Sub-metric</td><td style="width:12%">狀態</td><td style="width:10%">分數</td><td>備註</td>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Signal 8 sub-metrics -->
+  <div class="card">
+    <div class="section-title">Signal 8 — 中國對手擴產進度（5 個子訊號）</div>
+    <table class="sub-table" id="s8-table">
+      <thead>
+        <tr style="color:var(--muted)">
+          <td style="width:28%">Sub-metric</td><td style="width:12%">狀態</td><td style="width:10%">分數</td><td>備註</td>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Signal 9 meta card -->
+  <div class="card" id="s9-card">
+    <div class="section-title">Signal 9 — Cycle Ending 時間軸校準 <span class="meta-tag">元指標</span></div>
+    <div id="s9-content" style="font-size:0.85rem; color:var(--muted); line-height:1.6;"></div>
+  </div>
+
   <!-- Signal Explanations -->
   <div class="card">
-    <div class="section-title">7 個訊號說明</div>
-    <div class="signal-explain">
+    <div class="section-title">9 個訊號說明</div>
+    <div>
 
       <div class="explain-item">
         <div class="explain-num">S1</div>
         <div>
-          <div class="explain-title">Daily 記憶體現貨報價 <span class="weight-tag">15%</span></div>
-          <div class="explain-body">每日從 TrendForce 自動抓取 DDR5 / DDR4 原廠現貨晶片價格。現貨價是最領先的週期指標，通常領先合約價 3–6 個月轉向。系統計算 5 日均線（5MA）與 20 日均線（20MA），當價格站上均線且 5MA 穿越 20MA 時訊號偏多。</div>
+          <div class="explain-title">Daily 記憶體現貨報價（複合）<span class="weight-tag">15%</span></div>
+          <div class="explain-body">三個子訊號加權：1a DDR5 spot vs MA（50%）、1b spot/contract 比值（30%）、1c DDR5/DDR4 分化（20%）。現貨價是最領先的週期指標，通常領先合約價 3–6 個月轉向。<br><strong>黃燈觸發</strong>：5MA 反轉向下；spot/contract &lt;0.95；DDR5/DDR4 比值縮至 1.8x 以下。</div>
         </div>
       </div>
 
       <div class="explain-item">
         <div class="explain-num">S2</div>
         <div>
-          <div class="explain-title">DRAM / NAND 月合約價 QoQ <span class="weight-tag">15%</span></div>
-          <div class="explain-body">TrendForce 每月公布的模組廠採購合約均價，以季增率（QoQ）方向判斷動能。合約價反映品牌廠與原廠的實際成交，領先市場認知約 6–9 個月。連續兩季上漲代表供需緊俏，進入週期高點。</div>
+          <div class="explain-title">DRAM/NAND 月合約價 QoQ <span class="weight-tag">15%</span></div>
+          <div class="explain-body">TrendForce 月度合約均價季增率，領先市場認知 6–9 個月。動能強（QoQ &gt;+30%）= 早期，放緩到 +30% 以下觸發黃燈，+10% 以下觸發紅燈。</div>
         </div>
       </div>
 
       <div class="explain-item">
         <div class="explain-num">S3</div>
         <div>
-          <div class="explain-title">Spot ÷ Contract Ratio <span class="weight-tag">15%</span></div>
-          <div class="explain-body">現貨價除以合約價的比值。比值 &gt; 1 代表現貨溢價，意味市場短缺、需求旺盛，是週期加速的早期信號；比值 &lt; 1 代表現貨折價，供過於求。此比值領先週期轉折約 3–6 個月。</div>
+          <div class="explain-title">Spot ÷ Contract Ratio <span class="weight-tag">12%</span></div>
+          <div class="explain-body">比值 &gt;1 代表現貨溢價（需求旺），&lt;1 代表現貨折價（供過於求）。領先週期轉折 3–6 個月。</div>
         </div>
       </div>
 
       <div class="explain-item">
         <div class="explain-num">S4</div>
         <div>
-          <div class="explain-title">Hyperscaler Demand Floor（複合）<span class="weight-tag">25%</span></div>
-          <div class="explain-body">追蹤 Microsoft、Amazon、Google、Meta 四大超大規模雲端業者的資本支出意願，是記憶體需求的最根本支撐。由五個子訊號加權組成：capex 修正方向（30%）、雲端營收成長（20%）、Backlog vs Capex（20%）、capex 公告後股價反應（15%）、2027 guidance 方向（15%）。</div>
+          <div class="explain-title">Hyperscaler Demand Floor（複合，6 個子訊號）<span class="weight-tag">20%</span></div>
+          <div class="explain-body">追蹤 MSFT/AMZN/GOOG/META 資本支出意願，是記憶體需求的最根本支撐。V3 新增 4f：NVDA supply commitments（$119B，佔 15%），這是比 capex 本身更前瞻的產能鎖定訊號。</div>
         </div>
       </div>
 
@@ -152,30 +256,46 @@
         <div class="explain-num">S5</div>
         <div>
           <div class="explain-title">Samsung HBM4 良率進度 <span class="weight-tag">10%</span></div>
-          <div class="explain-body">追蹤三星 HBM4 高頻寬記憶體的量產良率。良率提升代表三星進入 AI 記憶體市場，將與 SK Hynix 直接競爭，對 HBM ASP 造成結構性壓力；良率停滯則維持 SK Hynix 的供給壟斷優勢。屬結構性訊號，不看短期波動。</div>
+          <div class="explain-body">良率突破 50% 代表三星進入 AI 記憶體市場，對 HBM ASP 造成結構性壓力。目前三星仍落後 SK Hynix，Micron 已量產 HBM4 12-high。屬結構性訊號，不看短期波動。</div>
         </div>
       </div>
 
       <div class="explain-item">
         <div class="explain-num">S6</div>
         <div>
-          <div class="explain-title">Micron 毛利率 Trajectory <span class="weight-tag">10%</span></div>
-          <div class="explain-body">Micron 是唯一在美國上市的 DRAM 原廠，季報毛利率趨勢是整體記憶體定價能力最直接的財務呈現，領先週期轉向約一季。毛利率持續爬升代表供給紀律良好、需求支撐 ASP；轉向下修是週期高點的早期財務信號。</div>
+          <div class="explain-title">Micron 財務指標（複合，3 個子訊號）<span class="weight-tag">10%</span></div>
+          <div class="explain-body">6a GM 軌跡（50%）：上升中 = 低分，首季下滑觸發黃燈。6b Q3 FY26 財報 outcome（30%）：6/24-25 發布，miss 場景直接觸發 Red Alert。6c HBM revenue（20%）：月營收 $2B+ = 健康。</div>
         </div>
       </div>
 
       <div class="explain-item">
         <div class="explain-num">S7</div>
         <div>
-          <div class="explain-title">Samsung / SK Hynix 庫存週數 <span class="weight-tag">10%</span></div>
-          <div class="explain-body">TrendForce 追蹤的原廠成品庫存週數。庫存週數下降（&lt;8 週）代表去化健康、供需平衡；庫存回升（&gt;10 週）是供過於求的同步指標。此訊號與週期同步，用於確認其他領先訊號的方向，而非預測轉折。</div>
+          <div class="explain-title">Samsung / SK Hynix 庫存週數 <span class="weight-tag">8%</span></div>
+          <div class="explain-body">原廠成品庫存週數，是週期同步指標（非領先）。歷史低點 = 健康。回升到 8 週觸發黃燈，&gt;12 週觸發紅燈。</div>
+        </div>
+      </div>
+
+      <div class="explain-item">
+        <div class="explain-num">S8</div>
+        <div>
+          <div class="explain-title">中國對手擴產進度（複合，5 個子訊號）<span class="weight-tag">7%</span></div>
+          <div class="explain-body">追蹤 CXMT 和 YMTC 的 IPO 進程、客戶擴張、產能 ramp、HBM 研發進度。這是 V2 完全缺失的結構性風險維度，與 cyclical 訊號性質不同，需要單獨追蹤。中國 HBM 量產出貨 Tier 1 客戶 = 絕對紅燈。</div>
+        </div>
+      </div>
+
+      <div class="explain-item">
+        <div class="explain-num">S9</div>
+        <div>
+          <div class="explain-title">Cycle Ending 時間軸校準 <span class="weight-tag">3%</span><span class="meta-tag">元指標</span></div>
+          <div class="explain-body">追蹤業內人士和券商對週期反轉時間點的具體預測，用來校準 dashboard 整體閾值是否需要調整，而非直接影響部位決策。季度更新。目前共識：2027 H2 ± 一季。</div>
         </div>
       </div>
 
     </div>
   </div>
 
-</div>
+</div><!-- #app -->
 
 <script>
 const DATA_BASE = "./data/";
@@ -186,12 +306,38 @@ function scoreColor(s) {
   return "#ef4444";
 }
 
-function barColor(s) { return scoreColor(s); }
+function statusClass(st) {
+  if (!st) return "green";
+  if (st === "pending") return "pending";
+  return st;
+}
 
 async function loadJSON(file) {
   const r = await fetch(DATA_BASE + file + "?t=" + Date.now());
   if (!r.ok) throw new Error("Cannot load " + file);
   return r.json();
+}
+
+function daysUntil(dateStr) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const target = new Date(dateStr); target.setHours(0,0,0,0);
+  return Math.round((target - today) / 86400000);
+}
+
+function renderSubTable(tbodyEl, sub, labelMap, scoreKey) {
+  tbodyEl.innerHTML = "";
+  Object.entries(sub).forEach(([k, v]) => {
+    const score = v[scoreKey || "score"] ?? v.score ?? "—";
+    const status = v.status || (typeof score === "number" ? (score < 5 ? "green" : score < 7 ? "yellow" : "red") : "green");
+    const note = v.note || v.detail || "";
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><strong>${labelMap[k] || k}</strong></td>
+      <td><span class="dot ${statusClass(status)}"></span>${status.toUpperCase()}</td>
+      <td style="color:${typeof score==="number"?scoreColor(score):"var(--muted)"};font-weight:700">${typeof score==="number"?score.toFixed(1):score}</td>
+      <td class="note-col">${note}</td>`;
+    tbodyEl.appendChild(tr);
+  });
 }
 
 async function init() {
@@ -205,10 +351,18 @@ async function init() {
     document.getElementById("loading").style.display = "none";
     document.getElementById("app").style.display = "block";
 
-    // Updated time
+    // Updated time + methodology
     const d = new Date(sig.updated);
+    const ver = sig.methodology || "V2";
     document.getElementById("updated-time").textContent =
-      "最後更新：" + d.toLocaleString("zh-TW");
+      "最後更新：" + d.toLocaleString("zh-TW") + "　評分方法：" + ver;
+
+    // V3 migration note
+    if (ver === "V3") {
+      const note = document.getElementById("v3-note");
+      note.style.display = "block";
+      note.textContent = "V3 於 2026-05-27 升級：新增 Signal 8（中國擴產）、Signal 9（時間軸校準），評分方向修正（低分=早期/安全），舊分數 6.45 → 新方法論 3.6，屬方法論差異，非週期惡化。";
+    }
 
     // Alerts
     const alertsEl = document.getElementById("alerts");
@@ -224,64 +378,131 @@ async function init() {
     document.getElementById("cycle-score").textContent = score.toFixed(1);
     document.getElementById("cycle-score").style.color = scoreColor(score);
     const badge = document.getElementById("status-badge");
-    badge.textContent = sig.status_color === "green" ? "● Green" : sig.status_color === "yellow" ? "● Yellow" : "● Red";
-    badge.className = "badge " + sig.status_color;
+    const color = sig.status_color;
+    badge.textContent = color === "green" ? "● Green" : color === "yellow" ? "● Yellow" : "● Red";
+    badge.className = "badge " + color;
     document.getElementById("status-text").textContent = sig.status_text;
+
+    // Weights V3
+    const weights = { s1:15, s2:15, s3:12, s4:20, s5:10, s6:10, s7:8, s8:7, s9:3 };
 
     // Signals list
     const sigList = document.getElementById("signals-list");
-    const weights = { s1:15, s2:15, s3:15, s4:25, s5:10, s6:10, s7:10 };
     Object.entries(sig.signals).forEach(([k, v]) => {
       const row = document.createElement("div");
       row.className = "signal-row";
       const pct = (v.score / 10 * 100).toFixed(0);
+      const dotColor = v.score <= 6 ? "green" : v.score <= 8 ? "yellow" : "red";
+      const subNote = k === "s1" && v.sub
+        ? ` — 1c: <span style="color:${v.sub["1c"]?.score >= 7 ? "var(--red)" : v.sub["1c"]?.score >= 5 ? "var(--yellow)" : "var(--green)"}">` +
+          (v.sub["1c"]?.status || "").toUpperCase() + `</span>`
+        : "";
       row.innerHTML = `
         <div style="flex:1">
           <div style="display:flex;align-items:center;gap:6px">
-            <span class="dot ${v.score<=6?'green':v.score<=8?'yellow':'red'}"></span>
+            <span class="dot ${dotColor}"></span>
             <span style="font-size:0.9rem">${v.label}</span>
             <span style="font-size:0.75rem;color:var(--muted)">(${weights[k]}%)</span>
+            ${subNote}
           </div>
           <div class="signal-bar-wrap" style="margin-top:6px">
-            <div class="signal-bar" style="width:${pct}%;background:${barColor(v.score)}"></div>
+            <div class="signal-bar" style="width:${pct}%;background:${scoreColor(v.score)}"></div>
           </div>
           <div style="font-size:0.75rem;color:var(--muted);margin-top:3px">${v.detail||''}</div>
         </div>
-        <div class="signal-score" style="color:${scoreColor(v.score)};margin-left:12px">${v.score.toFixed(1)}</div>
-      `;
+        <div style="color:${scoreColor(v.score)};font-weight:700;font-size:1.1rem;margin-left:12px">${v.score.toFixed(1)}</div>`;
       sigList.appendChild(row);
     });
 
-    // Signal 4 sub-metrics
+    // Signal 4 sub-table
     const s4Labels = {
       "4a": "Capex Revision 方向",
       "4b": "Cloud 營收成長",
       "4c": "Backlog vs Capex",
       "4d": "Capex 公告股價反應",
-      "4e": "2027 Guidance",
+      "4e": "2027 Capex Guidance",
+      "4f": "NVDA Supply Commitments ★",
     };
-    const tbody = document.querySelector("#s4-table tbody");
-    Object.entries(sig.signals.s4.sub).forEach(([k, v]) => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${s4Labels[k] || k}</td>
-        <td><span class="dot ${v.status||'green'}"></span>${(v.status||'').toUpperCase()}</td>
-        <td style="color:${scoreColor(v.score)};font-weight:700">${v.score}</td>
-        <td style="color:var(--muted)">${v.note||''}</td>
-      `;
-      tbody.appendChild(tr);
-    });
+    renderSubTable(
+      document.querySelector("#s4-table tbody"),
+      sig.signals.s4?.sub || {},
+      s4Labels
+    );
+
+    // Signal 6 sub-table
+    const s6Labels = {
+      "6a": "Micron GM 軌跡（Auto）",
+      "6b": "Q3 FY26 財報 Outcome",
+      "6c": "HBM Revenue 揭露",
+    };
+    renderSubTable(
+      document.querySelector("#s6-table tbody"),
+      sig.signals.s6?.sub || {},
+      s6Labels
+    );
+
+    // Signal 8 sub-table
+    const s8Labels = {
+      "8a": "CXMT IPO 進度",
+      "8b": "CXMT 客戶名單擴大",
+      "8c": "YMTC IPO 進度",
+      "8d": "中國 HBM 進度",
+      "8e": "CXMT/YMTC 月產能 Ramp",
+    };
+    renderSubTable(
+      document.querySelector("#s8-table tbody"),
+      sig.signals.s8?.sub || {},
+      s8Labels
+    );
+
+    // Signal 9
+    const s9 = sig.signals.s9 || {};
+    const s9Score = s9.score ?? "—";
+    const s9Status = s9Score <= 6 ? "green" : s9Score <= 8 ? "yellow" : "red";
+    document.getElementById("s9-content").innerHTML =
+      `<span class="dot ${s9Status}"></span>` +
+      `分數 <strong style="color:${scoreColor(s9Score)}">${typeof s9Score==="number"?s9Score.toFixed(1):s9Score}</strong>　` +
+      (s9.detail || "") + `<br><br>` +
+      `<span style="font-size:0.78rem">此為元指標（meta-signal），不直接影響部位決策。` +
+      `主要用途：當業內警告與 dashboard 推斷偏差 &gt;2 季時，觸發整體閾值校準。季度更新。</span>`;
+
+    // Event calendar
+    const eventsList = document.getElementById("events-list");
+    const events = sig.events || [];
+    if (events.length > 0) {
+      eventsList.innerHTML = "";
+      events.forEach(ev => {
+        const days = daysUntil(ev.date);
+        const lockSoon = days >= 0 && days <= (ev.lock_before_h / 24 + 1);
+        const row = document.createElement("div");
+        row.className = "event-row";
+        const daysText = days < 0 ? `${Math.abs(days)}天前` : days === 0 ? "今天" : `${days}天後`;
+        row.innerHTML = `
+          <div class="event-date-badge ${lockSoon ? "lock-soon" : ""}">
+            ${ev.date.slice(5)}<br>${daysText}${lockSoon ? " 🔒" : ""}
+          </div>
+          <div>
+            <div class="event-name">${ev.event}</div>
+            <div class="event-note">${ev.note || ""}${lockSoon ? "　→ 鎖倉期：事件前24h停止調整部位" : ""}</div>
+          </div>`;
+        eventsList.appendChild(row);
+      });
+    }
 
     // Score history chart
     const scoreEntries = scoreHist.entries || [];
+    const v3Start = scoreHist.v3_start;
     if (scoreEntries.length > 0) {
+      const labels = scoreEntries.map(e => e.date.slice(5));
+      const dataPoints = scoreEntries.map(e => e.score);
+      const v3Idx = v3Start ? scoreEntries.findIndex(e => e.date >= v3Start) : -1;
       new Chart(document.getElementById("scoreChart"), {
         type: "line",
         data: {
-          labels: scoreEntries.map(e => e.date),
+          labels,
           datasets: [{
             label: "Cycle Score",
-            data: scoreEntries.map(e => e.score),
+            data: dataPoints,
             borderColor: "#6366f1",
             backgroundColor: "rgba(99,102,241,0.1)",
             borderWidth: 2, pointRadius: 2, tension: 0.3, fill: true,
@@ -289,16 +510,29 @@ async function init() {
         },
         options: {
           responsive: true,
-          plugins: { legend: { display: false } },
+          plugins: {
+            legend: { display: false },
+            annotation: v3Idx >= 0 ? {} : undefined,
+          },
           scales: {
             x: { ticks: { color: "#94a3b8", maxTicksLimit: 8 }, grid: { color: "#2a2d3e" } },
-            y: { min: 0, max: 10, ticks: { color: "#94a3b8" }, grid: { color: "#2a2d3e" } }
+            y: { min: 0, max: 10,
+              ticks: { color: "#94a3b8",
+                callback: v => {
+                  if (v === 3) return "── Early";
+                  if (v === 6) return "── Mid";
+                  if (v === 8) return "── Late";
+                  return v;
+                }
+              },
+              grid: { color: "#2a2d3e" }
+            }
           }
         }
       });
     }
 
-    // Spot price chart
+    // DDR5 spot price chart
     const ddr5Key = "DDR5 16Gb (2Gx8) 4800/5600";
     const spotSeries = (spotHist.series || {})[ddr5Key] || [];
     if (spotSeries.length > 0) {
@@ -306,7 +540,7 @@ async function init() {
       new Chart(document.getElementById("spotChart"), {
         type: "line",
         data: {
-          labels: last90.map(e => e.date),
+          labels: last90.map(e => e.date.slice(5)),
           datasets: [{
             label: "DDR5 16Gb Spot $",
             data: last90.map(e => e.price),
@@ -324,6 +558,50 @@ async function init() {
           }
         }
       });
+    }
+
+    // DDR5/DDR4 ratio chart (Signal 1c)
+    const ddr4Key = "DDR4 16Gb (2Gx8) 3200";
+    const ddr5Spot = (spotHist.series || {})[ddr5Key] || [];
+    const ddr4Spot = (spotHist.series || {})[ddr4Key] || [];
+    if (ddr5Spot.length > 10 && ddr4Spot.length > 10) {
+      // Align by date
+      const ddr4Map = Object.fromEntries(ddr4Spot.map(e => [e.date, e.price]));
+      const ratioData = ddr5Spot.slice(-90)
+        .filter(e => ddr4Map[e.date] && ddr4Map[e.date] > 0)
+        .map(e => ({ date: e.date, ratio: +(e.price / ddr4Map[e.date]).toFixed(2) }));
+
+      if (ratioData.length > 5) {
+        new Chart(document.getElementById("ratioChart"), {
+          type: "line",
+          data: {
+            labels: ratioData.map(e => e.date.slice(5)),
+            datasets: [
+              {
+                label: "DDR5/DDR4 ratio",
+                data: ratioData.map(e => e.ratio),
+                borderColor: "#a78bfa",
+                backgroundColor: "rgba(167,139,250,0.08)",
+                borderWidth: 2, pointRadius: 2, tension: 0.3, fill: true,
+              },
+              {
+                label: "警示線 1.8x",
+                data: Array(ratioData.length).fill(1.8),
+                borderColor: "rgba(245,158,11,0.6)",
+                borderDash: [4,4], borderWidth: 1, pointRadius: 0, fill: false,
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { ticks: { color: "#94a3b8", maxTicksLimit: 8 }, grid: { color: "#2a2d3e" } },
+              y: { ticks: { color: "#94a3b8", callback: v => v+"x" }, grid: { color: "#2a2d3e" } }
+            }
+          }
+        });
+      }
     }
 
   } catch(e) {

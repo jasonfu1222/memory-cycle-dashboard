@@ -1,71 +1,167 @@
 {
-  "updated": "2026-05-26T22:29:48.315520",
-  "date": "2026-05-26",
-  "cycle_score": 6.45,
+  "updated": "2026-05-27T21:12:15.154884",
+  "date": "2026-05-27",
+  "methodology": "V3",
+  "cycle_score": 3.55,
   "status_color": "green",
-  "status_text": "Mid Cycle — Hold",
+  "status_text": "Mid Cycle — 多數訊號正面，持有，密切監控",
   "alerts": [],
+  "events": [
+    {
+      "date": "2026-06-24",
+      "event": "Micron Q3 FY26 財報",
+      "signal": "6b",
+      "lock_before_h": 24,
+      "note": "最重要近期事件。miss 場景將直接觸發 Red Alert"
+    },
+    {
+      "date": "2026-07-15",
+      "event": "Hyperscaler Q2 財報季（估）",
+      "signal": "4a",
+      "lock_before_h": 24,
+      "note": "MSFT/AMZN/GOOG/META，追蹤 capex revision 與 cloud 營收"
+    },
+    {
+      "date": "2026-08-27",
+      "event": "NVDA Q2 FY27 財報（估）",
+      "signal": "4f",
+      "lock_before_h": 24,
+      "note": "確認 supply commitments 是否維持 $119B+"
+    }
+  ],
   "signals": {
     "s1": {
-      "score": 4.0,
-      "label": "Daily Spot Price",
-      "detail": "price < 5MA ↓"
+      "score": 4.7,
+      "label": "Daily 記憶體現貨報價",
+      "detail": "1a=5.5 | 1b=3.0 | 1c=5.0",
+      "sub": {
+        "1a": {
+          "score": 5.5,
+          "detail": "DDR5 $52.5 | <52.5 5MA ↓"
+        },
+        "1b": {
+          "score": 3.0,
+          "detail": "spot/contract = 1.00 ($52.5/$52.5) [green]"
+        },
+        "1c": {
+          "score": 5.0,
+          "detail": "DDR5/DDR4 比值 ~2.2x，DDR4 持續軟，DDR5 仍強 → 分化進行中，對 thesis 中性但需監控",
+          "status": "yellow"
+        }
+      }
     },
     "s2": {
-      "score": 5.0,
-      "label": "月合約價 QoQ",
-      "detail": "[auto] QoQ -0.9% | DDR5 $52.5"
+      "score": 3.0,
+      "label": "DRAM/NAND 月合約價 QoQ",
+      "detail": "[manual] Q2 2026 DRAM QoQ +58-63%，NAND +70-75%，10年最大漲幅 → Green，動能仍強"
     },
     "s3": {
-      "score": 6.0,
-      "label": "Spot/Contract Ratio",
-      "detail": "Spot/Contract ratio 待計算"
+      "score": 3.0,
+      "label": "Spot ÷ Contract Ratio",
+      "detail": "[manual] DDR5 spot 仍高於 contract，ratio > 1.0 → Green"
     },
     "s4": {
-      "score": 8.4,
+      "score": 3.2,
       "label": "Hyperscaler Demand Floor",
       "sub": {
         "4a": {
-          "score": 9.0,
+          "score": 3.0,
           "status": "green",
           "note": "MSFT/AMZN/GOOG/META 全部上修 capex"
         },
         "4b": {
-          "score": 9.0,
+          "score": 3.0,
           "status": "green",
           "note": "Google Cloud +63%、AWS +28%、Azure +40%"
         },
         "4c": {
-          "score": 9.0,
+          "score": 3.0,
           "status": "green",
           "note": "Google backlog QoQ 翻倍 vs capex +4-8%，backlog 跑贏"
         },
         "4d": {
           "score": 5.0,
           "status": "yellow",
-          "note": "Meta -6%、MSFT -2.5%，單一公司未到觸發條件"
+          "note": "Meta -6%、MSFT -2.5%，單一公司，未到觸發條件"
         },
         "4e": {
-          "score": 9.0,
+          "score": 3.0,
           "status": "green",
           "note": "Alphabet CFO 表態 2027 顯著增加，街上預估破 $1T"
+        },
+        "4f": {
+          "score": 3.0,
+          "status": "green",
+          "note": "NVDA $119B supply commitments，鎖定產能到明年 → demand floor 最前瞻訊號"
         }
       }
     },
     "s5": {
-      "score": 5.0,
-      "label": "Samsung HBM4 良率",
-      "detail": "Samsung HBM4 良率進度待更新"
+      "score": 3.0,
+      "label": "Samsung HBM4 良率進度",
+      "detail": "[manual] Samsung HBM4 良率仍待觀察，SK Hynix 領先，Micron HBM4 12-high 已量產給 NVDA → Green"
     },
     "s6": {
-      "score": 10.0,
-      "label": "Micron 毛利率",
-      "detail": "[auto] GM 74.4% (2026-02) ↑ +18.4pp"
+      "score": 3.4,
+      "label": "Micron 毛利率 + 財報 Trajectory",
+      "sub": {
+        "6a": {
+          "score": 2.5,
+          "detail": "GM 74.4% (2026-02) ↑ +18.4pp",
+          "status": "green"
+        },
+        "6b": {
+          "score": 5.0,
+          "detail": "6/24-25 待財報。三情境：超預期(35%→score 2)、達標(50%→score 5)、miss(15%→score 8.5)",
+          "status": "pending"
+        },
+        "6c": {
+          "score": 3.0,
+          "detail": "HBM revenue 預期 $2B+/月，持續成長",
+          "status": "green"
+        }
+      }
     },
     "s7": {
-      "score": 6.0,
-      "label": "庫存週數",
-      "detail": "Samsung/SK Hynix 庫存週數下降中（TrendForce）"
+      "score": 3.0,
+      "label": "Samsung/SK Hynix 庫存週數",
+      "detail": "[manual] Samsung/SK Hynix 庫存週數全部歷史低點 → Green"
+    },
+    "s8": {
+      "score": 5.2,
+      "label": "中國對手擴產進度",
+      "sub": {
+        "8a": {
+          "score": 6.0,
+          "status": "yellow",
+          "note": "5/27 CXMT 上會審核中，結果待定 → 需在結果出來後更新"
+        },
+        "8b": {
+          "score": 6.0,
+          "status": "yellow",
+          "note": "Corsair DDR5 採用 CXMT 晶片，Tier 2 客戶擴大"
+        },
+        "8c": {
+          "score": 6.0,
+          "status": "yellow",
+          "note": "5/19 YMTC 已啟動 IPO 輔導備案"
+        },
+        "8d": {
+          "score": 3.0,
+          "status": "green",
+          "note": "中國 HBM 仍落後 SK Hynix 約 4 年"
+        },
+        "8e": {
+          "score": 3.0,
+          "status": "green",
+          "note": "CXMT DDR4 產能從 2萬→1萬片/月，無明顯擴產跡象"
+        }
+      }
+    },
+    "s9": {
+      "score": 5.0,
+      "label": "Cycle Ending 時間軸校準",
+      "detail": "[manual] 業內共識 2027 H2 ± 一季（慶桂顯、BofA、Goldman）。Dashboard 推斷 2026 Q4～2027 Q1 為觀察點，與共識一致"
     }
   }
 }
