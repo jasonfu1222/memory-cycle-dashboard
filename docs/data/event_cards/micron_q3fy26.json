@@ -1,0 +1,36 @@
+{
+  "id": "micron_q3fy26",
+  "event": "Micron Q3 FY26 財報",
+  "ticker": "MU",
+  "report_date": "2026-06-24",
+  "time": "盤後",
+  "signal_affected": "s6b",
+  "lock_before_h": 24,
+  "pre_scenarios": [
+    {
+      "label": "超預期大幅上修",
+      "probability": 0.35,
+      "outcome_score": 2.0,
+      "triggers": "signal_score_to: 2.0",
+      "description": "營收+毛利率雙超預期，Q4 guide 再上修，HBM revenue 加速"
+    },
+    {
+      "label": "達標無 surprise",
+      "probability": 0.50,
+      "outcome_score": 5.0,
+      "triggers": "no alert",
+      "description": "in-line，Q4 guide 維持當前水平，Signal 6b 維持 Green/neutral"
+    },
+    {
+      "label": "miss 或 guide 下修",
+      "probability": 0.15,
+      "outcome_score": 8.5,
+      "triggers": "Red Alert",
+      "description": "營收 miss + guide 下修 + 管理層使用 'moderation' 字眼 → 整體 Cycle Score 跳升 1.5+"
+    }
+  ],
+  "outcome": null,
+  "outcome_date": null,
+  "outcome_score": null,
+  "outcome_notes": ""
+}
