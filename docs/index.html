@@ -589,7 +589,7 @@ async function init() {
             plugins: { legend: { display: false } },
             scales: {
               x: { ticks: { color: "#94a3b8", maxTicksLimit: 8 }, grid: { color: "#2a2d3e" } },
-              y: { ticks: { color: "#94a3b8", callback: v => v+"x" }, grid: { color: "#2a2d3e" } }
+              y: { ticks: { color: "#94a3b8", callback: v => (+v).toFixed(1)+"x" }, grid: { color: "#2a2d3e" } }
             }
           }
         });
