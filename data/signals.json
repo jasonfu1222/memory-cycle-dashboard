@@ -1,15 +1,10 @@
 {
-  "updated": "2026-05-25T16:09:43.681595",
-  "date": "2026-05-25",
+  "updated": "2026-05-27T10:50:09.154824",
+  "date": "2026-05-27",
   "cycle_score": 6.45,
   "status_color": "green",
   "status_text": "Mid Cycle — Hold",
-  "alerts": [
-    {
-      "level": "yellow",
-      "msg": "連續 3 天 DDR5 spot 跌破 5MA"
-    }
-  ],
+  "alerts": [],
   "signals": {
     "s1": {
       "score": 4.0,
