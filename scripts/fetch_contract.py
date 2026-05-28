@@ -38,7 +38,7 @@ def parse_prices(html):
 
 def load_history():
     if CONTRACT_FILE.exists():
-        return json.loads(CONTRACT_FILE.read_text(encoding="utf-8"))
+        return json.loads(CONTRACT_FILE.read_text(encoding="utf-8-sig"))
     return {"updated": "", "series": {}}
 
 

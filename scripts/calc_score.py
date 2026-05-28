@@ -32,7 +32,7 @@ WEIGHTS_V3 = {
 
 def load_json(path, default):
     p = Path(path)
-    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else default
+    return json.loads(p.read_text(encoding="utf-8-sig")) if p.exists() else default
 
 def save_json(path, data):
     Path(path).write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")

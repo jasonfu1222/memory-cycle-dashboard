@@ -1,8 +1,8 @@
 {
-  "updated": "2026-05-27T16:30:00.000000",
-  "date": "2026-05-27",
+  "updated": "2026-05-28T20:50:47.540047",
+  "date": "2026-05-28",
   "methodology": "V3",
-  "cycle_score": 3.55,
+  "cycle_score": 3.31,
   "status_color": "green",
   "status_text": "Mid Cycle — 多數訊號正面，持有，密切監控",
   "alerts": [],
@@ -31,17 +31,17 @@
   ],
   "signals": {
     "s1": {
-      "score": 4.7,
+      "score": 3.1,
       "label": "Daily 記憶體現貨報價",
-      "detail": "1a=5.5 | 1b=3.0 | 1c=5.0",
+      "detail": "1a=2.5 | 1b=3.0 | 1c=5.0",
       "sub": {
         "1a": {
-          "score": 5.5,
-          "detail": "DDR5 $52.5 | <52.5 5MA ↓"
+          "score": 2.5,
+          "detail": "DDR5 $52.6 | >$52.5 5MA ↑"
         },
         "1b": {
           "score": 3.0,
-          "detail": "spot/contract = 1.00 ($52.5/$52.5) [green]"
+          "detail": "spot/contract = 1.00 ($52.6/$52.6) [green]"
         },
         "1c": {
           "score": 5.0,
