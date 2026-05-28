@@ -45,7 +45,7 @@ def parse_prices(html):
 
 def load_history():
     if SPOT_FILE.exists():
-        return json.loads(SPOT_FILE.read_text(encoding="utf-8"))
+        return json.loads(SPOT_FILE.read_text(encoding="utf-8-sig"))
     return {"updated": "", "series": {}}
 
 def save_history(history):
