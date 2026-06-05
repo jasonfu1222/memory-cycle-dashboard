@@ -105,6 +105,12 @@
       "score": 3.2,
       "color": "green",
       "methodology": "V3"
+    },
+    {
+      "date": "2026-06-05",
+      "score": 3.2,
+      "color": "green",
+      "methodology": "V3"
     }
   ],
   "v3_start": "2026-05-27"
