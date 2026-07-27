@@ -1,6 +1,6 @@
 {
-  "updated": "2026-07-24T21:55:01.189673",
-  "date": "2026-07-24",
+  "updated": "2026-07-27T21:48:17.231702",
+  "date": "2026-07-27",
   "methodology": "V3",
   "cycle_score": 3.2,
   "status_color": "green",
@@ -37,7 +37,7 @@
       "sub": {
         "1a": {
           "score": 1.0,
-          "detail": "DDR5 $66.5 | >$65.6 5MA ↑ | >$63.1 20MA ↑ | golden cross | +0.8%"
+          "detail": "DDR5 $66.5 | >$65.9 5MA ↑ | >$63.5 20MA ↑ | golden cross"
         },
         "1b": {
           "score": 3.0,
