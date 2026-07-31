@@ -17,6 +17,7 @@ V3 changes from V2:
   - New S8: 7%, S9: 3%
   - S2 prefers manual over auto (auto data captures daily snapshots, not monthly QoQ averages)
 """
+
 import json
 from datetime import date, datetime
 from pathlib import Path
@@ -25,26 +26,39 @@ from statistics import mean
 DATA_DIR = Path(__file__).parent.parent / "data"
 
 WEIGHTS_V3 = {
-    "s1": 0.15, "s2": 0.15, "s3": 0.12,
-    "s4": 0.20, "s5": 0.10, "s6": 0.10,
-    "s7": 0.08, "s8": 0.07, "s9": 0.03,
+    "s1": 0.15,
+    "s2": 0.15,
+    "s3": 0.12,
+    "s4": 0.20,
+    "s5": 0.10,
+    "s6": 0.10,
+    "s7": 0.08,
+    "s8": 0.07,
+    "s9": 0.03,
 }
+
 
 def load_json(path, default):
     p = Path(path)
     return json.loads(p.read_text(encoding="utf-8-sig")) if p.exists() else default
 
+
 def save_json(path, data):
-    Path(path).write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+    Path(path).write_text(
+        json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
+
 
 def calc_ma(prices, window):
     if len(prices) < window:
         return None
     return mean(prices[-window:])
 
+
 # ──────────────────────────────────────────────
 # Signal 1 sub-metrics
 # ──────────────────────────────────────────────
+
 
 def score_signal_1a(spot_history):
     """DDR5 spot price vs moving averages.
@@ -134,9 +148,12 @@ def score_signal_1b(spot_history, contract_history):
     elif ratio >= 0.90:
         score, status = 7.5, "yellow"
     else:
-        score, status = 9.0, "red"     # V3 red trigger: spot < contract × 0.90
+        score, status = 9.0, "red"  # V3 red trigger: spot < contract × 0.90
 
-    return score, f"spot/contract = {ratio:.2f} (${spot_price:.1f}/${contract_price:.1f}) [{status}]"
+    return (
+        score,
+        f"spot/contract = {ratio:.2f} (${spot_price:.1f}/${contract_price:.1f}) [{status}]",
+    )
 
 
 def score_signal_1c(spot_history, manual_override=None):
@@ -170,17 +187,20 @@ def score_signal_1c(spot_history, manual_override=None):
 
     # Healthy zone: 1.8-2.5x. Below = DDR5 losing premium = warning.
     if ratio > 2.5:
-        score = 2.5   # DDR5 strongly outperforming, very healthy
+        score = 2.5  # DDR5 strongly outperforming, very healthy
     elif ratio > 2.0:
-        score = 4.5   # healthy range; DDR4 softening ongoing = slight yellow
+        score = 4.5  # healthy range; DDR4 softening ongoing = slight yellow
     elif ratio > 1.8:
-        score = 5.5   # approaching yellow threshold
+        score = 5.5  # approaching yellow threshold
     elif ratio > 1.5:
-        score = 7.0   # yellow: divergence narrowing fast
+        score = 7.0  # yellow: divergence narrowing fast
     else:
-        score = 8.5   # red: DDR5 premium collapsing
+        score = 8.5  # red: DDR5 premium collapsing
 
-    return round(score, 1), f"DDR5/DDR4 = {ratio:.2f}x (${ddr5_price:.1f} / ${ddr4_price:.1f})"
+    return (
+        round(score, 1),
+        f"DDR5/DDR4 = {ratio:.2f}x (${ddr5_price:.1f} / ${ddr4_price:.1f})",
+    )
 
 
 def score_signal_1_composite(spot_history, contract_history, manual_1c=None):
@@ -201,14 +221,18 @@ def score_signal_1_composite(spot_history, contract_history, manual_1c=None):
     return composite, {
         "1a": {"score": s1a, "detail": d1a},
         "1b": {"score": s1b, "detail": d1b},
-        "1c": {"score": s1c, "detail": d1c,
-               "status": "green" if s1c < 5 else "yellow" if s1c < 7 else "red"},
+        "1c": {
+            "score": s1c,
+            "detail": d1c,
+            "status": "green" if s1c < 5 else "yellow" if s1c < 7 else "red",
+        },
     }
 
 
 # ──────────────────────────────────────────────
 # Signal 2: Monthly contract QoQ
 # ──────────────────────────────────────────────
+
 
 def score_signal_2_auto(contract_history):
     """Auto-computed contract QoQ. High QoQ (bullish) = low score.
@@ -224,10 +248,15 @@ def score_signal_2_auto(contract_history):
 
     try:
         from datetime import timedelta
+
         current_dt = date.fromisoformat(entries[-1]["date"])
         target = current_dt - timedelta(days=90)
         past_entry = next(
-            (e for e in reversed(entries[:-1]) if date.fromisoformat(e["date"]) <= target),
+            (
+                e
+                for e in reversed(entries[:-1])
+                if date.fromisoformat(e["date"]) <= target
+            ),
             entries[0],
         )
     except (ValueError, IndexError):
@@ -246,11 +275,11 @@ def score_signal_2_auto(contract_history):
     elif qoq > 0:
         base = 4.5
     elif qoq > -5:
-        base = 5.5   # flat = neutral-yellow
+        base = 5.5  # flat = neutral-yellow
     elif qoq > -15:
-        base = 7.0   # declining = yellow
+        base = 7.0  # declining = yellow
     else:
-        base = 8.5   # sharply declining = red
+        base = 8.5  # sharply declining = red
 
     return round(base, 1), f"[auto] QoQ {qoq:+.1f}% | DDR5 contract ${current}"
 
@@ -267,6 +296,7 @@ S4_WEIGHTS = {
     "4e": 0.12,  # 2027 capex guidance
     "4f": 0.15,  # NVDA supply commitments (NEW V3)
 }
+
 
 def calc_signal_4_composite(s4_sub):
     total, w_sum = 0.0, 0.0
@@ -289,6 +319,7 @@ S6_WEIGHTS = {
     "6c": 0.20,  # HBM revenue (manual)
 }
 
+
 def score_signal_6a(micron_gross):
     """Micron GM trajectory. RISING GM = early cycle = LOW score.
     Yellow: first quarter of decline. Red: consecutive decline.
@@ -308,25 +339,25 @@ def score_signal_6a(micron_gross):
 
     # Score based on TRAJECTORY, not absolute level
     if margin < 0:
-        base = 1.0   # deep trough = very early upcycle
+        base = 1.0  # deep trough = very early upcycle
     elif margin < 15:
-        base = 1.5   # trough recovery = early cycle
+        base = 1.5  # trough recovery = early cycle
     elif margin < 30:
-        base = 2.5   # recovering
+        base = 2.5  # recovering
     else:
         # High margin territory: direction is the key signal
         if delta > 5:
-            base = 2.5   # accelerating up
+            base = 2.5  # accelerating up
         elif delta > 2:
-            base = 3.0   # steadily rising
+            base = 3.0  # steadily rising
         elif delta > 0:
-            base = 3.5   # barely rising, may plateau
+            base = 3.5  # barely rising, may plateau
         elif delta > -3:
-            base = 5.5   # plateau / first sign of stall
+            base = 5.5  # plateau / first sign of stall
         elif delta > -8:
-            base = 7.0   # one quarter meaningful decline (V3 Yellow trigger)
+            base = 7.0  # one quarter meaningful decline (V3 Yellow trigger)
         else:
-            base = 9.0   # sharp decline (V3 Red trigger)
+            base = 9.0  # sharp decline (V3 Red trigger)
 
     trend = ("↑" if delta > 0 else "↓" if delta < 0 else "→") + f" {delta:+.1f}pp"
     return round(base, 1), f"GM {margin:.1f}% ({period}) {trend}"
@@ -351,12 +382,25 @@ def calc_signal_6_composite(micron_gross, s6_manual_sub):
         S6_WEIGHTS["6a"] * s6a + S6_WEIGHTS["6b"] * s6b + S6_WEIGHTS["6c"] * s6c, 1
     )
     return composite, {
-        "6a": {"score": s6a, "detail": d6a,
-               "status": "green" if s6a < 5 else "yellow" if s6a < 7 else "red"},
-        "6b": {"score": s6b, "detail": d6b,
-               "status": s6b_entry.get("status", "green" if s6b < 5 else "yellow" if s6b < 7 else "red")},
-        "6c": {"score": s6c, "detail": d6c,
-               "status": s6c_entry.get("status", "green" if s6c < 5 else "yellow" if s6c < 7 else "red")},
+        "6a": {
+            "score": s6a,
+            "detail": d6a,
+            "status": "green" if s6a < 5 else "yellow" if s6a < 7 else "red",
+        },
+        "6b": {
+            "score": s6b,
+            "detail": d6b,
+            "status": s6b_entry.get(
+                "status", "green" if s6b < 5 else "yellow" if s6b < 7 else "red"
+            ),
+        },
+        "6c": {
+            "score": s6c,
+            "detail": d6c,
+            "status": s6c_entry.get(
+                "status", "green" if s6c < 5 else "yellow" if s6c < 7 else "red"
+            ),
+        },
     }
 
 
@@ -372,6 +416,7 @@ S8_WEIGHTS = {
     "8e": 0.10,  # CXMT/YMTC monthly capacity ramp
 }
 
+
 def calc_signal_8_composite(s8_sub):
     total, w_sum = 0.0, 0.0
     for k, w in S8_WEIGHTS.items():
@@ -386,6 +431,7 @@ def calc_signal_8_composite(s8_sub):
 # ──────────────────────────────────────────────
 # Cycle Score & Status
 # ──────────────────────────────────────────────
+
 
 def compute_cycle_score(signal_scores):
     total = sum(signal_scores.get(k, 5.0) * w for k, w in WEIGHTS_V3.items())
@@ -411,6 +457,7 @@ def score_to_status(score):
 # Alert generation (V3)
 # ──────────────────────────────────────────────
 
+
 def generate_alerts(signal_scores, signals_detail, spot_history):
     alerts = []
 
@@ -421,25 +468,45 @@ def generate_alerts(signal_scores, signals_detail, spot_history):
         prices = [e["price"] for e in spot_series]
         ma5_checks = []
         for i in range(-3, 0):
-            window = prices[max(0, len(prices)+i-5):len(prices)+i+1]
+            window = prices[max(0, len(prices) + i - 5) : len(prices) + i + 1]
             if len(window) >= 5:
                 ma5_checks.append((prices[i], mean(window)))
         if len(ma5_checks) == 3 and all(p < m for p, m in ma5_checks):
-            alerts.append({"level": "yellow", "msg": "Signal 1 Yellow：連續 3 天 DDR5 spot 跌破 5MA"})
+            alerts.append(
+                {
+                    "level": "yellow",
+                    "msg": "Signal 1 Yellow：連續 3 天 DDR5 spot 跌破 5MA",
+                }
+            )
 
     # Signal 1c warning
     s1_sub = signals_detail.get("s1", {}).get("sub", {})
     if s1_sub.get("1c", {}).get("score", 0) >= 7:
-        alerts.append({"level": "yellow", "msg": "Signal 1c Yellow：DDR5/DDR4 比值跌破 1.8x，DDR5 溢價收窄"})
+        alerts.append(
+            {
+                "level": "yellow",
+                "msg": "Signal 1c Yellow：DDR5/DDR4 比值跌破 1.8x，DDR5 溢價收窄",
+            }
+        )
 
     # Signal 8 yellow
     if signal_scores.get("s8", 5) >= 6:
-        alerts.append({"level": "yellow", "msg": "Signal 8 Yellow：中國對手擴產進度出現多個觀察點（CXMT/YMTC IPO）"})
+        alerts.append(
+            {
+                "level": "yellow",
+                "msg": "Signal 8 Yellow：中國對手擴產進度出現多個觀察點（CXMT/YMTC IPO）",
+            }
+        )
 
     # Two or more top-level signals in Red zone
     red_signals = [k for k, v in signal_scores.items() if v >= 8]
     if len(red_signals) >= 2:
-        alerts.append({"level": "red", "msg": f"Red Alert：{len(red_signals)} 個訊號進入紅燈區，強制 review 部位"})
+        alerts.append(
+            {
+                "level": "red",
+                "msg": f"Red Alert：{len(red_signals)} 個訊號進入紅燈區，強制 review 部位",
+            }
+        )
 
     # Cycle score climbing fast
     return alerts
@@ -448,6 +515,7 @@ def generate_alerts(signal_scores, signals_detail, spot_history):
 # ──────────────────────────────────────────────
 # Main
 # ──────────────────────────────────────────────
+
 
 def main():
     today = date.today().isoformat()
@@ -459,7 +527,9 @@ def main():
 
     # ── Signal 1 (composite: 1a + 1b + 1c) ──
     manual_1c = manual.get("s1_sub", {}).get("1c")
-    s1_score, s1_sub = score_signal_1_composite(spot_history, contract_history, manual_1c)
+    s1_score, s1_sub = score_signal_1_composite(
+        spot_history, contract_history, manual_1c
+    )
     s1_detail = f"1a={s1_sub['1a']['score']} | 1b={s1_sub['1b']['score']} | 1c={s1_sub['1c']['score']}"
 
     # ── Signal 2 (manual preferred; auto fallback) ──
@@ -505,27 +575,102 @@ def main():
     s9_detail = f"[manual] {s9.get('note', '')}"
 
     signal_scores = {
-        "s1": s1_score, "s2": s2_score, "s3": s3_score,
-        "s4": s4_score, "s5": s5_score, "s6": s6_score,
-        "s7": s7_score, "s8": s8_score, "s9": s9_score,
+        "s1": s1_score,
+        "s2": s2_score,
+        "s3": s3_score,
+        "s4": s4_score,
+        "s5": s5_score,
+        "s6": s6_score,
+        "s7": s7_score,
+        "s8": s8_score,
+        "s9": s9_score,
     }
 
     cycle_score = compute_cycle_score(signal_scores)
     status_color, status_text = score_to_status(cycle_score)
 
     signals_detail = {
-        "s1": {"score": s1_score, "label": "Daily 記憶體現貨報價", "detail": s1_detail, "sub": s1_sub},
-        "s2": {"score": s2_score, "label": "DRAM/NAND 月合約價 QoQ", "detail": s2_detail},
-        "s3": {"score": s3_score, "label": "Spot ÷ Contract Ratio", "detail": s3_detail},
+        "s1": {
+            "score": s1_score,
+            "label": "Daily 記憶體現貨報價",
+            "detail": s1_detail,
+            "sub": s1_sub,
+        },
+        "s2": {
+            "score": s2_score,
+            "label": "DRAM/NAND 月合約價 QoQ",
+            "detail": s2_detail,
+        },
+        "s3": {
+            "score": s3_score,
+            "label": "Spot ÷ Contract Ratio",
+            "detail": s3_detail,
+        },
         "s4": {"score": s4_score, "label": "Hyperscaler Demand Floor", "sub": s4_sub},
-        "s5": {"score": s5_score, "label": "Samsung HBM4 良率進度", "detail": s5_detail},
-        "s6": {"score": s6_score, "label": "Micron 毛利率 + 財報 Trajectory", "sub": s6_sub},
-        "s7": {"score": s7_score, "label": "Samsung/SK Hynix 庫存週數", "detail": s7_detail},
+        "s5": {
+            "score": s5_score,
+            "label": "Samsung HBM4 良率進度",
+            "detail": s5_detail,
+        },
+        "s6": {
+            "score": s6_score,
+            "label": "Micron 毛利率 + 財報 Trajectory",
+            "sub": s6_sub,
+        },
+        "s7": {
+            "score": s7_score,
+            "label": "Samsung/SK Hynix 庫存週數",
+            "detail": s7_detail,
+        },
         "s8": {"score": s8_score, "label": "中國對手擴產進度", "sub": s8_sub},
-        "s9": {"score": s9_score, "label": "Cycle Ending 時間軸校準", "detail": s9_detail},
+        "s9": {
+            "score": s9_score,
+            "label": "Cycle Ending 時間軸校準",
+            "detail": s9_detail,
+        },
     }
 
     alerts = generate_alerts(signal_scores, signals_detail, spot_history)
+
+    # ── 手填訊號過期偵測（2026-07-31 新增）──────────────────
+    # 背景：9 個訊號有 5 個是 manual，內容曾停在 5/27 整整兩個月沒動，期間 Micron Q3、
+    # hynix Q2、三星 Q2 全部開牌過，分數卻固定 3.2 綠燈 40 個交易日。儀表板不會自己
+    # 喊「我很久沒被餵資料了」，看的人就會把僵化誤讀成穩定。這裡讓它自己承認。
+    STALE_WARN_DAYS, STALE_RED_DAYS = 30, 60
+    stale = []
+    for sig_key, entry in (
+        ("s1c", manual.get("s1_sub", {}).get("1c", {})),
+        ("s2", manual.get("s2", {})),
+        ("s3", manual.get("s3", {})),
+        ("s5", manual.get("s5", {})),
+        ("s6b", manual.get("s6_sub", {}).get("6b", {})),
+        ("s7", manual.get("s7", {})),
+        ("s8a", manual.get("s8", {}).get("8a", {})),
+        ("s9", manual.get("s9", {})),
+    ):
+        stamp = entry.get("updated") or manual.get("_last_updated")
+        if not stamp:
+            continue
+        try:
+            age = (date.fromisoformat(today) - date.fromisoformat(stamp)).days
+        except ValueError:
+            continue
+        if age >= STALE_WARN_DAYS:
+            stale.append({"signal": sig_key, "updated": stamp, "age_days": age})
+
+    if stale:
+        worst = max(s["age_days"] for s in stale)
+        lvl = "red" if worst >= STALE_RED_DAYS else "yellow"
+        names = ", ".join(
+            f"{s['signal']}({s['age_days']}天)"
+            for s in sorted(stale, key=lambda x: -x["age_days"])
+        )
+        alerts.append(
+            {
+                "level": lvl,
+                "msg": f"手填訊號過期：{len(stale)} 個逾 {STALE_WARN_DAYS} 天未更新 → {names}。分數可能沒有反映最新事件。",
+            }
+        )
 
     signals_out = {
         "updated": datetime.now().isoformat(),
@@ -535,6 +680,8 @@ def main():
         "status_color": status_color,
         "status_text": status_text,
         "alerts": alerts,
+        "manual_last_updated": manual.get("_last_updated"),
+        "stale_signals": stale,
         "events": manual.get("events", []),
         "signals": signals_detail,
     }
@@ -544,9 +691,18 @@ def main():
     score_history = load_json(DATA_DIR / "score_history.json", {"entries": []})
     entries = score_history["entries"]
     if entries and entries[-1]["date"] == today:
-        entries[-1].update({"score": cycle_score, "color": status_color, "methodology": "V3"})
+        entries[-1].update(
+            {"score": cycle_score, "color": status_color, "methodology": "V3"}
+        )
     else:
-        entries.append({"date": today, "score": cycle_score, "color": status_color, "methodology": "V3"})
+        entries.append(
+            {
+                "date": today,
+                "score": cycle_score,
+                "color": status_color,
+                "methodology": "V3",
+            }
+        )
     score_history["entries"] = entries[-365:]
     # Mark V3 start date for chart annotation
     score_history.setdefault("v3_start", today)
