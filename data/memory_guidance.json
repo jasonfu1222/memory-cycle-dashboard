@@ -1,0 +1,33 @@
+{
+  "updated": "2026-08-01T02:43:12.412411",
+  "entries": [
+    {
+      "company": "Micron",
+      "quarter": "FY26Q3",
+      "period_end": "2026-05-28",
+      "reported_on": "2026-06-下旬",
+      "dram_bit_qoq_actual": "低個位數 %",
+      "dram_asp_qoq_actual": "+60 幾 %（low-60s）",
+      "dram_bit_qoq_guide_next": "（未記錄）",
+      "nand_bit_qoq_actual": "中個位數 %",
+      "nand_asp_qoq_actual": "+80 幾 %（mid-80s）",
+      "nand_bit_qoq_guide_next": "（未記錄）",
+      "note": "DRAM 營收 $31.3B＝總營收 76%，QoQ +67%(=1.03×1.62 量價相乘吻合)；單季毛利率 84.6%；FY26 capex 上調至約 $27B。",
+      "source": "MU FQ3-2026 法說＋SEC XBRL"
+    },
+    {
+      "company": "SK hynix",
+      "quarter": "2026Q2",
+      "period_end": "2026-06-30",
+      "reported_on": "2026-07-28",
+      "dram_bit_qoq_actual": "高個位數 %",
+      "dram_asp_qoq_actual": "約 +30%",
+      "dram_bit_qoq_guide_next": "約 +10%（加速）",
+      "nand_bit_qoq_actual": "中十幾 %",
+      "nand_asp_qoq_actual": "中 50 幾 %",
+      "nand_bit_qoq_guide_next": "低個位數 %（急鈍化）",
+      "note": "營收 79.32 兆韓元(QoQ +51%/YoY +257%)、營益率 76%；HBM4 Q2 進入量產出貨；與約 10 家客戶簽多年期 LTA。Q3 明講積極回應伺服器需求。",
+      "source": "SK hynix Q2 2026 法說"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "updated": "2026-08-01T02:57:15.181154",
+  "method": "量MoM = (1+台幣營收MoM)/(1+USDTWD月均MoM)/(1+合約價MoM) - 1",
+  "caveat": "代理的是利基/消費端的量，非 AI 端；南亞科非純 DDR4，單一報價當分母有誤差",
+  "rows": [
+    {
+      "code": "2408",
+      "name": "南亞科",
+      "from": "2026-05",
+      "to": "2026-06",
+      "price_key": "DDR4 16Gb (2Gx8) 3200",
+      "twd_rev_mom_pct": 6.21,
+      "fx_mom_pct": 0.45,
+      "usd_rev_mom_pct": 5.73,
+      "price_mom_pct": 15.29,
+      "bit_proxy_mom_pct": -8.29
+    },
+    {
+      "code": "2408",
+      "name": "南亞科",
+      "from": "2026-05",
+      "to": "2026-06",
+      "price_key": "DDR5 16Gb (2Gx8) 4800/5600",
+      "twd_rev_mom_pct": 6.21,
+      "fx_mom_pct": 0.45,
+      "usd_rev_mom_pct": 5.73,
+      "price_mom_pct": 8.6,
+      "bit_proxy_mom_pct": -2.64
+    },
+    {
+      "code": "2344",
+      "name": "華邦電",
+      "from": "2026-05",
+      "to": "2026-06",
+      "price_key": "DDR4 16Gb (2Gx8) 3200",
+      "twd_rev_mom_pct": 2.98,
+      "fx_mom_pct": 0.45,
+      "usd_rev_mom_pct": 2.51,
+      "price_mom_pct": 15.29,
+      "bit_proxy_mom_pct": -11.08
+    },
+    {
+      "code": "2344",
+      "name": "華邦電",
+      "from": "2026-05",
+      "to": "2026-06",
+      "price_key": "DDR5 16Gb (2Gx8) 4800/5600",
+      "twd_rev_mom_pct": 2.98,
+      "fx_mom_pct": 0.45,
+      "usd_rev_mom_pct": 2.51,
+      "price_mom_pct": 8.6,
+      "bit_proxy_mom_pct": -5.6
+    }
+  ]
+}
