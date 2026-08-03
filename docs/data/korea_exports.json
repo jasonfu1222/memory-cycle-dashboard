@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-01T02:59:11.213139",
+  "updated": "2026-08-02T18:54:16.016324",
   "unit": "千美元 (thousand USD)",
   "source": "관세청 수출입무역통계 retrieveTentativeValues.do (品項別×出口)",
   "note": "半導體含記憶體＋系統半導體＋代工，非純記憶體；用於看總量方向與 YoY 轉折",
@@ -1291,6 +1291,20 @@
       "total_yoy": 52.3,
       "semiconductor_yoy": 180.6,
       "semi_share": 40.3
+    },
+    {
+      "ym": "202607",
+      "seg": "FULL",
+      "range": "01~31",
+      "total": 98886734,
+      "semiconductor": 41171955,
+      "steel": 4658871,
+      "auto": 5955073,
+      "wireless": 2050953,
+      "computer_peripheral": 4945544,
+      "total_yoy": 62.8,
+      "semiconductor_yoy": 176.3,
+      "semi_share": 41.6
     }
   ]
 }
