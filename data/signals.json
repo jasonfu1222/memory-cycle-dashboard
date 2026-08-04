@@ -1,8 +1,8 @@
 {
-  "updated": "2026-08-05T00:18:28.255639",
+  "updated": "2026-08-05T00:40:53.999713",
   "date": "2026-08-05",
   "methodology": "V3",
-  "cycle_score": 3.81,
+  "cycle_score": 3.32,
   "status_color": "green",
   "status_text": "Mid Cycle — 多數訊號正面，持有，密切監控",
   "alerts": [],
@@ -65,13 +65,13 @@
   ],
   "signals": {
     "s1": {
-      "score": 5.0,
+      "score": 2.1,
       "label": "Daily 記憶體現貨報價",
-      "detail": "1a=None | 1b=None | 1c=5.0",
+      "detail": "1a=1.0 | 1b=None | 1c=5.0",
       "sub": {
         "1a": {
-          "score": null,
-          "detail": "insufficient data"
+          "score": 1.0,
+          "detail": "DDR5 $51.3 | >$51.1 5MA ↑ | >$50.5 20MA ↑ | golden cross"
         },
         "1b": {
           "score": null,
@@ -79,10 +79,10 @@
         },
         "1c": {
           "score": 5.0,
-          "detail": "★比值逆轉：5月底 DDR5/DDR4 ~2.2x，7/30 實測 DDR5 16Gb $67 vs DDR4 16Gb $107 → 比值 0.63，DDR4 反而比 DDR5 貴。成因是三大廠產能挪往 HBM/DDR5、DDR4 減產致舊制程搶貨。方向待 Jason 判定（短缺極端化=晚週期特徵 vs 結構性錯配），暫維持 5.0 中性不擅改。",
+          "detail": "★前提被推翻，此分數目前無資訊量：原記『比值逆轉：5月底 ~2.2x → 7/30 變 0.63』兩個數字都不對。舊值取自 High 欄；回填 297 天正確均價後，DDR5 16Gb ÷ DDR4 16Gb 全期間落在 0.448~0.713（5/27 為 0.679、8/04 為 0.597），從未接近 2.2x，也從未穿越 1.0——DDR4 16Gb 自 2025-10 起就一直比 DDR5 16Gb 貴，根本沒有『逆轉』這個事件。2.2x 疑似是拿 DDR5 16Gb ÷ DDR4 8Gb（實測 1.09~1.98）算的，與程式比對的品項不同。★待 Jason 裁決兩件事：①這訊號要比哪一組品項 ②校準區間重訂。在那之前維持 5.0，且 calc_score 自動路徑已加防呆（比值<1.0 直接回 None，不吐假紅燈）。",
           "status": "yellow"
         },
-        "_note": "已排除 1a/1b，權重在其餘子項間重新正規化"
+        "_note": "已排除 1b，權重在其餘子項間重新正規化"
       }
     },
     "s2": {

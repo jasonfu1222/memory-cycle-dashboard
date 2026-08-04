@@ -1,5 +1,5 @@
 import asyncio, json, re, sys
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from playwright.async_api import async_playwright
 from bs4 import BeautifulSoup
@@ -103,8 +103,21 @@ def save_history(history):
     )
 
 
+def session_date():
+    """表上這批報價屬於哪一天。
+
+    現貨盤台灣時間下午才更新（14:40、18:10 兩次），統一更新約 21:40 跑到的是當日盤。
+    但跨午夜或早上跑，抓到的其實是前一日的盤——2026-08-05 00:17 手動重置就這樣把
+    08-04 的盤標成 08-05，回填時才發現多一個假的持平日。
+    """
+    now = datetime.now()
+    return (
+        now.date() if now.hour >= 12 else now.date() - timedelta(days=1)
+    ).isoformat()
+
+
 async def main():
-    today = date.today().isoformat()
+    today = session_date()
     print(f"Fetching spot prices for {today}...")
 
     html = await fetch_page()

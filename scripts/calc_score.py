@@ -193,6 +193,17 @@ def score_signal_1c(spot_history, manual_override=None):
 
     ratio = ddr5_price / ddr4_price
 
+    # 2026-08-05：回填 297 天正確均價後發現，這條階梯的「健康區 1.8~2.5x」在整段
+    # 歷史從未成立——DDR5 16Gb ÷ DDR4 16Gb 實際落在 0.448~0.713，DDR4 一直比 DDR5 貴。
+    # 也就是說沒有手填值蓋著時，自動路徑會每天固定吐出 8.5 紅燈（憑空的訊號）。
+    # 階梯八成是照 DDR5 16Gb ÷ DDR4 **8Gb**（實測 1.09~1.98）校準的，但程式比的是 16Gb。
+    # 在 Jason 裁定要比哪一對之前，寧可承認沒量到，不要報一個假紅燈。
+    if ratio < 1.0:
+        return None, (
+            f"階梯未校準：實測比值 {ratio:.2f}x 遠低於校準區間（1.5~2.5x），"
+            "DDR4 16Gb 長期貴於 DDR5 16Gb。待確認應比對哪一組品項後才恢復自動計分"
+        )
+
     # Healthy zone: 1.8-2.5x. Below = DDR5 losing premium = warning.
     if ratio > 2.5:
         score = 2.5  # DDR5 strongly outperforming, very healthy
@@ -529,7 +540,7 @@ def generate_alerts(signal_scores, signals_detail, spot_history):
 
     # Signal 1c warning
     s1_sub = signals_detail.get("s1", {}).get("sub", {})
-    if s1_sub.get("1c", {}).get("score", 0) >= 7:
+    if (s1_sub.get("1c", {}).get("score") or 0) >= 7:
         alerts.append(
             {
                 "level": "yellow",
