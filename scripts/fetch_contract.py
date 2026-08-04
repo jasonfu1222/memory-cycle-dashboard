@@ -31,11 +31,41 @@ def parse_prices(html):
                 continue
             label = cells[0].get_text(strip=True)
             for cell in cells[1:]:
-                m = re.search(r"\$?([\d]+\.[\d]+)", cell.get_text(strip=True))
+                # 千分位逗號必須納入，否則 "1,750.00" 會被讀成 750.00
+                m = re.search(r"\$?([\d,]+\.[\d]+)", cell.get_text(strip=True))
                 if m and any(kw in label for kw in ["DDR5", "DDR4", "LPDDR", "GDDR"]):
-                    results[label] = float(m.group(1))
+                    results[label] = float(m.group(1).replace(",", ""))
                     break
     return results
+
+
+def check_source_integrity(prices):
+    """TrendForce 的 dram_spot 與 dram_contract 兩個 URL 目前回傳同一份頁面，
+    本檔抓到的其實是現貨表。不靜默接受：比對現貨檔，重疊鍵全同就大聲示警。"""
+    spot_file = DATA_DIR / "spot_history.json"
+    if not spot_file.exists():
+        return None
+    spot = json.loads(spot_file.read_text(encoding="utf-8-sig")).get("series", {})
+    overlap = [k for k in prices if k in spot and spot[k]]
+    if not overlap:
+        return None
+    same = [k for k in overlap if spot[k][-1]["price"] == prices[k]]
+    if len(same) < len(overlap):
+        return None
+    print(
+        "\n  [!! 資料完整性] 合約頁抓到的數值與現貨頁完全相同"
+        f"（{len(same)}/{len(overlap)} 個重疊項目）。\n"
+        "      dram_contract 與 dram_spot 現為同一份 DRAM Price Trends 頁面，\n"
+        "      本檔記錄的並非合約價。受影響：s1b 與 s3 的 spot/contract 比值恆為 1.00、\n"
+        "      calc_bit_proxy 的價格分母。待決定替代來源前不要據此解讀比值。\n",
+        file=sys.stderr,
+    )
+    return {
+        "duplicate_of_spot": True,
+        "overlap_keys": len(overlap),
+        "checked_at": datetime.now().isoformat(),
+        "note": "dram_contract URL 與 dram_spot 回傳同一頁；本檔實為現貨表，非合約價",
+    }
 
 
 def load_history():
@@ -63,6 +93,12 @@ async def main():
 
     history = load_history()
     history["updated"] = datetime.now().isoformat()
+
+    integrity = check_source_integrity(prices)
+    if integrity:
+        history["data_integrity"] = integrity
+    else:
+        history.pop("data_integrity", None)
 
     for key, price in prices.items():
         if key not in history["series"]:

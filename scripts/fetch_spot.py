@@ -41,9 +41,10 @@ def parse_prices(html):
                 continue
             label = cells[0].get_text(strip=True)
             for cell in cells[1:]:
-                m = re.search(r"\$?([\d]+\.[\d]+)", cell.get_text(strip=True))
+                # 千分位逗號必須納入，否則 "1,750.00" 會被讀成 750.00
+                m = re.search(r"\$?([\d,]+\.[\d]+)", cell.get_text(strip=True))
                 if m and any(kw in label for kw in ["DDR", "LPDDR", "GDDR"]):
-                    results[label] = float(m.group(1))
+                    results[label] = float(m.group(1).replace(",", ""))
                     break
     return results
 
