@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-02T19:03:16.490820",
+  "updated": "2026-08-04T22:09:19.369331",
   "method": "量MoM = (1+台幣營收MoM)/(1+USDTWD月均MoM)/(1+合約價MoM) - 1",
   "caveat": "代理的是利基/消費端的量，非 AI 端；南亞科非純 DDR4，單一報價當分母有誤差",
   "rows": [
@@ -18,6 +18,18 @@
     {
       "code": "2408",
       "name": "南亞科",
+      "from": "2026-06",
+      "to": "2026-07",
+      "price_key": "DDR4 16Gb (2Gx8) 3200",
+      "twd_rev_mom_pct": 49.27,
+      "fx_mom_pct": 1.77,
+      "usd_rev_mom_pct": 46.67,
+      "price_mom_pct": 22.7,
+      "bit_proxy_mom_pct": 19.54
+    },
+    {
+      "code": "2408",
+      "name": "南亞科",
       "from": "2026-05",
       "to": "2026-06",
       "price_key": "DDR5 16Gb (2Gx8) 4800/5600",
@@ -26,6 +38,18 @@
       "usd_rev_mom_pct": 5.73,
       "price_mom_pct": 8.6,
       "bit_proxy_mom_pct": -2.64
+    },
+    {
+      "code": "2408",
+      "name": "南亞科",
+      "from": "2026-06",
+      "to": "2026-07",
+      "price_key": "DDR5 16Gb (2Gx8) 4800/5600",
+      "twd_rev_mom_pct": 49.27,
+      "fx_mom_pct": 1.77,
+      "usd_rev_mom_pct": 46.67,
+      "price_mom_pct": 12.66,
+      "bit_proxy_mom_pct": 30.19
     },
     {
       "code": "2344",
