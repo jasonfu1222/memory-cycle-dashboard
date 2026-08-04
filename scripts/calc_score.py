@@ -118,7 +118,15 @@ def score_signal_1b(spot_history, contract_history):
     """DDR5 spot vs contract ratio.
     spot > contract = demand tight = low score (bullish/early).
     spot < contract = oversupply = high score (warning).
+
+    2026-08-05 停用：TrendForce 的 dram_spot 與 dram_contract 已回傳同一份頁面，
+    兩檔歷史 56 個重疊日期價格完全相同，比值恆為 1.00。這不是弱訊號，是沒有量測。
+    回傳 None 讓上層排除並重新正規化權重，不要填中性值假裝測過。
+    找到能分離現貨與合約的來源後再解除。
     """
+    if contract_history.get("data_integrity", {}).get("duplicate_of_spot"):
+        return None, "來源已合併：contract 頁與 spot 同源，比值恆為 1.00，訊號停用"
+
     spot_key = "DDR5 16Gb (2Gx8) 4800/5600"
     spot_series = spot_history.get("series", {}).get(spot_key, [])
     if not spot_series:
@@ -203,30 +211,54 @@ def score_signal_1c(spot_history, manual_override=None):
     )
 
 
+S1_WEIGHTS = {"1a": 0.50, "1b": 0.30, "1c": 0.20}
+
+
 def score_signal_1_composite(spot_history, contract_history, manual_1c=None):
-    """S1 = 0.50 × 1a + 0.30 × 1b + 0.20 × 1c"""
-    s1a, d1a = score_signal_1a(spot_history)
-    s1b, d1b = score_signal_1b(spot_history, contract_history)
-    s1c, d1c = score_signal_1c(spot_history, manual_1c)
+    """S1 = 0.50 × 1a + 0.30 × 1b + 0.20 × 1c
 
-    # Fallback if sub-metrics unavailable
-    if s1a is None:
-        s1a = 5.0
-    if s1b is None:
-        s1b = s1a  # proxy with 1a if no contract data
-    if s1c is None:
-        s1c = 4.5  # neutral default
+    2026-08-05 改：缺項不再填中性值，改為排除後重新正規化（與 s4/s8 同慣例）。
+    原本 s1a 無資料時填 5.0、s1b 無資料時抄 s1a，等於把「沒量到」報成「量到中性」，
+    在序列重建的暖機期會直接偽造一個訊號。
+    """
+    subs = {
+        "1a": score_signal_1a(spot_history),
+        "1b": score_signal_1b(spot_history, contract_history),
+        "1c": score_signal_1c(spot_history, manual_1c),
+    }
 
-    composite = round(0.50 * s1a + 0.30 * s1b + 0.20 * s1c, 1)
-    return composite, {
-        "1a": {"score": s1a, "detail": d1a},
-        "1b": {"score": s1b, "detail": d1b},
+    total, w_sum = 0.0, 0.0
+    for key, w in S1_WEIGHTS.items():
+        score = subs[key][0]
+        if score is not None:
+            total += score * w
+            w_sum += w
+
+    detail = {
+        "1a": {"score": subs["1a"][0], "detail": subs["1a"][1]},
+        "1b": {"score": subs["1b"][0], "detail": subs["1b"][1]},
         "1c": {
-            "score": s1c,
-            "detail": d1c,
-            "status": "green" if s1c < 5 else "yellow" if s1c < 7 else "red",
+            "score": subs["1c"][0],
+            "detail": subs["1c"][1],
+            "status": (
+                "unavailable"
+                if subs["1c"][0] is None
+                else (
+                    "green"
+                    if subs["1c"][0] < 5
+                    else "yellow" if subs["1c"][0] < 7 else "red"
+                )
+            ),
         },
     }
+    if w_sum == 0:
+        detail["_note"] = "1a/1b/1c 全部無資料，S1 不計入總分"
+        return None, detail
+
+    excluded = [k for k in S1_WEIGHTS if subs[k][0] is None]
+    if excluded:
+        detail["_note"] = f"已排除 {'/'.join(excluded)}，權重在其餘子項間重新正規化"
+    return round(total / w_sum, 1), detail
 
 
 # ──────────────────────────────────────────────
@@ -434,8 +466,24 @@ def calc_signal_8_composite(s8_sub):
 
 
 def compute_cycle_score(signal_scores):
-    total = sum(signal_scores.get(k, 5.0) * w for k, w in WEIGHTS_V3.items())
-    return round(total, 2)
+    """2026-08-05 改：無資料的訊號排除後重新正規化，不再以 5.0 頂替。
+
+    舊寫法 signal_scores.get(k, 5.0) 會把「沒量到」當成「量到中性 5.0」，
+    在暖機期或訊號停用時會把總分往中間拉，看起來像市場變化。
+    與 calc_signal_4_composite / calc_signal_8_composite 的既有慣例一致。
+    回傳 (分數, 被排除的訊號清單)；全部缺項時分數為 None。
+    """
+    total, w_sum, excluded = 0.0, 0.0, []
+    for k, w in WEIGHTS_V3.items():
+        score = signal_scores.get(k)
+        if score is None:
+            excluded.append(k)
+            continue
+        total += score * w
+        w_sum += w
+    if w_sum == 0:
+        return None, excluded
+    return round(total / w_sum, 2), excluded
 
 
 def score_to_status(score):
@@ -490,7 +538,7 @@ def generate_alerts(signal_scores, signals_detail, spot_history):
         )
 
     # Signal 8 yellow
-    if signal_scores.get("s8", 5) >= 6:
+    if (signal_scores.get("s8") or 5) >= 6:
         alerts.append(
             {
                 "level": "yellow",
@@ -499,7 +547,7 @@ def generate_alerts(signal_scores, signals_detail, spot_history):
         )
 
     # Two or more top-level signals in Red zone
-    red_signals = [k for k, v in signal_scores.items() if v >= 8]
+    red_signals = [k for k, v in signal_scores.items() if v is not None and v >= 8]
     if len(red_signals) >= 2:
         alerts.append(
             {
@@ -543,9 +591,15 @@ def main():
             s2_detail = "no data"
 
     # ── Signal 3 (manual) ──
+    # 2026-08-05 停用：s3 量的就是 spot÷contract，而兩個來源頁面已合併，
+    # 手填一個 5.0 只是把「沒得量」寫成「量到中性」。改為排除並重新正規化。
     s3 = manual.get("s3", {})
-    s3_score = s3.get("score", 5.0)
-    s3_detail = f"[manual] {s3.get('note', '')}"
+    if contract_history.get("data_integrity", {}).get("duplicate_of_spot"):
+        s3_score = None
+        s3_detail = "來源已合併：contract 頁與 spot 同源，無法計算比值，訊號停用"
+    else:
+        s3_score = s3.get("score", 5.0)
+        s3_detail = f"[manual] {s3.get('note', '')}"
 
     # ── Signal 4 (composite: 4a–4f) ──
     s4_sub = manual.get("s4", {})
@@ -586,8 +640,12 @@ def main():
         "s9": s9_score,
     }
 
-    cycle_score = compute_cycle_score(signal_scores)
-    status_color, status_text = score_to_status(cycle_score)
+    cycle_score, excluded_signals = compute_cycle_score(signal_scores)
+    status_color, status_text = (
+        score_to_status(cycle_score)
+        if cycle_score is not None
+        else ("grey", "無足夠訊號")
+    )
 
     signals_detail = {
         "s1": {
@@ -682,6 +740,10 @@ def main():
         "alerts": alerts,
         "manual_last_updated": manual.get("_last_updated"),
         "stale_signals": stale,
+        "excluded_signals": excluded_signals,
+        "effective_weight": round(
+            sum(w for k, w in WEIGHTS_V3.items() if k not in excluded_signals), 3
+        ),
         "events": manual.get("events", []),
         "signals": signals_detail,
     }
@@ -710,7 +772,17 @@ def main():
 
     print(f"Cycle Score V3: {cycle_score} ({status_color})")
     print(f"  → {status_text}")
-    print(f"Signals: { {k: round(v, 1) for k, v in signal_scores.items()} }")
+    shown = {
+        k: (round(v, 1) if v is not None else "—") for k, v in signal_scores.items()
+    }
+    print(f"Signals: {shown}")
+    if excluded_signals:
+        live = len(WEIGHTS_V3) - len(excluded_signals)
+        kept_w = sum(w for k, w in WEIGHTS_V3.items() if k not in excluded_signals)
+        print(
+            f"  [排除] {'/'.join(excluded_signals)} 無資料，未計入；"
+            f"總分由其餘 {live} 個訊號重新正規化（原權重合計 {kept_w:.0%}）"
+        )
     if alerts:
         for a in alerts:
             print(f"  [{a['level'].upper()}] {a['msg']}")

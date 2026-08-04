@@ -49,7 +49,15 @@ def check_source_integrity(prices):
     overlap = [k for k in prices if k in spot and spot[k]]
     if not overlap:
         return None
-    same = [k for k in overlap if spot[k][-1]["price"] == prices[k]]
+
+    # 必須比同一個口徑：現貨檔自 2026-08-05 起 price＝Session Average，
+    # 而本檔解析出來的是 High 欄，要拿 price_high 對照才有意義。
+    # 拿均價對 High 會永遠不相等，同源偵測就會靜默失效。
+    def spot_high(key):
+        last = spot[key][-1]
+        return last.get("price_high", last.get("price"))
+
+    same = [k for k in overlap if spot_high(k) == prices[k]]
     if len(same) < len(overlap):
         return None
     print(

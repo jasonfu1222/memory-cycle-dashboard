@@ -16,6 +16,7 @@ r"""位元出貨量代理：台系記憶體廠月營收 ÷ 合約價 ÷ 匯率
 """
 
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from statistics import mean
@@ -79,6 +80,16 @@ def fetch_fx_monthly():
 
 def contract_monthly():
     d = json.loads(CONTRACT.read_text(encoding="utf-8-sig"))
+    # 2026-08-05：TrendForce 的 contract 頁與 spot 頁已合併，本檔存的其實是現貨。
+    # 分母是「合約價」是這個代理成立的前提，來源不對就不能算——寧可不出數字，
+    # 也不要在兩個月後資料湊齊時，靜默地拿現貨當合約價恢復輸出。
+    if d.get("data_integrity", {}).get("duplicate_of_spot"):
+        print(
+            "  [!! 停用] 合約檔與現貨同源，分母不是合約價。位元代理不計算。\n"
+            "      解除條件：找到能分離現貨與合約的來源，或改用季度合約指引重寫算式。",
+            file=sys.stderr,
+        )
+        return None
     out = {}
     for key in PRICE_KEYS:
         bym = {}
@@ -100,6 +111,12 @@ def main():
     print(f"\n{'=' * 100}")
     print("位元出貨量代理（匯率已修正）")
     print(f"{'=' * 100}")
+    if px is None:
+        print("  已停用：合約價來源失效，見上方訊息。對照 A／B 仍可看。")
+        print("-" * 100)
+        _write_output([], disabled="合約價來源與現貨同源，分母無效")
+        _print_references()
+        return
     print(
         f"{'公司':<12}{'期間':<18}{'台幣營收MoM':>12}{'匯率MoM':>10}{'美元營收MoM':>13}"
         f"{'合約價MoM':>11}{'→ 量MoM':>11}  口徑"
@@ -145,19 +162,7 @@ def main():
     if not results:
         print("  （可對齊月份不足：合約價序列起點晚於營收，或營收尚未公布）")
 
-    OUT_FILE.write_text(
-        json.dumps(
-            {
-                "updated": datetime.now().isoformat(),
-                "method": "量MoM = (1+台幣營收MoM)/(1+USDTWD月均MoM)/(1+合約價MoM) - 1",
-                "caveat": "代理的是利基/消費端的量，非 AI 端；南亞科非純 DDR4，單一報價當分母有誤差",
-                "rows": results,
-            },
-            indent=2,
-            ensure_ascii=False,
-        ),
-        encoding="utf-8",
-    )
+    _write_output(results)
 
     print(f"\n→ {OUT_FILE}")
     print(
@@ -165,7 +170,24 @@ def main():
         + "  ".join(f"{m}:{fx[m]}" for m in sorted(fx)[-3:])
         + "（上升＝台幣貶）"
     )
+    _print_references()
 
+
+def _write_output(results, disabled=None):
+    payload = {
+        "updated": datetime.now().isoformat(),
+        "method": "量MoM = (1+台幣營收MoM)/(1+USDTWD月均MoM)/(1+合約價MoM) - 1",
+        "caveat": "代理的是利基/消費端的量，非 AI 端；南亞科非純 DDR4，單一報價當分母有誤差",
+        "rows": results,
+    }
+    if disabled:
+        payload["disabled"] = disabled
+    OUT_FILE.write_text(
+        json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
+
+
+def _print_references():
     # ── 對照：韓系總量與三雄 bit 指引，讓三個訊號並排看 ──
     if KOREA.exists():
         k = json.loads(KOREA.read_text(encoding="utf-8"))

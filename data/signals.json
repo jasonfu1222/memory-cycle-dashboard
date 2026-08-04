@@ -1,13 +1,17 @@
 {
-  "updated": "2026-08-04T22:32:46.380056",
-  "date": "2026-08-04",
+  "updated": "2026-08-05T00:18:28.255639",
+  "date": "2026-08-05",
   "methodology": "V3",
-  "cycle_score": 3.56,
+  "cycle_score": 3.81,
   "status_color": "green",
   "status_text": "Mid Cycle — 多數訊號正面，持有，密切監控",
   "alerts": [],
   "manual_last_updated": "2026-07-31",
   "stale_signals": [],
+  "excluded_signals": [
+    "s3"
+  ],
+  "effective_weight": 0.88,
   "events": [
     {
       "date": "2026-06-24",
@@ -61,23 +65,24 @@
   ],
   "signals": {
     "s1": {
-      "score": 2.4,
+      "score": 5.0,
       "label": "Daily 記憶體現貨報價",
-      "detail": "1a=1.0 | 1b=3.0 | 1c=5.0",
+      "detail": "1a=None | 1b=None | 1c=5.0",
       "sub": {
         "1a": {
-          "score": 1.0,
-          "detail": "DDR5 $68.0 | >$67.2 5MA ↑ | >$65.6 20MA ↑ | golden cross | +1.5%"
+          "score": null,
+          "detail": "insufficient data"
         },
         "1b": {
-          "score": 3.0,
-          "detail": "spot/contract = 1.00 ($68.0/$68.0) [green]"
+          "score": null,
+          "detail": "來源已合併：contract 頁與 spot 同源，比值恆為 1.00，訊號停用"
         },
         "1c": {
           "score": 5.0,
           "detail": "★比值逆轉：5月底 DDR5/DDR4 ~2.2x，7/30 實測 DDR5 16Gb $67 vs DDR4 16Gb $107 → 比值 0.63，DDR4 反而比 DDR5 貴。成因是三大廠產能挪往 HBM/DDR5、DDR4 減產致舊制程搶貨。方向待 Jason 判定（短缺極端化=晚週期特徵 vs 結構性錯配），暫維持 5.0 中性不擅改。",
           "status": "yellow"
-        }
+        },
+        "_note": "已排除 1a/1b，權重在其餘子項間重新正規化"
       }
     },
     "s2": {
@@ -86,9 +91,9 @@
       "detail": "[manual] TrendForce 3Q26：傳統 DRAM 合約價 +13~18% QoQ（server +13~18%、PC 上修 8-13%→15-20%、NAND +10~15%）。序列 93-98→58-63→13-18＝漲價動能續降，與 7/15 辯論『動能已見頂』一致。給分依 calc_score S2 auto 階梯（QoQ>10% → 3.5），非主觀。"
     },
     "s3": {
-      "score": 5.0,
+      "score": null,
       "label": "Spot ÷ Contract Ratio",
-      "detail": "[manual] ★資料源已失效，此訊號目前無資訊量：TrendForce dram_spot 與 dram_contract 兩個 URL 於 2026-07-31 實測回傳完全相同頁面（23 品項 100% 同值、title 同為 DRAM Price Trends），故 spot÷contract 恆等於 1.0（歷史 51 個共同日期全部相同）。原手填『spot 仍高於 contract, ratio>1.0 → Green』與實際資料矛盾。改給 5.0 中性。待辦：找可分離的 spot 報價源，或把 s3 與 s1b 權重停用重分配（合計 16.5% 總權重，需 Jason 決定）。"
+      "detail": "來源已合併：contract 頁與 spot 同源，無法計算比值，訊號停用"
     },
     "s4": {
       "score": 3.2,

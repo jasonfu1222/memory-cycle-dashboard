@@ -121,11 +121,17 @@ async def main():
         if key not in all_prices:
             continue
         row = all_prices[key]
-        # price 沿用 High 欄不改，避免既有 5MA/20MA 序列出現斷階；
-        # avg/change_pct 為 2026-08-04 新增的平行欄位，供日後決定是否改用均價。
-        point = {"date": today, "price": row["high"]}
-        if row["avg"] is not None:
-            point["price_avg"] = row["avg"]
+        # 2026-08-05 起 price ＝ Session Average（代表性報價）。
+        # 舊序列記的是 High 欄，實測與官方 Session Change 對不上、且 High/均價
+        # 比值不固定（當日 1.29~1.76），偏差不會在相對量裡抵消，故整條重建。
+        if row["avg"] is None:
+            print(
+                f"  [!! 無均價] {key} 取不到 Session Average，本日不記錄"
+                "（不以 High 頂替，避免混入兩種口徑）",
+                file=sys.stderr,
+            )
+            continue
+        point = {"date": today, "price": row["avg"], "price_high": row["high"]}
         if row["change_pct"] is not None:
             point["change_pct"] = row["change_pct"]
 
@@ -136,8 +142,10 @@ async def main():
             entries.append(point)
         # Keep last 365 days
         history["series"][key] = entries[-365:]
-        avg_txt = f"｜均價 ${row['avg']}" if row["avg"] is not None else ""
-        print(f"  {key}: ${row['high']}{avg_txt}")
+        chg = (
+            f"｜當日 {row['change_pct']:+.2f}%" if row["change_pct"] is not None else ""
+        )
+        print(f"  {key}: ${row['avg']}（均價，High ${row['high']}）{chg}")
 
     save_history(history)
     print(f"Saved to {SPOT_FILE}")

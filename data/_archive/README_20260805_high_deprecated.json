@@ -1,0 +1,12 @@
+{
+  "archived_at": "2026-08-05T00:17:09.656861",
+  "reason": "price 欄取的是 TrendForce 表格的 High 欄而非 Session Average；實測 High/均價比值當日介於 1.29~1.76 不固定，且 High 推導的漲跌幅與官方 Session Change 四項全部對不上（含憑空產生與視而不見兩種方向），偏差不會在 MA 交叉／MoM 等相對量裡抵消。contract 檔另因來源頁面合併，與現貨完全同值。",
+  "successor": "同名檔案自 2026-08-05 起改記 Session Average，序列重新累積",
+  "do_not_use_for": "任何計分、回測或趨勢判讀",
+  "may_use_for": "決策校準的事後稽核（回答『當時螢幕上顯示什麼』）",
+  "files": {
+    "spot_history.json": "現貨序列（price 欄實為 Daily/Weekly High，非代表性報價）",
+    "contract_history.json": "合約序列（實為現貨同一份頁面，比值恆為 1.00）",
+    "score_history.json": "週期分數（以上述兩者算出，且含 6/04–7/30 卡在 3.2 的僵化期）"
+  }
+}

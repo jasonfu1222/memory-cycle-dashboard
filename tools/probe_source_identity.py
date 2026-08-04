@@ -14,7 +14,8 @@ async def grab(url):
     async with async_playwright() as p:
         b = await p.chromium.launch(headless=True)
         pg = await b.new_page()
-        await pg.goto(url, wait_until="networkidle", timeout=45000)
+        await pg.goto(url, wait_until="domcontentloaded", timeout=60000)
+        await pg.wait_for_selector("table", state="attached", timeout=30000)
         html = await pg.content()
         title = await pg.title()
         final = pg.url
