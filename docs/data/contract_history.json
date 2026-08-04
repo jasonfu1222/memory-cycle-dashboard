@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-04T22:24:52.370837",
+  "updated": "2026-08-04T22:32:46.238968",
   "series": {
     "DDR5 16Gb (2Gx8) 4800/5600": [
       {
@@ -3847,7 +3847,7 @@
   "data_integrity": {
     "duplicate_of_spot": true,
     "overlap_keys": 4,
-    "checked_at": "2026-08-04T22:24:52.380552",
+    "checked_at": "2026-08-04T22:32:46.250299",
     "note": "dram_contract URL 與 dram_spot 回傳同一頁；本檔實為現貨表，非合約價"
   }
 }
