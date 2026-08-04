@@ -14,18 +14,22 @@ TARGET_KEYS = [
     "GDDR6  8Gb",
 ]
 
+
 async def fetch_page():
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         page = await browser.new_page()
+        # 表格為伺服器端渲染；networkidle 會被廣告/追蹤請求卡到逾時，等 table 即可
         await page.goto(
             "https://www.trendforce.com/price/dram/dram_spot",
-            wait_until="networkidle",
-            timeout=30000,
+            wait_until="domcontentloaded",
+            timeout=60000,
         )
+        await page.wait_for_selector("table", state="attached", timeout=30000)
         content = await page.content()
         await browser.close()
     return content
+
 
 def parse_prices(html):
     soup = BeautifulSoup(html, "lxml")
@@ -37,22 +41,24 @@ def parse_prices(html):
                 continue
             label = cells[0].get_text(strip=True)
             for cell in cells[1:]:
-                m = re.search(r'\$?([\d]+\.[\d]+)', cell.get_text(strip=True))
+                m = re.search(r"\$?([\d]+\.[\d]+)", cell.get_text(strip=True))
                 if m and any(kw in label for kw in ["DDR", "LPDDR", "GDDR"]):
                     results[label] = float(m.group(1))
                     break
     return results
+
 
 def load_history():
     if SPOT_FILE.exists():
         return json.loads(SPOT_FILE.read_text(encoding="utf-8-sig"))
     return {"updated": "", "series": {}}
 
+
 def save_history(history):
     SPOT_FILE.write_text(
-        json.dumps(history, indent=2, ensure_ascii=False),
-        encoding="utf-8"
+        json.dumps(history, indent=2, ensure_ascii=False), encoding="utf-8"
     )
+
 
 async def main():
     today = date.today().isoformat()
@@ -84,6 +90,7 @@ async def main():
 
     save_history(history)
     print(f"Saved to {SPOT_FILE}")
+
 
 if __name__ == "__main__":
     asyncio.run(main())

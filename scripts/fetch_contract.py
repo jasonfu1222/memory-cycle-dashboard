@@ -13,7 +13,9 @@ async def fetch_page():
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         page = await browser.new_page()
-        await page.goto(URL, wait_until="networkidle", timeout=30000)
+        # 表格為伺服器端渲染；networkidle 會被廣告/追蹤請求卡到逾時，等 table 即可
+        await page.goto(URL, wait_until="domcontentloaded", timeout=60000)
+        await page.wait_for_selector("table", state="attached", timeout=30000)
         content = await page.content()
         await browser.close()
     return content
