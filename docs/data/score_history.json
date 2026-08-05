@@ -2,7 +2,13 @@
   "entries": [
     {
       "date": "2026-08-05",
-      "score": 3.81,
+      "score": 3.32,
+      "color": "green",
+      "methodology": "V3"
+    },
+    {
+      "date": "2026-08-06",
+      "score": 3.32,
       "color": "green",
       "methodology": "V3"
     }
