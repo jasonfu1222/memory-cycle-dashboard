@@ -1,17 +1,96 @@
 {
-  "updated": "2026-08-17T22:30:02.754281",
-  "date": "2026-08-17",
+  "updated": "2026-08-18T21:51:48.670779",
+  "date": "2026-08-18",
   "methodology": "V3",
   "cycle_score": 3.32,
   "status_color": "green",
   "status_text": "Mid Cycle — 多數訊號正面，持有，密切監控",
-  "alerts": [],
+  "alerts": [
+    {
+      "level": "yellow",
+      "msg": "無更新戳記：s4（合計權重 20%）——過期偵測看不到它們，新鮮度一律不予採信。"
+    }
+  ],
   "manual_last_updated": "2026-07-31",
   "stale_signals": [],
   "excluded_signals": [
     "s3"
   ],
   "effective_weight": 0.88,
+  "freshness": {
+    "as_of": "2026-08-18",
+    "effective_weight": 0.88,
+    "fresh_weight": 0.58,
+    "stale_weight": 0.0,
+    "frozen_weight": 0.1,
+    "unstamped_weight": 0.2,
+    "fresh_share_of_effective": 0.659,
+    "unstamped_signals": [
+      "s4"
+    ],
+    "by_signal": {
+      "s1": {
+        "weight": 0.15,
+        "source": "auto+manual",
+        "as_of": "2026-08-05",
+        "age_days": 13,
+        "bucket": "fresh"
+      },
+      "s2": {
+        "weight": 0.15,
+        "source": "manual",
+        "as_of": "2026-07-31",
+        "age_days": 18,
+        "bucket": "fresh"
+      },
+      "s4": {
+        "weight": 0.2,
+        "source": "manual",
+        "as_of": null,
+        "age_days": null,
+        "bucket": "unstamped"
+      },
+      "s5": {
+        "weight": 0.1,
+        "source": "manual",
+        "as_of": "2026-07-31",
+        "age_days": 18,
+        "bucket": "fresh"
+      },
+      "s6": {
+        "weight": 0.1,
+        "source": "auto+manual",
+        "as_of": "2026-05-28",
+        "age_days": 82,
+        "bucket": "frozen"
+      },
+      "s7": {
+        "weight": 0.08,
+        "source": "manual",
+        "as_of": "2026-07-31",
+        "age_days": 18,
+        "bucket": "fresh"
+      },
+      "s8": {
+        "weight": 0.07,
+        "source": "manual",
+        "as_of": "2026-07-31",
+        "age_days": 18,
+        "bucket": "fresh"
+      },
+      "s9": {
+        "weight": 0.03,
+        "source": "manual",
+        "as_of": "2026-07-31",
+        "age_days": 18,
+        "bucket": "fresh"
+      }
+    },
+    "thresholds": {
+      "warn_days": 30,
+      "red_days": 60
+    }
+  },
   "events": [
     {
       "date": "2026-06-24",
@@ -71,7 +150,7 @@
       "sub": {
         "1a": {
           "score": 1.0,
-          "detail": "DDR5 $52.7 | >$52.7 5MA ↑ | >$51.6 20MA ↑ | golden cross"
+          "detail": "DDR5 $52.7 | >$52.7 5MA ↑ | >$51.7 20MA ↑ | golden cross"
         },
         "1b": {
           "score": null,

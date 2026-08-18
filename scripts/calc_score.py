@@ -741,6 +741,121 @@ def main():
             }
         )
 
+    # ── 新鮮度權重（2026-08-17 新增，純加輸出、不動評分）──────────
+    # 背景：effective_weight 只回答「多少權重有分數」，回答不了「這些分數有多新」。
+    # 88% 的有效權重裡，可能有一半是兩個月前手填的——看的人會把「有分數」讀成「有資訊」。
+    # 這裡把有效權重按資料新鮮度拆桶。**取每個訊號各成分中最舊的那個**（保守）。
+    # ★兩個既有盲點在這裡才浮出來：
+    #   ①上面的過期偵測清單根本沒有 s4，而它是 0.20＝單一最大權重；
+    #     s4 的 4a~4f 也沒有任何 updated 戳記 → 歸為 unstamped，不當成新的。
+    #   ②只檢查了 s6b（手填），沒檢查 s6a 的自動來源 micron_gross。
+    def _dates(*vals):
+        out = []
+        for v in vals:
+            if not v:
+                continue
+            try:
+                out.append(date.fromisoformat(str(v)[:10]))
+            except ValueError:
+                pass
+        return out
+
+    def _series_last(hist):
+        ds = [p.get("date") for s in hist.get("series", {}).values() for p in s[-1:]]
+        return max(_dates(*ds), default=None)
+
+    def _sub_stamps(d):
+        return _dates(*[v.get("updated") for v in d.values() if isinstance(v, dict)])
+
+    micron_last = max(
+        _dates(*[e.get("date") for e in micron_gross.get("entries", [])]), default=None
+    )
+    s2_manual = manual.get("s2", {}).get("score") is not None
+    parts = {
+        "s1": (
+            _dates(_series_last(spot_history))
+            + _dates(manual.get("s1_sub", {}).get("1c", {}).get("updated")),
+            "auto+manual",
+        ),
+        "s2": (
+            (
+                _dates(manual.get("s2", {}).get("updated"))
+                if s2_manual
+                else _dates(_series_last(contract_history))
+            ),
+            "manual" if s2_manual else "auto",
+        ),
+        "s3": ([], "excluded"),
+        "s4": (_sub_stamps(manual.get("s4", {})), "manual"),
+        "s5": (_dates(manual.get("s5", {}).get("updated")), "manual"),
+        "s6": (
+            _dates(micron_last) + _sub_stamps(manual.get("s6_sub", {})),
+            "auto+manual",
+        ),
+        "s7": (_dates(manual.get("s7", {}).get("updated")), "manual"),
+        "s8": (_sub_stamps(manual.get("s8", {})), "manual"),
+        "s9": (_dates(manual.get("s9", {}).get("updated")), "manual"),
+    }
+    today_d = date.fromisoformat(today)
+    buckets = {"fresh": 0.0, "stale": 0.0, "frozen": 0.0, "unstamped": 0.0}
+    per_signal, unstamped = {}, []
+    for k, w in WEIGHTS_V3.items():
+        if k in excluded_signals:
+            continue
+        stamps, src = parts.get(k, ([], "?"))
+        if not stamps:
+            buckets["unstamped"] += w
+            per_signal[k] = {
+                "weight": w,
+                "source": src,
+                "as_of": None,
+                "age_days": None,
+                "bucket": "unstamped",
+            }
+            unstamped.append(k)
+            continue
+        as_of = min(stamps)  # 最舊成分決定整支訊號的新鮮度
+        age = (today_d - as_of).days
+        b = (
+            "fresh"
+            if age < STALE_WARN_DAYS
+            else ("stale" if age < STALE_RED_DAYS else "frozen")
+        )
+        buckets[b] += w
+        per_signal[k] = {
+            "weight": w,
+            "source": src,
+            "as_of": as_of.isoformat(),
+            "age_days": age,
+            "bucket": b,
+        }
+
+    eff_w = sum(w for k, w in WEIGHTS_V3.items() if k not in excluded_signals)
+    freshness = {
+        "as_of": today,
+        "effective_weight": round(eff_w, 3),
+        "fresh_weight": round(buckets["fresh"], 3),
+        "stale_weight": round(buckets["stale"], 3),
+        "frozen_weight": round(buckets["frozen"], 3),
+        "unstamped_weight": round(buckets["unstamped"], 3),
+        # ★這一格才是「這個分數有多少是真的新資訊」：分母用有效權重不是 1.0，
+        #   否則被排除的訊號會被算成「不新鮮」，兩件事會混在一起。
+        "fresh_share_of_effective": (
+            round(buckets["fresh"] / eff_w, 3) if eff_w else None
+        ),
+        "unstamped_signals": unstamped,
+        "by_signal": per_signal,
+        "thresholds": {"warn_days": STALE_WARN_DAYS, "red_days": STALE_RED_DAYS},
+    }
+    if unstamped:
+        alerts.append(
+            {
+                "level": "yellow",
+                "msg": f"無更新戳記：{'/'.join(unstamped)}（合計權重 {buckets['unstamped']:.0%}）"
+                f"——過期偵測看不到它們，新鮮度一律不予採信。",
+            }
+        )
+
     signals_out = {
         "updated": datetime.now().isoformat(),
         "date": today,
@@ -752,9 +867,8 @@ def main():
         "manual_last_updated": manual.get("_last_updated"),
         "stale_signals": stale,
         "excluded_signals": excluded_signals,
-        "effective_weight": round(
-            sum(w for k, w in WEIGHTS_V3.items() if k not in excluded_signals), 3
-        ),
+        "effective_weight": round(eff_w, 3),
+        "freshness": freshness,
         "events": manual.get("events", []),
         "signals": signals_detail,
     }
@@ -794,6 +908,26 @@ def main():
             f"  [排除] {'/'.join(excluded_signals)} 無資料，未計入；"
             f"總分由其餘 {live} 個訊號重新正規化（原權重合計 {kept_w:.0%}）"
         )
+    f = freshness
+    print(
+        f"  [新鮮度] 有效權重 {f['effective_weight']:.0%} 之中："
+        f"新 {f['fresh_weight']:.0%}／過期 {f['stale_weight']:.0%}"
+        f"／僵化 {f['frozen_weight']:.0%}／無戳記 {f['unstamped_weight']:.0%}"
+        + (
+            f"　→ 真正新的只佔 {f['fresh_share_of_effective']:.0%}"
+            if f["fresh_share_of_effective"] is not None
+            else "　→ 無有效權重"
+        )
+    )
+    for k, v in sorted(
+        f["by_signal"].items(), key=lambda x: -(x[1]["age_days"] or 9999)
+    )[:4]:
+        age = (
+            "無戳記"
+            if v["age_days"] is None
+            else f"{v['age_days']}天前（{v['as_of']}）"
+        )
+        print(f"      {k} w={v['weight']:.0%} {v['source']:<11} {age}")
     if alerts:
         for a in alerts:
             print(f"  [{a['level'].upper()}] {a['msg']}")
