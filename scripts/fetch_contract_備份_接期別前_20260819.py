@@ -92,32 +92,11 @@ def check_source_integrity(prices):
 #   ③ 解除 data_integrity 旗標會讓 s3 悄悄退回「手填 5.0」，正是 8/05 修掉的那個病
 CONTRACT_REAL_FILE = DATA_DIR / "contract_real_history.json"
 PRICE_COL = "Session Average"  # 對齊 8/05 的均價口徑，不用 High
-CHANGE_COL = "Average Change"  # 官方自報的「期別對期別」變動，不是我們自算
-# 合約價是半月報價（1H/2H＋月份），標題帶期別。期別若長期不前進＝來源停更，
-# 拿它當任何比值的分母，變動就 100% 來自分子＝與現貨訊號共線。門檻設 45 天
-# （半月報價正常最多間隔 ~16 天，45 天＝連跳兩期以上才算停滯，不會誤報）。
-VINTAGE_STALE_DAYS = 45  # ★與 calc_score.VINTAGE_STALE_DAYS 是同一條線，改一邊要改兩邊
-
-
-def _pct(text):
-    """'▲2.68 %' → +2.68；'▼1.5 %' → -1.5；'—0.00 %' → 0.0；讀不出來回 None。
-    ▲▼ 是唯一的正負來源（數字本身不帶符號），漏判方向會讓漲價被記成跌價。"""
-    if not text:
-        return None
-    m = re.search(r"([\d,]+\.?\d*)\s*%", text)
-    if not m:
-        return None
-    val = float(m.group(1).replace(",", ""))
-    if "▼" in text or "▽" in text:
-        return -val
-    if "▲" in text or "△" in text:
-        return val
-    return 0.0 if val == 0 else None  # 有數字卻沒方向符號→不猜，回 None
 
 
 def parse_contract_table(html):
     """定位標題含 'Contract Price' 的表（排除 Mobile DRAM，產品線不同），
-    回傳 (heading, {item: {price, change_pct}})。找不到回 (None, {})——大聲失敗，不猜。"""
+    回傳 (heading, {item: price})。找不到回 (None, {})——大聲失敗，不猜。"""
     soup = BeautifulSoup(html, "lxml")
     for table in soup.find_all("table"):
         heading = None
@@ -141,7 +120,6 @@ def parse_contract_table(html):
         if any(h.startswith(("Daily", "Weekly")) for h in hdr):
             continue
         idx = hdr.index(PRICE_COL)
-        idx_chg = hdr.index(CHANGE_COL) if CHANGE_COL in hdr else None
 
         out = {}
         for row in rows[1:]:
@@ -151,84 +129,35 @@ def parse_contract_table(html):
             item = cells[0]
             m = re.search(r"([\d,]+\.?\d*)", cells[idx])
             if item and m:
-                out[item] = {
-                    "price": float(m.group(1).replace(",", "")),
-                    "change_pct": (
-                        _pct(cells[idx_chg])
-                        if idx_chg is not None and len(cells) > idx_chg
-                        else None
-                    ),
-                }
+                out[item] = float(m.group(1).replace(",", ""))
         if out:
             return heading, out
     return None, {}
 
 
-def parse_vintage(heading):
-    """'DRAM Contract Price (2H Jun)' → '2H Jun'。括號抓不到就回 None，不編。"""
-    if not heading:
-        return None
-    m = re.search(r"\(([^)]+)\)", heading)
-    return m.group(1).strip() if m else None
-
-
-def track_vintage(hist, vintage, today):
-    """記錄期別何時第一次／最後一次出現，回傳（停滯天數, 是否停滯）。
-    只有這份紀錄能回答「合約價到底多久沒動了」——價格本身是平的，看不出來。"""
-    log = hist.setdefault("vintage_log", [])
-    if not vintage:
-        return None, False
-    if log and log[-1]["period"] == vintage:
-        log[-1]["last_seen"] = today
-    else:
-        log.append({"period": vintage, "first_seen": today, "last_seen": today})
-    cur = log[-1]
-    try:
-        span = (
-            date.fromisoformat(cur["last_seen"]) - date.fromisoformat(cur["first_seen"])
-        ).days
-    except ValueError:
-        return None, False
-    return span, span >= VINTAGE_STALE_DAYS
-
-
-def save_contract_real(heading, rows, today):
-    """rows = {item: {price, change_pct}}。回傳 (vintage, 期別已持續天數, 是否停滯)。"""
+def save_contract_real(heading, prices, today):
     hist = (
         json.loads(CONTRACT_REAL_FILE.read_text(encoding="utf-8-sig"))
         if CONTRACT_REAL_FILE.exists()
         else {"series": {}}
     )
-    vintage = parse_vintage(heading)
-    span, stalled = track_vintage(hist, vintage, today)
-
     hist["updated"] = datetime.now().isoformat()
     hist["source_heading"] = heading  # 存來源表名，日後可稽核抓對沒
     hist["price_column"] = PRICE_COL
-    hist["vintage"] = vintage
-    hist["vintage_span_days"] = span
     hist["note"] = (
-        "真・DRAM 合約價（TrendForce 頁內獨立表，半月報價）。"
-        "★這是「期別價」不是日價：同一期別內每天抓到的數字必然相同，"
-        "序列看起來平不等於市場沒動，要看 vintage 有沒有前進。"
-        "顆粒項（DDR4 16Gb 2Gx8 等）與現貨同口徑可比；"
-        "模組項（DDR5 8GB SO-DIMM 等）含 PCB/SPD 非純顆粒，不可與顆粒現貨相除。"
-        "未接入 s1b/s3 評分，理由見 calc_score.score_signal_1b 註解。"
+        "真・DRAM 合約價（TrendForce 頁內獨立表）。單位為模組 GB，"
+        "與現貨顆粒 Gb 不同口徑，未接入 s1b/s3/位元代理，待配對關係裁決。"
     )
-    for key, row in rows.items():
-        price = row["price"] if isinstance(row, dict) else row
-        change = row.get("change_pct") if isinstance(row, dict) else None
+    for key, price in prices.items():
         entries = hist["series"].setdefault(key, [])
-        rec = {"date": today, "price": price, "change_pct": change, "vintage": vintage}
         if entries and entries[-1]["date"] == today:
-            entries[-1] = rec
+            entries[-1]["price"] = price
         else:
-            entries.append(rec)
+            entries.append({"date": today, "price": price})
         hist["series"][key] = entries[-365:]
     CONTRACT_REAL_FILE.write_text(
         json.dumps(hist, indent=2, ensure_ascii=False), encoding="utf-8"
     )
-    return vintage, span, stalled
 
 
 def load_history():
@@ -281,24 +210,13 @@ async def main():
     try:
         heading, c_prices = parse_contract_table(html)
         if c_prices:
-            vintage, span, stalled = save_contract_real(heading, c_prices, today)
+            save_contract_real(heading, c_prices, today)
             print(
                 f"\n  [真合約價] 來源表「{heading}」｜{PRICE_COL}｜{len(c_prices)} 項"
-                f"｜期別 {vintage}（同一期別已持續 {span} 天）"
             )
             for k, v in list(c_prices.items())[:6]:
-                chg = v.get("change_pct")
-                chg_s = f"  期變動 {chg:+.2f}%" if chg is not None else "  期變動 n/a"
-                print(f"    {k}: ${v['price']}{chg_s}")
-            print(f"  → {CONTRACT_REAL_FILE}（未接入 s1b/s3 評分，理由見 calc_score）")
-            if stalled:
-                print(
-                    f"\n  [!! 合約期別停滯] 期別仍是「{vintage}」，已 {span} 天未前進"
-                    f"（門檻 {VINTAGE_STALE_DAYS} 天）。\n"
-                    "      半月報價正常最多間隔約 16 天 → 來源停更或頁面改版。\n"
-                    "      影響：任何以合約價為分母的比值，變動將 100% 來自現貨端。",
-                    file=sys.stderr,
-                )
+                print(f"    {k}: ${v}")
+            print(f"  → {CONTRACT_REAL_FILE}（尚未接入 s1b/s3/位元代理，待配對裁決）")
         else:
             print(
                 "\n  [真合約價][警告] 頁面上找不到 Contract Price 表——版面可能已改，"

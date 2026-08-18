@@ -36,6 +36,7 @@
   .dot.yellow { background: var(--yellow); }
   .dot.red    { background: var(--red); }
   .dot.pending { background: var(--accent); }
+  .dot.muted  { background: var(--muted); }
   .alert-box { padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 8px; }
   .alert-box.yellow { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); color: var(--yellow); }
   .alert-box.red    { background: rgba(239,68,68,0.1);  border: 1px solid rgba(239,68,68,0.3);  color: var(--red); }
@@ -169,6 +170,12 @@
     <div id="signals-list"></div>
   </div>
 
+  <!-- 真合約價觀測（不評分） -->
+  <div class="card" id="contract-watch-card" style="display:none">
+    <div class="section-title">合約價觀測（不評分）</div>
+    <div id="contract-watch"></div>
+  </div>
+
   <!-- Signal 4 sub-metrics -->
   <div class="card">
     <div class="section-title">Signal 4 — Hyperscaler Demand Floor（6 個子訊號）</div>
@@ -300,6 +307,8 @@
 const DATA_BASE = "./data/";
 
 function scoreColor(s) {
+  // 2026-08-19：訊號被排除時 score 是 null，原本落到最後一行回紅色＝把「沒量到」畫成「危險」
+  if (typeof s !== "number") return "var(--muted)";
   if (s <= 6) return "#22c55e";
   if (s <= 8) return "#f59e0b";
   return "#ef4444";
@@ -390,8 +399,12 @@ async function init() {
     Object.entries(sig.signals).forEach(([k, v]) => {
       const row = document.createElement("div");
       row.className = "signal-row";
-      const pct = (v.score / 10 * 100).toFixed(0);
-      const dotColor = v.score <= 6 ? "green" : v.score <= 8 ? "yellow" : "red";
+      // 2026-08-19 修：s3 自 08-05 起被排除、score = null，
+      // 原本 v.score.toFixed(1) 直接丟 TypeError → 被 init 的 catch 接住 →
+      // 整個儀表板顯示「資料載入失敗」。終端機輸出照樣漂亮，所以兩週沒人發現。
+      const hasScore = typeof v.score === "number";
+      const pct = hasScore ? (v.score / 10 * 100).toFixed(0) : 0;
+      const dotColor = !hasScore ? "muted" : v.score <= 6 ? "green" : v.score <= 8 ? "yellow" : "red";
       const subNote = k === "s1" && v.sub
         ? ` — 1c: <span style="color:${v.sub["1c"]?.score >= 7 ? "var(--red)" : v.sub["1c"]?.score >= 5 ? "var(--yellow)" : "var(--green)"}">` +
           (v.sub["1c"]?.status || "").toUpperCase() + `</span>`
@@ -409,9 +422,33 @@ async function init() {
           </div>
           <div style="font-size:0.75rem;color:var(--muted);margin-top:3px">${v.detail||''}</div>
         </div>
-        <div style="color:${scoreColor(v.score)};font-weight:700;font-size:1.1rem;margin-left:12px">${v.score.toFixed(1)}</div>`;
+        <div style="color:${scoreColor(v.score)};font-weight:700;font-size:1.1rem;margin-left:12px">${hasScore ? v.score.toFixed(1) : "—"}</div>`;
       sigList.appendChild(row);
     });
+
+    // 合約價觀測（不評分）——s1b/s3 停用期間，這是「4Q26 合約價轉負」唯一的自動來源
+    const cw = sig.contract_watch;
+    if (cw) {
+      const card = document.getElementById("contract-watch-card");
+      card.style.display = "";
+      const med = typeof cw.period_change_median_pct === "number"
+        ? (cw.period_change_median_pct >= 0 ? "+" : "") + cw.period_change_median_pct.toFixed(2) + "%"
+        : "n/a";
+      const stall = cw.vintage_stalled
+        ? `<span style="color:var(--yellow)">（已 ${cw.vintage_span_days} 天未前進）</span>`
+        : `（已 ${cw.vintage_span_days ?? "?"} 天）`;
+      const rows = (cw.die_ratios || []).map(r =>
+        `<tr><td>${r.pair}</td><td>${r.spot} / ${r.contract}</td>` +
+        `<td style="font-weight:700">${(typeof r.ratio === "number" ? r.ratio.toFixed(2) : "—")}x</td></tr>`
+      ).join("");
+      document.getElementById("contract-watch").innerHTML =
+        `<div style="font-size:0.85rem;margin-bottom:8px">` +
+        `合約期別 <strong>${cw.vintage || "n/a"}</strong>${stall}　｜　期別變動中位數 <strong>${med}</strong></div>` +
+        (rows ? `<table class="sub-table">${rows}</table>` : "") +
+        `<div style="font-size:0.75rem;color:var(--muted);margin-top:8px">` +
+        `顆粒比值目前 2x 上下，落在 s1b 門檻表（0.90~1.10）之外，且合約為半月報價、` +
+        `期別不動時比值變動全部來自現貨端 → 觀測不評分，累積樣本後再議校準。</div>`;
+    }
 
     // Signal 4 sub-table
     const s4Labels = {

@@ -86,15 +86,7 @@ def contract_monthly():
     if d.get("data_integrity", {}).get("duplicate_of_spot"):
         print(
             "  [!! 停用] 合約檔與現貨同源，分母不是合約價。位元代理不計算。\n"
-            "      ★2026-08-19 覆核：真合約表已找到並自 8/10 起獨立累積"
-            "（data/contract_real_history.json），但仍不足以解除，還缺三件：\n"
-            "        ①月序列長度：算 MoM 至少要兩個完整月的合約月均，最早 2026-10 初才有；\n"
-            "        ②DDR5 沒得配：真合約表只有 DDR5 8GB SO-DIMM（模組，含 PCB/SPD），"
-            "沒有 DDR5 顆粒 → 解除後也只能跑 DDR4 一條，PRICE_KEYS 要砍半；\n"
-            "        ③分母會不會動：合約是半月報價且期別停在 2H Jun。"
-            "期別不前進時合約價MoM＝0，量MoM 會退化成美元營收MoM——"
-            "那是營收成長換個名字，不是位元量，比停用更危險。\n"
-            "      解除條件＝①②③同時成立；只滿足①就開，等於自欺。",
+            "      解除條件：找到能分離現貨與合約的來源，或改用季度合約指引重寫算式。",
             file=sys.stderr,
         )
         return None

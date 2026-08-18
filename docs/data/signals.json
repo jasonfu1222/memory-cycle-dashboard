@@ -1,88 +1,92 @@
 {
-  "updated": "2026-08-18T21:51:48.670779",
-  "date": "2026-08-18",
+  "updated": "2026-08-19T03:20:34.201058",
+  "date": "2026-08-19",
   "methodology": "V3",
   "cycle_score": 3.32,
   "status_color": "green",
   "status_text": "Mid Cycle — 多數訊號正面，持有，密切監控",
   "alerts": [
     {
-      "level": "yellow",
-      "msg": "無更新戳記：s4（合計權重 20%）——過期偵測看不到它們，新鮮度一律不予採信。"
+      "level": "red",
+      "msg": "訊號過期：1 個逾 30 天未更新 → s6a(auto:micron)(83天)（含自動源）。分數可能沒有反映最新事件。"
     }
   ],
   "manual_last_updated": "2026-07-31",
-  "stale_signals": [],
+  "stale_signals": [
+    {
+      "signal": "s6a(auto:micron)",
+      "updated": "2026-05-28",
+      "age_days": 83
+    }
+  ],
   "excluded_signals": [
     "s3"
   ],
   "effective_weight": 0.88,
   "freshness": {
-    "as_of": "2026-08-18",
+    "as_of": "2026-08-19",
     "effective_weight": 0.88,
-    "fresh_weight": 0.58,
+    "fresh_weight": 0.78,
     "stale_weight": 0.0,
     "frozen_weight": 0.1,
-    "unstamped_weight": 0.2,
-    "fresh_share_of_effective": 0.659,
-    "unstamped_signals": [
-      "s4"
-    ],
+    "unstamped_weight": 0.0,
+    "fresh_share_of_effective": 0.886,
+    "unstamped_signals": [],
     "by_signal": {
       "s1": {
         "weight": 0.15,
         "source": "auto+manual",
         "as_of": "2026-08-05",
-        "age_days": 13,
+        "age_days": 14,
         "bucket": "fresh"
       },
       "s2": {
         "weight": 0.15,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 18,
+        "age_days": 19,
         "bucket": "fresh"
       },
       "s4": {
         "weight": 0.2,
         "source": "manual",
-        "as_of": null,
-        "age_days": null,
-        "bucket": "unstamped"
+        "as_of": "2026-07-31",
+        "age_days": 19,
+        "bucket": "fresh"
       },
       "s5": {
         "weight": 0.1,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 18,
+        "age_days": 19,
         "bucket": "fresh"
       },
       "s6": {
         "weight": 0.1,
         "source": "auto+manual",
         "as_of": "2026-05-28",
-        "age_days": 82,
+        "age_days": 83,
         "bucket": "frozen"
       },
       "s7": {
         "weight": 0.08,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 18,
+        "age_days": 19,
         "bucket": "fresh"
       },
       "s8": {
         "weight": 0.07,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 18,
+        "age_days": 19,
         "bucket": "fresh"
       },
       "s9": {
         "weight": 0.03,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 18,
+        "age_days": 19,
         "bucket": "fresh"
       }
     },
@@ -142,6 +146,61 @@
       "note": "★辯論定稿的關鍵驗證點：轉負＝價格水準見頂確認"
     }
   ],
+  "contract_watch": {
+    "as_of": "2026-08-19",
+    "vintage": "2H Jun",
+    "vintage_span_days": 9,
+    "vintage_stalled": false,
+    "period_change_median_pct": 5.0,
+    "items": {
+      "DDR5 8GB SO-DIMM": {
+        "price": 115.0,
+        "change_pct": 2.68
+      },
+      "DDR4 16GB SO-DIMM": {
+        "price": 227.0,
+        "change_pct": 0.0
+      },
+      "DDR4 8GB SO-DIMM": {
+        "price": 119.0,
+        "change_pct": 0.0
+      },
+      "DDR4 16Gb 2Gx8": {
+        "price": 42.0,
+        "change_pct": 5.0
+      },
+      "DDR4 8Gb 1Gx8": {
+        "price": 21.0,
+        "change_pct": 5.0
+      },
+      "DDR4 4Gb 256Mx16": {
+        "price": 13.0,
+        "change_pct": 8.33
+      },
+      "DDR3 4Gb 256Mx16": {
+        "price": 12.5,
+        "change_pct": 13.64
+      }
+    },
+    "die_ratios": [
+      {
+        "pair": "DDR4 16Gb (2Gx8) 3200 ÷ DDR4 16Gb 2Gx8",
+        "spot": 89.427,
+        "contract": 42.0,
+        "ratio": 2.129,
+        "spot_date": "2026-08-18"
+      },
+      {
+        "pair": "DDR4 8Gb (1Gx8) 3200 ÷ DDR4 8Gb 1Gx8",
+        "spot": 42.895,
+        "contract": 21.0,
+        "ratio": 2.043,
+        "spot_date": "2026-08-18"
+      }
+    ],
+    "scored": false,
+    "note": "觀測不評分。期別價非日價，同期別內每日相同；期別變動%為 TrendForce 自報。die_ratios 為同口徑顆粒比值，累積 ≥60 個交易日後才具備重新校準 s1b 門檻的樣本。"
+  },
   "signals": {
     "s1": {
       "score": 2.1,
@@ -154,7 +213,7 @@
         },
         "1b": {
           "score": null,
-          "detail": "來源已合併：contract 頁與 spot 同源，比值恆為 1.00，訊號停用"
+          "detail": "停用：真合約表無 DDR5 顆粒、DDR4 比值 2.13 出門檻表、期別半月不動與 s1a 共線"
         },
         "1c": {
           "score": 5.0,
@@ -172,7 +231,7 @@
     "s3": {
       "score": null,
       "label": "Spot ÷ Contract Ratio",
-      "detail": "來源已合併：contract 頁與 spot 同源，無法計算比值，訊號停用"
+      "detail": "停用：真合約表已在累積但配對不成立（無 DDR5 顆粒／DDR4 比值 2.13 出門檻表／期別半月不動與 s1a 共線）。改以 contract_watch 觀測不評分，理由詳 score_signal_1b"
     },
     "s4": {
       "score": 3.2,
@@ -181,32 +240,38 @@
         "4a": {
           "score": 3.0,
           "status": "green",
-          "note": "MSFT/AMZN/GOOG/META 全部上修 capex"
+          "note": "MSFT/AMZN/GOOG/META 全部上修 capex",
+          "updated": "2026-07-31"
         },
         "4b": {
           "score": 3.0,
           "status": "green",
-          "note": "Google Cloud +63%、AWS +28%、Azure +40%"
+          "note": "Google Cloud +63%、AWS +28%、Azure +40%",
+          "updated": "2026-07-31"
         },
         "4c": {
           "score": 3.0,
           "status": "green",
-          "note": "Google backlog QoQ 翻倍 vs capex +4-8%，backlog 跑贏"
+          "note": "Google backlog QoQ 翻倍 vs capex +4-8%，backlog 跑贏",
+          "updated": "2026-07-31"
         },
         "4d": {
           "score": 5.0,
           "status": "yellow",
-          "note": "Meta -6%、MSFT -2.5%，單一公司，未到觸發條件"
+          "note": "Meta -6%、MSFT -2.5%，單一公司，未到觸發條件",
+          "updated": "2026-07-31"
         },
         "4e": {
           "score": 3.0,
           "status": "green",
-          "note": "Alphabet CFO 表態 2027 顯著增加，街上預估破 $1T"
+          "note": "Alphabet CFO 表態 2027 顯著增加，街上預估破 $1T",
+          "updated": "2026-07-31"
         },
         "4f": {
           "score": 3.0,
           "status": "green",
-          "note": "NVDA $119B supply commitments，鎖定產能到明年 → demand floor 最前瞻訊號"
+          "note": "NVDA $119B supply commitments，鎖定產能到明年 → demand floor 最前瞻訊號",
+          "updated": "2026-07-31"
         }
       }
     },

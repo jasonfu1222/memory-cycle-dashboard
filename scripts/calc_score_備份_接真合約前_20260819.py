@@ -114,76 +114,6 @@ def score_signal_1a(spot_history):
     return round(score, 1), f"DDR5 ${current:.1f} | " + " | ".join(detail)
 
 
-# ──────────────────────────────────────────────
-# 真合約價觀測（不評分）
-# ──────────────────────────────────────────────
-# 2026-08-19：真合約表自 8/10 起獨立累積。它現在還不能餵 s1b/s3（理由見下方
-# score_signal_1b 的三條），但「不能評分」不等於「不用看」——華邦電／SNXX 的論點
-# 失效線寫的是「4Q26 合約價轉負＝價格水準見頂確認」，那條線在此之前根本沒有自動來源，
-# 只能靠手填的 s2 每隔一個月更新一次。這裡把可觀測的事實原樣攤開，不轉成分數：
-#   ①期別與停滯天數 ②官方自報的期別變動% ③同口徑 DDR4 顆粒的 spot/contract 比值
-# 比值序列同時是未來重新校準 s1b 門檻的原料，從今天開始累積。
-DIE_PAIRS = [
-    ("DDR4 16Gb (2Gx8) 3200", "DDR4 16Gb 2Gx8"),
-    ("DDR4 8Gb (1Gx8) 3200", "DDR4 8Gb 1Gx8"),
-]
-VINTAGE_STALE_DAYS = 45  # ★與 fetch_contract.VINTAGE_STALE_DAYS 是同一條線，改一邊要改兩邊
-
-
-def build_contract_watch(spot_history, contract_real, today):
-    """回傳觀測 dict；資料不足就回 None（不填中性值）。"""
-    series = contract_real.get("series", {})
-    if not series:
-        return None
-
-    vintage = contract_real.get("vintage")
-    span = contract_real.get("vintage_span_days")
-    stalled = span is not None and span >= VINTAGE_STALE_DAYS
-
-    items, changes = {}, []
-    for key, entries in series.items():
-        if not entries:
-            continue
-        last = entries[-1]
-        items[key] = {"price": last.get("price"), "change_pct": last.get("change_pct")}
-        if last.get("change_pct") is not None:
-            changes.append(last["change_pct"])
-
-    spot_series = spot_history.get("series", {})
-    ratios = []
-    for spot_key, c_key in DIE_PAIRS:
-        sp = spot_series.get(spot_key, [])
-        cp = series.get(c_key, [])
-        if not sp or not cp or not cp[-1].get("price"):
-            continue
-        ratios.append(
-            {
-                "pair": f"{spot_key} ÷ {c_key}",
-                "spot": sp[-1]["price"],
-                "contract": cp[-1]["price"],
-                "ratio": round(sp[-1]["price"] / cp[-1]["price"], 3),
-                "spot_date": sp[-1].get("date"),
-            }
-        )
-
-    return {
-        "as_of": today,
-        "vintage": vintage,
-        "vintage_span_days": span,
-        "vintage_stalled": stalled,
-        "period_change_median_pct": (
-            round(sorted(changes)[len(changes) // 2], 2) if changes else None
-        ),
-        "items": items,
-        "die_ratios": ratios,
-        "scored": False,
-        "note": (
-            "觀測不評分。期別價非日價，同期別內每日相同；期別變動%為 TrendForce 自報。"
-            "die_ratios 為同口徑顆粒比值，累積 ≥60 個交易日後才具備重新校準 s1b 門檻的樣本。"
-        ),
-    }
-
-
 def score_signal_1b(spot_history, contract_history):
     """DDR5 spot vs contract ratio.
     spot > contract = demand tight = low score (bullish/early).
@@ -192,20 +122,10 @@ def score_signal_1b(spot_history, contract_history):
     2026-08-05 停用：TrendForce 的 dram_spot 與 dram_contract 已回傳同一份頁面，
     兩檔歷史 56 個重疊日期價格完全相同，比值恆為 1.00。這不是弱訊號，是沒有量測。
     回傳 None 讓上層排除並重新正規化權重，不要填中性值假裝測過。
-
-    ★2026-08-19 覆核（真合約表已於 8/10 起獨立累積，仍維持停用）——三個理由，
-      任一條成立就不該給分，目前三條全成立：
-      ① 真合約表沒有 DDR5 顆粒，只有 DDR5 8GB SO-DIMM 模組。模組價含 PCB/SPD/組裝，
-         與顆粒現貨相除得到的不是供需鬆緊，是模組加工價差。
-      ② 改用同口徑的 DDR4 顆粒對（spot 89.4 / contract 42.0）比值 2.13，
-         整個落在門檻表（0.90~1.10）之外 → 恆判 green 2.0＝假確認，不是量測。
-      ③ 合約價是半月報價、期別停在 2H Jun（vintage_log 追蹤中）。分母幾週不動，
-         日頻比值的變動 100% 來自分子 spot → 與 s1a 共線，等於同一件事投兩票。
-      解除條件：期別恢復前進（③解）＋累積 ≥60 個交易日的比值分布可重新校準門檻（②解）。
-      在那之前 spot/contract 只做「觀測不評分」，見 main() 的 contract_watch。
+    找到能分離現貨與合約的來源後再解除。
     """
     if contract_history.get("data_integrity", {}).get("duplicate_of_spot"):
-        return None, "停用：真合約表無 DDR5 顆粒、DDR4 比值 2.13 出門檻表、期別半月不動與 s1a 共線"
+        return None, "來源已合併：contract 頁與 spot 同源，比值恆為 1.00，訊號停用"
 
     spot_key = "DDR5 16Gb (2Gx8) 4800/5600"
     spot_series = spot_history.get("series", {}).get(spot_key, [])
@@ -360,14 +280,7 @@ def score_signal_1_composite(spot_history, contract_history, manual_1c=None):
 def score_signal_2_auto(contract_history):
     """Auto-computed contract QoQ. High QoQ (bullish) = low score.
     Note: auto data is daily snapshot; manual assessment preferred for V3.
-
-    ★2026-08-19 加閘門：contract_history.json 自 8/05 起裝的其實是現貨模組價
-    （dram_contract 與 dram_spot 同頁）。手填 s2 一旦被清空就會掉進這個 auto，
-    把現貨 QoQ 當合約 QoQ 報出來——分數照樣是綠的，沒有人會發現。
-    來源不對就不算，讓 s2 走「no data」而不是走一個錯的數字。
     """
-    if contract_history.get("data_integrity", {}).get("duplicate_of_spot"):
-        return None, "來源無效：contract 檔實為現貨，不以現貨代算合約 QoQ"
     series = contract_history.get("series", {})
     ddr5_key = next((k for k in series if "DDR5 16Gb" in k), None)
     if not ddr5_key or len(series[ddr5_key]) < 4:
@@ -668,7 +581,6 @@ def main():
 
     spot_history = load_json(DATA_DIR / "spot_history.json", {"series": {}})
     contract_history = load_json(DATA_DIR / "contract_history.json", {"series": {}})
-    contract_real = load_json(DATA_DIR / "contract_real_history.json", {"series": {}})
     micron_gross = load_json(DATA_DIR / "micron_gross.json", {"entries": []})
     manual = load_json(DATA_DIR / "manual_inputs.json", {})
 
@@ -695,10 +607,7 @@ def main():
     s3 = manual.get("s3", {})
     if contract_history.get("data_integrity", {}).get("duplicate_of_spot"):
         s3_score = None
-        s3_detail = (
-            "停用：真合約表已在累積但配對不成立（無 DDR5 顆粒／DDR4 比值 2.13 出門檻表／"
-            "期別半月不動與 s1a 共線）。改以 contract_watch 觀測不評分，理由詳 score_signal_1b"
-        )
+        s3_detail = "來源已合併：contract 頁與 spot 同源，無法計算比值，訊號停用"
     else:
         s3_score = s3.get("score", 5.0)
         s3_detail = f"[manual] {s3.get('note', '')}"
@@ -798,24 +707,11 @@ def main():
     # 喊「我很久沒被餵資料了」，看的人就會把僵化誤讀成穩定。這裡讓它自己承認。
     STALE_WARN_DAYS, STALE_RED_DAYS = 30, 60
     stale = []
-    # 2026-08-19 補兩個漏檢（8/17 新鮮度權重那段自己標出來的盲點，當時只寫在註解沒修）：
-    #   ① s4 完全不在這張清單裡，而它是 0.20＝單一最大權重。4a~4f 現已補 updated 戳記，
-    #      取最舊的一個當 s4 的年齡（保守）。
-    #   ② 只檢查手填，沒檢查自動源。s6a 的 micron_gross 停在 5/28 也照樣不會叫。
-    #      自動源「抓不到新資料」與手填「沒去更新」，對讀分數的人是同一件事。
-    s4_stamps = [
-        v.get("updated")
-        for v in manual.get("s4", {}).values()
-        if isinstance(v, dict) and v.get("updated")
-    ]
-    micron_dates = [e.get("date") for e in micron_gross.get("entries", []) if e.get("date")]
     for sig_key, entry in (
         ("s1c", manual.get("s1_sub", {}).get("1c", {})),
         ("s2", manual.get("s2", {})),
         ("s3", manual.get("s3", {})),
-        ("s4", {"updated": min(s4_stamps)} if s4_stamps else {}),
         ("s5", manual.get("s5", {})),
-        ("s6a(auto:micron)", {"updated": max(micron_dates)} if micron_dates else {}),
         ("s6b", manual.get("s6_sub", {}).get("6b", {})),
         ("s7", manual.get("s7", {})),
         ("s8a", manual.get("s8", {}).get("8a", {})),
@@ -841,7 +737,7 @@ def main():
         alerts.append(
             {
                 "level": lvl,
-                "msg": f"訊號過期：{len(stale)} 個逾 {STALE_WARN_DAYS} 天未更新 → {names}（含自動源）。分數可能沒有反映最新事件。",
+                "msg": f"手填訊號過期：{len(stale)} 個逾 {STALE_WARN_DAYS} 天未更新 → {names}。分數可能沒有反映最新事件。",
             }
         )
 
@@ -960,20 +856,6 @@ def main():
             }
         )
 
-    contract_watch = build_contract_watch(spot_history, contract_real, today)
-    if contract_watch and contract_watch["vintage_stalled"]:
-        alerts.append(
-            {
-                "level": "yellow",
-                "msg": (
-                    f"合約價期別停滯：仍是 {contract_watch['vintage']}，"
-                    f"已 {contract_watch['vintage_span_days']} 天未前進"
-                    f"（半月報價正常最多約 16 天）。"
-                    "以合約價為分母的任何比值，變動將全部來自現貨端。"
-                ),
-            }
-        )
-
     signals_out = {
         "updated": datetime.now().isoformat(),
         "date": today,
@@ -988,7 +870,6 @@ def main():
         "effective_weight": round(eff_w, 3),
         "freshness": freshness,
         "events": manual.get("events", []),
-        "contract_watch": contract_watch,
         "signals": signals_detail,
     }
     save_json(DATA_DIR / "signals.json", signals_out)
@@ -1047,18 +928,6 @@ def main():
             else f"{v['age_days']}天前（{v['as_of']}）"
         )
         print(f"      {k} w={v['weight']:.0%} {v['source']:<11} {age}")
-    if contract_watch:
-        cw = contract_watch
-        med = cw["period_change_median_pct"]
-        print(
-            f"  [合約價觀測·不評分] 期別 {cw['vintage']}（已 {cw['vintage_span_days']} 天）"
-            + (f"｜期別變動中位數 {med:+.2f}%" if med is not None else "｜期別變動 n/a")
-        )
-        for r in cw["die_ratios"]:
-            print(
-                f"      {r['pair']}：{r['spot']} / {r['contract']} = {r['ratio']:.2f}"
-                f"（門檻表 0.90~1.10 之外，故不評分）"
-            )
     if alerts:
         for a in alerts:
             print(f"  [{a['level'].upper()}] {a['msg']}")

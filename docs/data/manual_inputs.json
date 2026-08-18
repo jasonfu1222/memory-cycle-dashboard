@@ -23,32 +23,38 @@
     "4a": {
       "score": 3.0,
       "status": "green",
-      "note": "MSFT/AMZN/GOOG/META 全部上修 capex"
+      "note": "MSFT/AMZN/GOOG/META 全部上修 capex",
+      "updated": "2026-07-31"
     },
     "4b": {
       "score": 3.0,
       "status": "green",
-      "note": "Google Cloud +63%、AWS +28%、Azure +40%"
+      "note": "Google Cloud +63%、AWS +28%、Azure +40%",
+      "updated": "2026-07-31"
     },
     "4c": {
       "score": 3.0,
       "status": "green",
-      "note": "Google backlog QoQ 翻倍 vs capex +4-8%，backlog 跑贏"
+      "note": "Google backlog QoQ 翻倍 vs capex +4-8%，backlog 跑贏",
+      "updated": "2026-07-31"
     },
     "4d": {
       "score": 5.0,
       "status": "yellow",
-      "note": "Meta -6%、MSFT -2.5%，單一公司，未到觸發條件"
+      "note": "Meta -6%、MSFT -2.5%，單一公司，未到觸發條件",
+      "updated": "2026-07-31"
     },
     "4e": {
       "score": 3.0,
       "status": "green",
-      "note": "Alphabet CFO 表態 2027 顯著增加，街上預估破 $1T"
+      "note": "Alphabet CFO 表態 2027 顯著增加，街上預估破 $1T",
+      "updated": "2026-07-31"
     },
     "4f": {
       "score": 3.0,
       "status": "green",
-      "note": "NVDA $119B supply commitments，鎖定產能到明年 → demand floor 最前瞻訊號"
+      "note": "NVDA $119B supply commitments，鎖定產能到明年 → demand floor 最前瞻訊號",
+      "updated": "2026-07-31"
     }
   },
   "s5": {
@@ -162,6 +168,7 @@
   ],
   "_update_log": [
     "2026-05-27 V3 上線首次填寫",
-    "2026-07-31 全面更新：分數自 06-04 起卡 3.2 共 40 個交易日，期間 Micron Q3(6/24)、hynix Q2(7/29)、三星 Q2(7/30) 全部開牌過而未進分數。"
+    "2026-07-31 全面更新：分數自 06-04 起卡 3.2 共 40 個交易日，期間 Micron Q3(6/24)、hynix Q2(7/29)、三星 Q2(7/30) 全部開牌過而未進分數。",
+    "2026-08-19 s4 補 updated 戳記＝2026-07-31（4a~4f 共 6 項）。★這是推定不是實測：依據 _last_updated 與 07-31「全面更新」紀錄，且 4b「Google Cloud +63%」、4d「Meta -6%、MSFT -2.5%」引用的是 2026Q2 財報季（7 月下旬）數據，與該日一致。若日後查出 s4 實際更早定稿，往前改不要往後改。同時 calc_score 的過期偵測已把 s4 與 s6a 自動源納入（原本兩者都不會叫）。"
   ]
 }
