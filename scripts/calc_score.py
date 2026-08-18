@@ -821,6 +821,10 @@ def main():
         ("s8a", manual.get("s8", {}).get("8a", {})),
         ("s9", manual.get("s9", {})),
     ):
+        # 已被排除的訊號（如停用中的 s3）不參與過期告警：它的手填值根本沒進分數，
+        # 再喊「過期」只是製造每天都在的噪音，會稀釋真正該看的那幾條。
+        if sig_key.split("(")[0] in excluded_signals:
+            continue
         stamp = entry.get("updated") or manual.get("_last_updated")
         if not stamp:
             continue
