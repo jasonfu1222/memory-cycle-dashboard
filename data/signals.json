@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-19T03:22:07.455104",
+  "updated": "2026-08-19T21:53:08.787349",
   "date": "2026-08-19",
   "methodology": "V3",
   "cycle_score": 3.32,
@@ -185,17 +185,17 @@
     "die_ratios": [
       {
         "pair": "DDR4 16Gb (2Gx8) 3200 ÷ DDR4 16Gb 2Gx8",
-        "spot": 89.427,
+        "spot": 90.098,
         "contract": 42.0,
-        "ratio": 2.129,
-        "spot_date": "2026-08-18"
+        "ratio": 2.145,
+        "spot_date": "2026-08-19"
       },
       {
         "pair": "DDR4 8Gb (1Gx8) 3200 ÷ DDR4 8Gb 1Gx8",
-        "spot": 42.895,
+        "spot": 43.073,
         "contract": 21.0,
-        "ratio": 2.043,
-        "spot_date": "2026-08-18"
+        "ratio": 2.051,
+        "spot_date": "2026-08-19"
       }
     ],
     "scored": false,
@@ -209,7 +209,7 @@
       "sub": {
         "1a": {
           "score": 1.0,
-          "detail": "DDR5 $52.7 | >$52.7 5MA ↑ | >$51.7 20MA ↑ | golden cross"
+          "detail": "DDR5 $53.3 | >$52.8 5MA ↑ | >$51.8 20MA ↑ | golden cross | +1.0%"
         },
         "1b": {
           "score": null,
