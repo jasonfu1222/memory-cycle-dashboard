@@ -323,7 +323,7 @@
       }
     ]
   },
-  "updated": "2026-08-21T00:47:42.675346",
+  "updated": "2026-08-21T23:02:57.557951",
   "source_heading": "DRAM Contract Price (2H Jun)",
   "price_column": "Session Average",
   "note": "真・DRAM 合約價（TrendForce 頁內獨立表，半月報價）。★這是「期別價」不是日價：同一期別內每天抓到的數字必然相同，序列看起來平不等於市場沒動，要看 vintage 有沒有前進。顆粒項（DDR4 16Gb 2Gx8 等）與現貨同口徑可比；模組項（DDR5 8GB SO-DIMM 等）含 PCB/SPD 非純顆粒，不可與顆粒現貨相除。未接入 s1b/s3 評分，理由見 calc_score.score_signal_1b 註解。",

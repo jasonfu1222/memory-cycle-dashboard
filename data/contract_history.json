@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-21T00:47:42.616675",
+  "updated": "2026-08-21T23:02:57.502997",
   "series": {
     "DDR5 16Gb (2Gx8) 4800/5600": [
       {
@@ -106,7 +106,7 @@
       },
       {
         "date": "2026-08-21",
-        "price": 25.4
+        "price": 25.3
       }
     ],
     "DDR4 16Gb (2Gx8) 3200": [
@@ -214,7 +214,7 @@
       },
       {
         "date": "2026-08-21",
-        "price": 11.6
+        "price": 11.8
       }
     ],
     "DDR4 8Gb (1Gx8) 3200": [
@@ -322,7 +322,7 @@
       },
       {
         "date": "2026-08-21",
-        "price": 4.43
+        "price": 4.45
       }
     ],
     "DDR5 8GB SO-DIMM": [
@@ -926,7 +926,7 @@
   "data_integrity": {
     "duplicate_of_spot": true,
     "overlap_keys": 4,
-    "checked_at": "2026-08-21T00:47:42.633978",
+    "checked_at": "2026-08-21T23:02:57.517776",
     "note": "dram_contract URL 與 dram_spot 回傳同一頁；本檔實為現貨表，非合約價"
   }
 }
