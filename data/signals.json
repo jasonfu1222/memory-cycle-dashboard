@@ -1,14 +1,14 @@
 {
-  "updated": "2026-08-25T22:45:55.659755",
-  "date": "2026-08-25",
+  "updated": "2026-08-26T19:36:19.681355",
+  "date": "2026-08-26",
   "methodology": "V3",
-  "cycle_score": 3.32,
+  "cycle_score": 3.69,
   "status_color": "green",
   "status_text": "Mid Cycle — 多數訊號正面，持有，密切監控",
   "alerts": [
     {
       "level": "red",
-      "msg": "訊號過期：1 個逾 30 天未更新 → s6a(auto:micron)(89天)（含自動源）。分數可能沒有反映最新事件。"
+      "msg": "訊號過期：1 個逾 30 天未更新 → s6a(auto:micron)(90天)（含自動源）。分數可能沒有反映最新事件。"
     }
   ],
   "manual_last_updated": "2026-07-31",
@@ -16,7 +16,7 @@
     {
       "signal": "s6a(auto:micron)",
       "updated": "2026-05-28",
-      "age_days": 89
+      "age_days": 90
     }
   ],
   "excluded_signals": [
@@ -24,7 +24,7 @@
   ],
   "effective_weight": 0.88,
   "freshness": {
-    "as_of": "2026-08-25",
+    "as_of": "2026-08-26",
     "effective_weight": 0.88,
     "fresh_weight": 0.78,
     "stale_weight": 0.0,
@@ -37,56 +37,56 @@
         "weight": 0.15,
         "source": "auto+manual",
         "as_of": "2026-08-05",
-        "age_days": 20,
+        "age_days": 21,
         "bucket": "fresh"
       },
       "s2": {
         "weight": 0.15,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 25,
+        "age_days": 26,
         "bucket": "fresh"
       },
       "s4": {
         "weight": 0.2,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 25,
+        "age_days": 26,
         "bucket": "fresh"
       },
       "s5": {
         "weight": 0.1,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 25,
+        "age_days": 26,
         "bucket": "fresh"
       },
       "s6": {
         "weight": 0.1,
         "source": "auto+manual",
         "as_of": "2026-05-28",
-        "age_days": 89,
+        "age_days": 90,
         "bucket": "frozen"
       },
       "s7": {
         "weight": 0.08,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 25,
+        "age_days": 26,
         "bucket": "fresh"
       },
       "s8": {
         "weight": 0.07,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 25,
+        "age_days": 26,
         "bucket": "fresh"
       },
       "s9": {
         "weight": 0.03,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 25,
+        "age_days": 26,
         "bucket": "fresh"
       }
     },
@@ -147,9 +147,9 @@
     }
   ],
   "contract_watch": {
-    "as_of": "2026-08-25",
+    "as_of": "2026-08-26",
     "vintage": "2H Jun",
-    "vintage_span_days": 15,
+    "vintage_span_days": 16,
     "vintage_stalled": false,
     "period_change_median_pct": 5.0,
     "items": {
@@ -185,17 +185,17 @@
     "die_ratios": [
       {
         "pair": "DDR4 16Gb (2Gx8) 3200 ÷ DDR4 16Gb 2Gx8",
-        "spot": 90.561,
+        "spot": 91.049,
         "contract": 42.0,
-        "ratio": 2.156,
-        "spot_date": "2026-08-25"
+        "ratio": 2.168,
+        "spot_date": "2026-08-26"
       },
       {
         "pair": "DDR4 8Gb (1Gx8) 3200 ÷ DDR4 8Gb 1Gx8",
-        "spot": 43.377,
+        "spot": 43.637,
         "contract": 21.0,
-        "ratio": 2.066,
-        "spot_date": "2026-08-25"
+        "ratio": 2.078,
+        "spot_date": "2026-08-26"
       }
     ],
     "scored": false,
@@ -203,13 +203,13 @@
   },
   "signals": {
     "s1": {
-      "score": 2.1,
+      "score": 4.3,
       "label": "Daily 記憶體現貨報價",
-      "detail": "1a=1.0 | 1b=None | 1c=5.0",
+      "detail": "1a=4.0 | 1b=None | 1c=5.0",
       "sub": {
         "1a": {
-          "score": 1.0,
-          "detail": "DDR5 $54.2 | >$53.9 5MA ↑ | >$52.4 20MA ↑ | golden cross"
+          "score": 4.0,
+          "detail": "DDR5 $54.0 | <54.0 5MA ↓ | >$52.6 20MA ↑ | golden cross"
         },
         "1b": {
           "score": null,
