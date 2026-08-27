@@ -1,6 +1,6 @@
 {
-  "updated": "2026-08-26T19:36:19.681355",
-  "date": "2026-08-26",
+  "updated": "2026-08-27T22:13:11.081044",
+  "date": "2026-08-27",
   "methodology": "V3",
   "cycle_score": 3.69,
   "status_color": "green",
@@ -8,7 +8,7 @@
   "alerts": [
     {
       "level": "red",
-      "msg": "訊號過期：1 個逾 30 天未更新 → s6a(auto:micron)(90天)（含自動源）。分數可能沒有反映最新事件。"
+      "msg": "訊號過期：1 個逾 30 天未更新 → s6a(auto:micron)(91天)（含自動源）。分數可能沒有反映最新事件。"
     }
   ],
   "manual_last_updated": "2026-07-31",
@@ -16,7 +16,7 @@
     {
       "signal": "s6a(auto:micron)",
       "updated": "2026-05-28",
-      "age_days": 90
+      "age_days": 91
     }
   ],
   "excluded_signals": [
@@ -24,7 +24,7 @@
   ],
   "effective_weight": 0.88,
   "freshness": {
-    "as_of": "2026-08-26",
+    "as_of": "2026-08-27",
     "effective_weight": 0.88,
     "fresh_weight": 0.78,
     "stale_weight": 0.0,
@@ -37,56 +37,56 @@
         "weight": 0.15,
         "source": "auto+manual",
         "as_of": "2026-08-05",
-        "age_days": 21,
+        "age_days": 22,
         "bucket": "fresh"
       },
       "s2": {
         "weight": 0.15,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 26,
+        "age_days": 27,
         "bucket": "fresh"
       },
       "s4": {
         "weight": 0.2,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 26,
+        "age_days": 27,
         "bucket": "fresh"
       },
       "s5": {
         "weight": 0.1,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 26,
+        "age_days": 27,
         "bucket": "fresh"
       },
       "s6": {
         "weight": 0.1,
         "source": "auto+manual",
         "as_of": "2026-05-28",
-        "age_days": 90,
+        "age_days": 91,
         "bucket": "frozen"
       },
       "s7": {
         "weight": 0.08,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 26,
+        "age_days": 27,
         "bucket": "fresh"
       },
       "s8": {
         "weight": 0.07,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 26,
+        "age_days": 27,
         "bucket": "fresh"
       },
       "s9": {
         "weight": 0.03,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 26,
+        "age_days": 27,
         "bucket": "fresh"
       }
     },
@@ -147,9 +147,9 @@
     }
   ],
   "contract_watch": {
-    "as_of": "2026-08-26",
+    "as_of": "2026-08-27",
     "vintage": "2H Jun",
-    "vintage_span_days": 16,
+    "vintage_span_days": 17,
     "vintage_stalled": false,
     "period_change_median_pct": 5.0,
     "items": {
@@ -188,14 +188,14 @@
         "spot": 91.049,
         "contract": 42.0,
         "ratio": 2.168,
-        "spot_date": "2026-08-26"
+        "spot_date": "2026-08-27"
       },
       {
         "pair": "DDR4 8Gb (1Gx8) 3200 ÷ DDR4 8Gb 1Gx8",
-        "spot": 43.637,
+        "spot": 44.011,
         "contract": 21.0,
-        "ratio": 2.078,
-        "spot_date": "2026-08-26"
+        "ratio": 2.096,
+        "spot_date": "2026-08-27"
       }
     ],
     "scored": false,
@@ -209,7 +209,7 @@
       "sub": {
         "1a": {
           "score": 4.0,
-          "detail": "DDR5 $54.0 | <54.0 5MA ↓ | >$52.6 20MA ↑ | golden cross"
+          "detail": "DDR5 $53.9 | <54.1 5MA ↓ | >$52.7 20MA ↑ | golden cross"
         },
         "1b": {
           "score": null,
