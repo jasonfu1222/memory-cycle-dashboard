@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-31T03:31:17.986758",
+  "updated": "2026-08-31T21:59:55.784036",
   "date": "2026-08-31",
   "methodology": "V3",
   "cycle_score": 3.69,
@@ -187,54 +187,54 @@
   ],
   "contract_watch": {
     "as_of": "2026-08-31",
-    "vintage": "2H Jun",
-    "vintage_span_days": 21,
+    "vintage": "2H Jul",
+    "vintage_span_days": 0,
     "vintage_stalled": false,
-    "period_change_median_pct": 5.0,
+    "period_change_median_pct": 14.29,
     "items": {
       "DDR5 8GB SO-DIMM": {
-        "price": 115.0,
-        "change_pct": 2.68
+        "price": 130.0,
+        "change_pct": 13.04
       },
       "DDR4 16GB SO-DIMM": {
-        "price": 227.0,
-        "change_pct": 0.0
+        "price": 265.0,
+        "change_pct": 16.74
       },
       "DDR4 8GB SO-DIMM": {
-        "price": 119.0,
-        "change_pct": 0.0
+        "price": 139.0,
+        "change_pct": 16.81
       },
       "DDR4 16Gb 2Gx8": {
-        "price": 42.0,
-        "change_pct": 5.0
+        "price": 48.0,
+        "change_pct": 14.29
       },
       "DDR4 8Gb 1Gx8": {
-        "price": 21.0,
-        "change_pct": 5.0
+        "price": 24.0,
+        "change_pct": 14.29
       },
       "DDR4 4Gb 256Mx16": {
-        "price": 13.0,
-        "change_pct": 8.33
+        "price": 14.5,
+        "change_pct": 11.54
       },
       "DDR3 4Gb 256Mx16": {
-        "price": 12.5,
-        "change_pct": 13.64
+        "price": 14.5,
+        "change_pct": 16.0
       }
     },
     "die_ratios": [
       {
         "pair": "DDR4 16Gb (2Gx8) 3200 ÷ DDR4 16Gb 2Gx8",
-        "spot": 91.293,
-        "contract": 42.0,
-        "ratio": 2.174,
-        "spot_date": "2026-08-30"
+        "spot": 91.78,
+        "contract": 48.0,
+        "ratio": 1.912,
+        "spot_date": "2026-08-31"
       },
       {
         "pair": "DDR4 8Gb (1Gx8) 3200 ÷ DDR4 8Gb 1Gx8",
-        "spot": 44.189,
-        "contract": 21.0,
-        "ratio": 2.104,
-        "spot_date": "2026-08-30"
+        "spot": 44.367,
+        "contract": 24.0,
+        "ratio": 1.849,
+        "spot_date": "2026-08-31"
       }
     ],
     "scored": false,
@@ -248,7 +248,7 @@
       "sub": {
         "1a": {
           "score": 4.0,
-          "detail": "DDR5 $53.9 | <54.0 5MA ↓ | >$53.0 20MA ↑ | golden cross"
+          "detail": "DDR5 $53.9 | <53.9 5MA ↓ | >$53.1 20MA ↑ | golden cross"
         },
         "1b": {
           "score": null,
