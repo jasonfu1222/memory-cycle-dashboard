@@ -1,18 +1,14 @@
 {
-  "updated": "2026-08-31T21:59:55.784036",
-  "date": "2026-08-31",
+  "updated": "2026-09-01T21:42:26.292727",
+  "date": "2026-09-01",
   "methodology": "V3",
-  "cycle_score": 3.69,
+  "cycle_score": 3.32,
   "status_color": "green",
   "status_text": "Mid Cycle — 多數訊號正面，持有，密切監控",
   "alerts": [
     {
-      "level": "yellow",
-      "msg": "Signal 1 Yellow：連續 3 天 DDR5 spot 跌破 5MA"
-    },
-    {
       "level": "red",
-      "msg": "訊號過期：8 個逾 30 天未更新 → s6a(auto:micron)(95天), s2(31天), s4(31天), s5(31天), s6b(31天), s7(31天), s8a(31天), s9(31天)（含自動源）。分數可能沒有反映最新事件。"
+      "msg": "訊號過期：8 個逾 30 天未更新 → s6a(auto:micron)(96天), s2(32天), s4(32天), s5(32天), s6b(32天), s7(32天), s8a(32天), s9(32天)（含自動源）。分數可能沒有反映最新事件。"
     }
   ],
   "manual_last_updated": "2026-07-31",
@@ -20,42 +16,42 @@
     {
       "signal": "s2",
       "updated": "2026-07-31",
-      "age_days": 31
+      "age_days": 32
     },
     {
       "signal": "s4",
       "updated": "2026-07-31",
-      "age_days": 31
+      "age_days": 32
     },
     {
       "signal": "s5",
       "updated": "2026-07-31",
-      "age_days": 31
+      "age_days": 32
     },
     {
       "signal": "s6a(auto:micron)",
       "updated": "2026-05-28",
-      "age_days": 95
+      "age_days": 96
     },
     {
       "signal": "s6b",
       "updated": "2026-07-31",
-      "age_days": 31
+      "age_days": 32
     },
     {
       "signal": "s7",
       "updated": "2026-07-31",
-      "age_days": 31
+      "age_days": 32
     },
     {
       "signal": "s8a",
       "updated": "2026-07-31",
-      "age_days": 31
+      "age_days": 32
     },
     {
       "signal": "s9",
       "updated": "2026-07-31",
-      "age_days": 31
+      "age_days": 32
     }
   ],
   "excluded_signals": [
@@ -63,7 +59,7 @@
   ],
   "effective_weight": 0.88,
   "freshness": {
-    "as_of": "2026-08-31",
+    "as_of": "2026-09-01",
     "effective_weight": 0.88,
     "fresh_weight": 0.15,
     "stale_weight": 0.63,
@@ -76,56 +72,56 @@
         "weight": 0.15,
         "source": "auto+manual",
         "as_of": "2026-08-05",
-        "age_days": 26,
+        "age_days": 27,
         "bucket": "fresh"
       },
       "s2": {
         "weight": 0.15,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 31,
+        "age_days": 32,
         "bucket": "stale"
       },
       "s4": {
         "weight": 0.2,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 31,
+        "age_days": 32,
         "bucket": "stale"
       },
       "s5": {
         "weight": 0.1,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 31,
+        "age_days": 32,
         "bucket": "stale"
       },
       "s6": {
         "weight": 0.1,
         "source": "auto+manual",
         "as_of": "2026-05-28",
-        "age_days": 95,
+        "age_days": 96,
         "bucket": "frozen"
       },
       "s7": {
         "weight": 0.08,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 31,
+        "age_days": 32,
         "bucket": "stale"
       },
       "s8": {
         "weight": 0.07,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 31,
+        "age_days": 32,
         "bucket": "stale"
       },
       "s9": {
         "weight": 0.03,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 31,
+        "age_days": 32,
         "bucket": "stale"
       }
     },
@@ -186,9 +182,9 @@
     }
   ],
   "contract_watch": {
-    "as_of": "2026-08-31",
+    "as_of": "2026-09-01",
     "vintage": "2H Jul",
-    "vintage_span_days": 0,
+    "vintage_span_days": 1,
     "vintage_stalled": false,
     "period_change_median_pct": 14.29,
     "items": {
@@ -224,17 +220,17 @@
     "die_ratios": [
       {
         "pair": "DDR4 16Gb (2Gx8) 3200 ÷ DDR4 16Gb 2Gx8",
-        "spot": 91.78,
+        "spot": 92.024,
         "contract": 48.0,
-        "ratio": 1.912,
-        "spot_date": "2026-08-31"
+        "ratio": 1.917,
+        "spot_date": "2026-09-01"
       },
       {
         "pair": "DDR4 8Gb (1Gx8) 3200 ÷ DDR4 8Gb 1Gx8",
-        "spot": 44.367,
+        "spot": 44.544,
         "contract": 24.0,
-        "ratio": 1.849,
-        "spot_date": "2026-08-31"
+        "ratio": 1.856,
+        "spot_date": "2026-09-01"
       }
     ],
     "scored": false,
@@ -242,13 +238,13 @@
   },
   "signals": {
     "s1": {
-      "score": 4.3,
+      "score": 2.1,
       "label": "Daily 記憶體現貨報價",
-      "detail": "1a=4.0 | 1b=None | 1c=5.0",
+      "detail": "1a=1.0 | 1b=None | 1c=5.0",
       "sub": {
         "1a": {
-          "score": 4.0,
-          "detail": "DDR5 $53.9 | <53.9 5MA ↓ | >$53.1 20MA ↑ | golden cross"
+          "score": 1.0,
+          "detail": "DDR5 $54.1 | >$54.0 5MA ↑ | >$53.2 20MA ↑ | golden cross"
         },
         "1b": {
           "score": null,
