@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-01T21:42:26.292727",
-  "date": "2026-09-01",
+  "updated": "2026-09-02T20:25:47.613370",
+  "date": "2026-09-02",
   "methodology": "V3",
   "cycle_score": 3.32,
   "status_color": "green",
@@ -8,7 +8,7 @@
   "alerts": [
     {
       "level": "red",
-      "msg": "訊號過期：8 個逾 30 天未更新 → s6a(auto:micron)(96天), s2(32天), s4(32天), s5(32天), s6b(32天), s7(32天), s8a(32天), s9(32天)（含自動源）。分數可能沒有反映最新事件。"
+      "msg": "訊號過期：8 個逾 30 天未更新 → s6a(auto:micron)(69天), s2(33天), s4(33天), s5(33天), s6b(33天), s7(33天), s8a(33天), s9(33天)（含自動源）。分數可能沒有反映最新事件。"
     }
   ],
   "manual_last_updated": "2026-07-31",
@@ -16,42 +16,42 @@
     {
       "signal": "s2",
       "updated": "2026-07-31",
-      "age_days": 32
+      "age_days": 33
     },
     {
       "signal": "s4",
       "updated": "2026-07-31",
-      "age_days": 32
+      "age_days": 33
     },
     {
       "signal": "s5",
       "updated": "2026-07-31",
-      "age_days": 32
+      "age_days": 33
     },
     {
       "signal": "s6a(auto:micron)",
-      "updated": "2026-05-28",
-      "age_days": 96
+      "updated": "2026-06-25",
+      "age_days": 69
     },
     {
       "signal": "s6b",
       "updated": "2026-07-31",
-      "age_days": 32
+      "age_days": 33
     },
     {
       "signal": "s7",
       "updated": "2026-07-31",
-      "age_days": 32
+      "age_days": 33
     },
     {
       "signal": "s8a",
       "updated": "2026-07-31",
-      "age_days": 32
+      "age_days": 33
     },
     {
       "signal": "s9",
       "updated": "2026-07-31",
-      "age_days": 32
+      "age_days": 33
     }
   ],
   "excluded_signals": [
@@ -59,7 +59,7 @@
   ],
   "effective_weight": 0.88,
   "freshness": {
-    "as_of": "2026-09-01",
+    "as_of": "2026-09-02",
     "effective_weight": 0.88,
     "fresh_weight": 0.15,
     "stale_weight": 0.63,
@@ -72,56 +72,56 @@
         "weight": 0.15,
         "source": "auto+manual",
         "as_of": "2026-08-05",
-        "age_days": 27,
+        "age_days": 28,
         "bucket": "fresh"
       },
       "s2": {
         "weight": 0.15,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 32,
+        "age_days": 33,
         "bucket": "stale"
       },
       "s4": {
         "weight": 0.2,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 32,
+        "age_days": 33,
         "bucket": "stale"
       },
       "s5": {
         "weight": 0.1,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 32,
+        "age_days": 33,
         "bucket": "stale"
       },
       "s6": {
         "weight": 0.1,
         "source": "auto+manual",
-        "as_of": "2026-05-28",
-        "age_days": 96,
+        "as_of": "2026-06-25",
+        "age_days": 69,
         "bucket": "frozen"
       },
       "s7": {
         "weight": 0.08,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 32,
+        "age_days": 33,
         "bucket": "stale"
       },
       "s8": {
         "weight": 0.07,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 32,
+        "age_days": 33,
         "bucket": "stale"
       },
       "s9": {
         "weight": 0.03,
         "source": "manual",
         "as_of": "2026-07-31",
-        "age_days": 32,
+        "age_days": 33,
         "bucket": "stale"
       }
     },
@@ -182,9 +182,9 @@
     }
   ],
   "contract_watch": {
-    "as_of": "2026-09-01",
+    "as_of": "2026-09-02",
     "vintage": "2H Jul",
-    "vintage_span_days": 1,
+    "vintage_span_days": 2,
     "vintage_stalled": false,
     "period_change_median_pct": 14.29,
     "items": {
@@ -220,17 +220,17 @@
     "die_ratios": [
       {
         "pair": "DDR4 16Gb (2Gx8) 3200 ÷ DDR4 16Gb 2Gx8",
-        "spot": 92.024,
+        "spot": 92.649,
         "contract": 48.0,
-        "ratio": 1.917,
-        "spot_date": "2026-09-01"
+        "ratio": 1.93,
+        "spot_date": "2026-09-02"
       },
       {
         "pair": "DDR4 8Gb (1Gx8) 3200 ÷ DDR4 8Gb 1Gx8",
-        "spot": 44.544,
+        "spot": 44.571,
         "contract": 24.0,
-        "ratio": 1.856,
-        "spot_date": "2026-09-01"
+        "ratio": 1.857,
+        "spot_date": "2026-09-02"
       }
     ],
     "scored": false,
@@ -244,7 +244,7 @@
       "sub": {
         "1a": {
           "score": 1.0,
-          "detail": "DDR5 $54.1 | >$54.0 5MA ↑ | >$53.2 20MA ↑ | golden cross"
+          "detail": "DDR5 $54.2 | >$54.0 5MA ↑ | >$53.4 20MA ↑ | golden cross"
         },
         "1b": {
           "score": null,

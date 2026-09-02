@@ -42,7 +42,9 @@ def extract_quarterly(facts, concept):
         if end not in by_date or e["filed"] > by_date[end]["filed"]:
             by_date[end] = e
 
-    return {k: v["val"] for k, v in by_date.items()}
+    # 連 filed 一起回傳：季末日不等於資訊到手日（FY26Q3 季末 5/28、公告 6/24 差 27 天），
+    # 新鮮度要用「什麼時候能知道」而不是「涵蓋到哪天」，否則剛開牌的財報也會被判過期。
+    return {k: {"val": v["val"], "filed": v.get("filed")} for k, v in by_date.items()}
 
 
 def main():
@@ -68,13 +70,16 @@ def main():
 
     margins = []
     for end_date in sorted(set(gross_profit) & set(revenue)):
-        rev = revenue[end_date]
+        rev = revenue[end_date]["val"]
+        gp = gross_profit[end_date]["val"]
         if rev > 0:
-            margin = round(gross_profit[end_date] / rev * 100, 1)
+            margin = round(gp / rev * 100, 1)
             margins.append(
                 {
                     "date": end_date,
-                    "gross_profit": gross_profit[end_date],
+                    "filed": gross_profit[end_date]["filed"]
+                    or revenue[end_date]["filed"],
+                    "gross_profit": gp,
                     "revenue": rev,
                     "margin_pct": margin,
                 }
@@ -88,7 +93,10 @@ def main():
 
     if margins:
         latest = margins[-1]
-        print(f"  Latest: {latest['date']} GM={latest['margin_pct']}%")
+        print(
+            f"  Latest: {latest['date']} GM={latest['margin_pct']}%"
+            f"（公告日 {latest['filed']}）"
+        )
     print(f"Saved {len(margins)} quarters to {MICRON_FILE}")
 
 

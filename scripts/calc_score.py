@@ -127,7 +127,9 @@ DIE_PAIRS = [
     ("DDR4 16Gb (2Gx8) 3200", "DDR4 16Gb 2Gx8"),
     ("DDR4 8Gb (1Gx8) 3200", "DDR4 8Gb 1Gx8"),
 ]
-VINTAGE_STALE_DAYS = 45  # ★與 fetch_contract.VINTAGE_STALE_DAYS 是同一條線，改一邊要改兩邊
+VINTAGE_STALE_DAYS = (
+    45  # ★與 fetch_contract.VINTAGE_STALE_DAYS 是同一條線，改一邊要改兩邊
+)
 
 
 def build_contract_watch(spot_history, contract_real, today):
@@ -205,7 +207,10 @@ def score_signal_1b(spot_history, contract_history):
       在那之前 spot/contract 只做「觀測不評分」，見 main() 的 contract_watch。
     """
     if contract_history.get("data_integrity", {}).get("duplicate_of_spot"):
-        return None, "停用：真合約表無 DDR5 顆粒、DDR4 比值 2.13 出門檻表、期別半月不動與 s1a 共線"
+        return (
+            None,
+            "停用：真合約表無 DDR5 顆粒、DDR4 比值 2.13 出門檻表、期別半月不動與 s1a 共線",
+        )
 
     spot_key = "DDR5 16Gb (2Gx8) 4800/5600"
     spot_series = spot_history.get("series", {}).get(spot_key, [])
@@ -808,7 +813,14 @@ def main():
         for v in manual.get("s4", {}).values()
         if isinstance(v, dict) and v.get("updated")
     ]
-    micron_dates = [e.get("date") for e in micron_gross.get("entries", []) if e.get("date")]
+    # ★2026-09-02 修：原本拿季末日（date）當新鮮度基準，害 FY26Q3 在 6/24 已經開牌、
+    #   數字也已進表的情況下，還被判 96 天過期。季末到公告差約 4 週，且下一份財報未發表前
+    #   本來就沒有新資料可抓——用 filed（SEC 收件日）才是「這份資訊何時到手」。
+    micron_dates = [
+        e.get("filed") or e.get("date")
+        for e in micron_gross.get("entries", [])
+        if e.get("filed") or e.get("date")
+    ]
     for sig_key, entry in (
         ("s1c", manual.get("s1_sub", {}).get("1c", {})),
         ("s2", manual.get("s2", {})),
@@ -876,7 +888,10 @@ def main():
         return _dates(*[v.get("updated") for v in d.values() if isinstance(v, dict)])
 
     micron_last = max(
-        _dates(*[e.get("date") for e in micron_gross.get("entries", [])]), default=None
+        _dates(
+            *[e.get("filed") or e.get("date") for e in micron_gross.get("entries", [])]
+        ),
+        default=None,
     )
     s2_manual = manual.get("s2", {}).get("score") is not None
     parts = {

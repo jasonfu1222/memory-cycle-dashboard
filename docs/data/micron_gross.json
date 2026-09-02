@@ -1,50 +1,58 @@
 {
-  "updated": "2026-09-01T21:42:26.125868",
+  "updated": "2026-09-02T20:25:47.449690",
   "entries": [
     {
       "date": "2024-02-29",
+      "filed": "2025-03-21",
       "gross_profit": 1079000000,
       "revenue": 5824000000,
       "margin_pct": 18.5
     },
     {
       "date": "2024-05-30",
+      "filed": "2025-06-26",
       "gross_profit": 1832000000,
       "revenue": 6811000000,
       "margin_pct": 26.9
     },
     {
       "date": "2024-11-28",
+      "filed": "2025-12-18",
       "gross_profit": 3348000000,
       "revenue": 8709000000,
       "margin_pct": 38.4
     },
     {
       "date": "2025-02-27",
+      "filed": "2026-03-19",
       "gross_profit": 2963000000,
       "revenue": 8053000000,
       "margin_pct": 36.8
     },
     {
       "date": "2025-05-29",
+      "filed": "2026-06-25",
       "gross_profit": 3508000000,
       "revenue": 9301000000,
       "margin_pct": 37.7
     },
     {
       "date": "2025-11-27",
+      "filed": "2025-12-18",
       "gross_profit": 7646000000,
       "revenue": 13643000000,
       "margin_pct": 56.0
     },
     {
       "date": "2026-02-26",
+      "filed": "2026-03-19",
       "gross_profit": 17755000000,
       "revenue": 23860000000,
       "margin_pct": 74.4
     },
     {
       "date": "2026-05-28",
+      "filed": "2026-06-25",
       "gross_profit": 35056000000,
       "revenue": 41456000000,
       "margin_pct": 84.6
