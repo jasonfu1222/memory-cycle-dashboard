@@ -11,6 +11,11 @@
 import sys
 from pathlib import Path
 
+if __name__ != "__main__":
+    raise ImportError(
+        "test_freshness_gate.py 是測試入口腳本，不可 import（會整支重跑）。"
+    )
+
 sys.path.insert(0, str(Path(__file__).parent))
 
 from calc_score import (  # noqa: E402
