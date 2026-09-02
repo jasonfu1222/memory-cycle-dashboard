@@ -168,20 +168,130 @@ def build_contract_watch(spot_history, contract_real, today):
             }
         )
 
+    med = round(sorted(changes)[len(changes) // 2], 2) if changes else None
+
+    # ★2026-09-02 Jason 裁決的過渡措施：s3（現貨÷合約）停用到 11 月中重新校準之前，
+    #   把兩邊的變動率**並排**給人看，不相除、不評分。
+    #   相除需要門檻（門檻正是現在沒有的東西），但「一邊在跌、另一邊還在漲」不需要門檻也看得出來。
+    #   現貨通常領先合約 1~2 個月轉弱，這是儀表板目前唯一還摸得到那條線的地方。
+    spot_key = "DDR5 16Gb (2Gx8) 4800/5600"
+    s = spot_series.get(spot_key, [])
+    spot_chg = None
+    if len(s) >= 21 and s[-21].get("price"):
+        spot_chg = round((s[-1]["price"] - s[-21]["price"]) / s[-21]["price"] * 100, 2)
+    diverging = spot_chg is not None and med is not None and spot_chg < 0 < med
+    # 背離之前還有一個中間狀態：兩邊都還在漲，但現貨的漲幅已經跟不上合約。
+    # 現貨領先合約 1~2 個月，所以「現貨先鈍化」比「現貨轉負」更早出現。
+    # 只判斷有／沒有，不給分——這層本來就是替代觀察不是訊號。
+    spot_lagging = (
+        spot_chg is not None and med is not None and 0 <= spot_chg < med and med > 0
+    )
+
     return {
         "as_of": today,
         "vintage": vintage,
         "vintage_span_days": span,
         "vintage_stalled": stalled,
-        "period_change_median_pct": (
-            round(sorted(changes)[len(changes) // 2], 2) if changes else None
-        ),
+        "period_change_median_pct": med,
+        "spot_vs_contract": {
+            "spot_key": spot_key,
+            "spot_chg_20d_pct": spot_chg,
+            "contract_period_chg_pct": med,
+            "diverging": diverging,
+            "spot_lagging": spot_lagging,
+            "state": (
+                "背離：現貨已轉負、合約仍漲"
+                if diverging
+                else (
+                    "現貨鈍化：兩邊都漲，但現貨漲幅已低於合約"
+                    if spot_lagging
+                    else "同向"
+                )
+            ),
+            "note": (
+                "s3 停用期間的替代觀察：現貨 20 日變動與合約期別變動並排，不相除也不評分。"
+                "現貨通常領先合約 1~2 個月，所以順序是『現貨鈍化 → 現貨轉負 → 合約跟跌』。"
+            ),
+        },
         "items": items,
         "die_ratios": ratios,
         "scored": False,
         "note": (
             "觀測不評分。期別價非日價，同期別內每日相同；期別變動%為 TrendForce 自報。"
             "die_ratios 為同口徑顆粒比值，累積 ≥60 個交易日後才具備重新校準 s1b 門檻的樣本。"
+        ),
+    }
+
+
+# ──────────────────────────────────────────────
+# DDR5/DDR4 比值觀測（不評分）— 2026-09-02
+# ──────────────────────────────────────────────
+# s1c 停用後留下的空位。停用理由不是「品項選錯」而是「分母被供給端人為決策主導」：
+# DDR4 自 2025-10 起比 DDR5 貴，是原廠停產減量的結果，不是需求強弱。
+# 所以現在無論比哪一組，量到的都是 DDR4 退場速度。
+# 這裡把三組口徑同時攤開累積，讓將來重新校準時有得選、也看得出彼此差多少。
+# ★解除條件寫死：樣本要**跨越一次 DDR4 價格轉折**（例如 DDR4 由漲轉跌或反之），
+#   不是「累積夠多天」——現有 297 天全部落在同一種狀態裡，再多天也是同一個特例。
+RATIO_PAIRS = [
+    ("DDR5 16Gb (2Gx8) 4800/5600", "DDR4 16Gb (2Gx8) 3200", "同容量（原程式比的這組）"),
+    (
+        "DDR5 16Gb (2Gx8) 4800/5600",
+        "DDR4 8Gb (1Gx8) 3200",
+        "異容量（舊階梯疑似照這組校準）",
+    ),
+]
+
+
+def build_ratio_watch(spot_history, today, lookback=60):
+    """DDR5/DDR4 比值觀測，回傳現值與區間；資料不足回 None（不填中性值）。"""
+    series = spot_history.get("series", {})
+    rows = []
+    for num_key, den_key, label in RATIO_PAIRS:
+        num, den = series.get(num_key, []), series.get(den_key, [])
+        if not num or not den:
+            continue
+        by_date = {e["date"]: e["price"] for e in den if e.get("price")}
+        pairs = [
+            (e["date"], e["price"] / by_date[e["date"]])
+            for e in num
+            if e.get("price") and by_date.get(e["date"])
+        ]
+        if not pairs:
+            continue
+        window = [r for _, r in pairs[-lookback:]]
+        rows.append(
+            {
+                "pair": f"{num_key} ÷ {den_key}",
+                "label": label,
+                "ratio": round(pairs[-1][1], 3),
+                "as_of": pairs[-1][0],
+                "window_days": len(window),
+                "window_min": round(min(window), 3),
+                "window_max": round(max(window), 3),
+                "n_total": len(pairs),
+            }
+        )
+    if not rows:
+        return None
+
+    # DDR4 自身的方向＝解除條件在等的那件事，一併攤出來
+    ddr4 = series.get("DDR4 16Gb (2Gx8) 3200", [])
+    ddr4_trend = None
+    if len(ddr4) >= 21:
+        now, past = ddr4[-1]["price"], ddr4[-21]["price"]
+        ddr4_trend = {
+            "price": now,
+            "chg_20d_pct": round((now - past) / past * 100, 2),
+            "direction": "上漲" if now > past else ("下跌" if now < past else "持平"),
+        }
+    return {
+        "as_of": today,
+        "scored": False,
+        "rows": rows,
+        "ddr4_trend": ddr4_trend,
+        "release_condition": (
+            "樣本需跨越一次 DDR4 價格轉折（由漲轉跌或由跌轉漲）才具備重新校準門檻的條件；"
+            "只累積天數不算——現有歷史全落在 DDR4 停產稀缺的同一種狀態。"
         ),
     }
 
@@ -255,6 +365,14 @@ def score_signal_1c(spot_history, manual_override=None):
     Manual override takes precedence for qualitative Yellow judgment.
     """
     if manual_override is not None:
+        # ★2026-09-02 Jason 裁決：手填值為 null＝觀測不評分（與 s1b/s3 同一種處理）。
+        #   回 None 讓 S1 複合排除它並重新正規化，不要用一個沒有資訊的 5.0 佔著權重。
+        if manual_override.get("score") is None:
+            return None, (
+                "觀測不評分：DDR4 因停產減量而長期貴於 DDR5，分母被供給端人為決策主導，"
+                "此比值現在量到的是 DDR4 退場速度而非 DDR5 的週期位置。"
+                "序列改由 ratio_watch 累積，樣本跨越一次 DDR4 價格轉折後再定門檻。"
+            )
         return manual_override["score"], manual_override.get("note", "manual")
 
     series = spot_history.get("series", {})
@@ -657,6 +775,11 @@ def build_freshness(manual, auto_stamps, today, excluded_signals):
     for leaf_key, parent, entry in iter_manual_leaves(manual):
         if parent not in collected:
             continue
+        # ★停用中的子項不參與新鮮度（比照被排除的父訊號）：它的分數沒有進總分，
+        #   拿它的日期去影響父訊號的新鮮度只會失真——可能讓父訊號看起來比實際新，
+        #   也可能因為它沒人維護而拖累父訊號。它的待辦另由 disabled_signals 常駐追蹤。
+        if entry.get("scored") is False or entry.get("disabled_since"):
+            continue
         d = _parse_date(entry.get("updated"))
         collected[parent]["sources"].add("manual")
         collected[parent]["leaves"].append(leaf_key)
@@ -966,6 +1089,7 @@ def main():
     contract_real = load_json(DATA_DIR / "contract_real_history.json", {"series": {}})
     micron_gross = load_json(DATA_DIR / "micron_gross.json", {"entries": []})
     manual = load_json(DATA_DIR / "manual_inputs.json", {})
+    supply_expansion = load_json(DATA_DIR / "supply_expansion.json", {"items": []})
 
     # ── Signal 1 (composite: 1a + 1b + 1c) ──
     manual_1c = manual.get("s1_sub", {}).get("1c")
@@ -1204,6 +1328,7 @@ def main():
         disabled.append(
             {
                 "signal": k,
+                "level": "signal",
                 "weight": WEIGHTS_V3.get(k),
                 "since": d.isoformat() if d else None,
                 "days": (date.fromisoformat(today) - d).days if d else None,
@@ -1211,7 +1336,56 @@ def main():
                 or (entry.get("note", "").split("待辦：")[-1] if entry else ""),
             }
         )
+    # ★子項層的停用（如 2026-09-02 起的 s1c）：父訊號還在跑，但這個子項已經不評分。
+    #   不在這裡列出來，它就從看板上完全消失了——那正是剛修掉的「排除即遺忘」。
+    SUB_WEIGHT_TABLES = {
+        "s1": S1_WEIGHTS,
+        "s4": S4_WEIGHTS,
+        "s6": S6_WEIGHTS,
+        "s8": S8_WEIGHTS,
+    }
+    for leaf_key, parent, entry in iter_manual_leaves(manual):
+        if parent in excluded_signals or entry.get("score") is not None:
+            continue
+        d = _parse_date(entry.get("disabled_since")) or _parse_date(
+            entry.get("updated")
+        )
+        sub_w = SUB_WEIGHT_TABLES.get(parent, {}).get(leaf_key[1:])
+        disabled.append(
+            {
+                "signal": leaf_key,
+                "level": "sub",
+                "parent": parent,
+                "weight": (
+                    round(sub_w * WEIGHTS_V3[parent], 4)
+                    if sub_w and parent in WEIGHTS_V3
+                    else None
+                ),
+                "since": d.isoformat() if d else None,
+                "days": (date.fromisoformat(today) - d).days if d else None,
+                "todo": entry.get("todo", ""),
+            }
+        )
 
+    # ★複合訊號的「還有幾個子項在運作」：s1 停掉 1b 與 1c 之後只剩 1a 獨撐 15% 權重，
+    #   分數看起來照常但資訊量只剩三分之一。不標出來，讀的人會以為它還是三腳架。
+    for k, det in signals_detail.items():
+        subs = det.get("sub")
+        if not isinstance(subs, dict):
+            continue
+        keys = [x for x in subs if not x.startswith("_")]
+        live = [
+            x
+            for x in keys
+            if isinstance(subs[x], dict) and subs[x].get("score") is not None
+        ]
+        det["subs_active"], det["subs_total"] = len(live), len(keys)
+        if keys and len(live) < len(keys):
+            det["subs_note"] = f"{len(live)}/{len(keys)} 個子項在運作" + (
+                f"（僅 {live[0]} 獨撐這支訊號的全部權重）" if len(live) == 1 else ""
+            )
+
+    ratio_watch = build_ratio_watch(spot_history, today)
     contract_watch = build_contract_watch(spot_history, contract_real, today)
     if contract_watch and contract_watch["vintage_stalled"]:
         alerts.append(
@@ -1243,6 +1417,8 @@ def main():
         "freshness": freshness,
         "events": manual.get("events", []),
         "contract_watch": contract_watch,
+        "ratio_watch": ratio_watch,
+        "supply_expansion": supply_expansion,
         "signals": signals_detail,
     }
     save_json(DATA_DIR / "signals.json", signals_out)
@@ -1314,11 +1490,16 @@ def main():
             )
         print(f"      {k} w={v['weight']:.0%} {v['source']:<11} {age}")
     for d in disabled:
+        w = f" w={d['weight']:.1%}" if d.get("weight") else ""
+        scope = "訊號" if d.get("level") == "signal" else f"子項於 {d.get('parent')}"
         print(
-            f"  [停用中] {d['signal']} w={d['weight']:.0%}"
+            f"  [停用中·{scope}] {d['signal']}{w}"
             + (f"，已 {d['days']} 天" if d["days"] is not None else "")
             + (f"｜待辦：{d['todo'][:60]}" if d["todo"] else "")
         )
+    for k, det in signals_detail.items():
+        if det.get("subs_note"):
+            print(f"  [資訊量] {k}：{det['subs_note']}")
     if contract_watch:
         cw = contract_watch
         med = cw["period_change_median_pct"]
@@ -1331,6 +1512,45 @@ def main():
                 f"      {r['pair']}：{r['spot']} / {r['contract']} = {r['ratio']:.2f}"
                 f"（門檻表 0.90~1.10 之外，故不評分）"
             )
+        sv = cw.get("spot_vs_contract") or {}
+        if sv.get("spot_chg_20d_pct") is not None:
+            print(
+                f"      [s3 替代觀察] 現貨 20 日 {sv['spot_chg_20d_pct']:+.2f}%"
+                f"　vs　合約期別 "
+                + (
+                    f"{sv['contract_period_chg_pct']:+.2f}%"
+                    if sv.get("contract_period_chg_pct") is not None
+                    else "n/a"
+                )
+                + "　→ "
+                + ("★" if sv.get("diverging") or sv.get("spot_lagging") else "")
+                + str(sv.get("state", ""))
+            )
+
+    if ratio_watch:
+        print("  [DDR5/DDR4 比值觀測·不評分]")
+        for r in ratio_watch["rows"]:
+            print(
+                f"      {r['label']}：{r['ratio']:.3f}"
+                f"（近 {r['window_days']} 日 {r['window_min']:.3f}~{r['window_max']:.3f}，"
+                f"總樣本 {r['n_total']} 日）"
+            )
+        t = ratio_watch.get("ddr4_trend")
+        if t:
+            print(
+                f"      DDR4 16Gb 現價 {t['price']}，20 日 {t['chg_20d_pct']:+.2f}%（{t['direction']}）"
+                "　←解除條件在等這條轉折"
+            )
+
+    sx = supply_expansion.get("items", [])
+    if sx:
+        print(f"  [供給側擴產觀測·不評分] {len(sx)} 筆")
+        for it in sx:
+            if it.get("first_output_est"):
+                print(
+                    f"      {it['company']}｜{it['item']}｜宣布 {it['date']}"
+                    f"｜產出 {it['first_output_est']}"
+                )
     if alerts:
         for a in alerts:
             print(f"  [{a['level'].upper()}] {a['msg']}")

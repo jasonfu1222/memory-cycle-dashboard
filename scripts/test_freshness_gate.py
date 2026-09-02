@@ -143,6 +143,29 @@ del m["s3"]["updated"]
 f = build_freshness(m, {}, TODAY, ["s3"])
 check("排除訊號的無戳記不製造噪音", "s3" not in f["unstamped_items"])
 
+print("\n── 5b. 停用中的子項不參與新鮮度（2026-09-02 s1c 起適用）──")
+m = base_manual()
+m["s1_sub"]["1c"] = {
+    "score": None,
+    "scored": False,
+    "disabled_since": "2026-08-05",
+    "updated": "2026-06-01",  # 很舊，若沒排除會把 s1 拖成過期
+}
+f = build_freshness(
+    m, {"s1": [("s1a(auto)", __import__("datetime").date(2026, 9, 2))]}, TODAY, []
+)
+check(
+    "停用子項不拖累父訊號的新鮮度",
+    f["by_signal"]["s1"]["bucket"] == "fresh",
+    f["by_signal"]["s1"],
+)
+check("停用子項不進過期清單", not any(s["signal"] == "s1c" for s in f["stale_items"]))
+m["s1_sub"]["1c"].pop("updated")
+f = build_freshness(
+    m, {"s1": [("s1a(auto)", __import__("datetime").date(2026, 9, 2))]}, TODAY, []
+)
+check("停用子項沒戳記也不算無戳記噪音", "s1c" not in f["unstamped_items"])
+
 print("\n── 6. 自動源比照辦理 ──")
 from datetime import date  # noqa: E402
 

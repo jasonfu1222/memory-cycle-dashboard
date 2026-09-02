@@ -81,6 +81,31 @@ def main():
         want("等外部事件的項目有顯示", f["awaiting_items"][0]["signal"] in body)
     for d in sig.get("disabled_signals", []):
         want(f"停用中的 {d['signal']} 有顯示（不是靜靜消失）", "停用中" in body)
+    for k, v in (sig.get("signals") or {}).items():
+        if v.get("subs_note"):
+            want(
+                f"{k} 的子項運作比例有顯示（少了子項要看得出來）",
+                v["subs_note"][:12] in body,
+            )
+
+    # 觀測層：不評分不代表不用看見。這三塊都是 2026-09-02 新增的，
+    # 全部只存在 JSON 而不渲染的話，等於又回到「算了但看不到」。
+    sv = (sig.get("contract_watch") or {}).get("spot_vs_contract") or {}
+    if sv.get("spot_chg_20d_pct") is not None:
+        want("s3 替代觀察有顯示（現貨 vs 合約並排）", "s3 替代觀察" in body)
+        want("替代觀察的狀態有顯示", (sv.get("state") or "###")[:6] in body)
+    rw = sig.get("ratio_watch") or {}
+    if rw.get("rows"):
+        want("DDR5/DDR4 比值觀測有顯示", f"{rw['rows'][0]['ratio']:.3f}" in body)
+        want("比值觀測的解除條件有顯示", rw["release_condition"][:12] in body)
+    sx = (sig.get("supply_expansion") or {}).get("items") or []
+    if sx:
+        want("供給側擴產有顯示", "供給側擴產" in body)
+        want(
+            "擴產的實際產出時間有顯示（不是只有宣布金額）",
+            sx[0]["first_output_est"][:6] in body,
+        )
+
     for a in sig.get("alerts", []):
         want(f"告警有顯示：{a['msg'][:14]}…", a["msg"][:14] in body)
     want("沒有 JS 錯誤", not errors, "; ".join(errors[:3]))
