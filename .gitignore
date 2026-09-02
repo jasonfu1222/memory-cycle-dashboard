@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 .env
 docs/reports/
+tools/_render_check.png

@@ -1,133 +1,233 @@
 {
-  "updated": "2026-09-02T20:25:47.613370",
+  "updated": "2026-09-02T21:04:09.341099",
   "date": "2026-09-02",
   "methodology": "V3",
-  "cycle_score": 3.32,
+  "cycle_score": 3.65,
   "status_color": "green",
   "status_text": "Mid Cycle — 多數訊號正面，持有，密切監控",
   "alerts": [
     {
-      "level": "red",
-      "msg": "訊號過期：8 個逾 30 天未更新 → s6a(auto:micron)(69天), s2(33天), s4(33天), s5(33天), s6b(33天), s7(33天), s8a(33天), s9(33天)（含自動源）。分數可能沒有反映最新事件。"
+      "level": "yellow",
+      "msg": "Signal 8 Yellow：中國對手擴產進度出現多個觀察點（CXMT/YMTC IPO）"
+    },
+    {
+      "level": "yellow",
+      "msg": "訊號過期：2 個項目逾 30 天未更新 → s8(32天／2 個子項)（含自動源）。分數可能沒有反映最新事件。"
     }
   ],
-  "manual_last_updated": "2026-07-31",
+  "manual_last_updated": "2026-09-02",
   "stale_signals": [
     {
-      "signal": "s2",
-      "updated": "2026-07-31",
-      "age_days": 33
+      "signal": "s8d",
+      "parent": "s8",
+      "updated": "2026-08-01",
+      "age_days": 32
     },
     {
-      "signal": "s4",
-      "updated": "2026-07-31",
-      "age_days": 33
-    },
-    {
-      "signal": "s5",
-      "updated": "2026-07-31",
-      "age_days": 33
-    },
-    {
-      "signal": "s6a(auto:micron)",
-      "updated": "2026-06-25",
-      "age_days": 69
-    },
-    {
-      "signal": "s6b",
-      "updated": "2026-07-31",
-      "age_days": 33
-    },
-    {
-      "signal": "s7",
-      "updated": "2026-07-31",
-      "age_days": 33
-    },
-    {
-      "signal": "s8a",
-      "updated": "2026-07-31",
-      "age_days": 33
-    },
-    {
-      "signal": "s9",
-      "updated": "2026-07-31",
-      "age_days": 33
+      "signal": "s8e",
+      "parent": "s8",
+      "updated": "2026-08-03",
+      "age_days": 30
     }
   ],
   "excluded_signals": [
     "s3"
   ],
+  "disabled_signals": [
+    {
+      "signal": "s3",
+      "weight": 0.12,
+      "since": "2026-07-31",
+      "days": 33,
+      "todo": "找可分離的 spot 報價源，或把 s3 與 s1b 的 16.5% 權重正式停用重分配（需 Jason 決定）。解除條件①期別恢復前進＝2026-09-02 已達成，②真合約比值累積 ≥60 個交易日＝自 8/10 起算，約 17 個交易日，未達成。"
+    }
+  ],
   "effective_weight": 0.88,
+  "reliability": "ok",
   "freshness": {
     "as_of": "2026-09-02",
     "effective_weight": 0.88,
-    "fresh_weight": 0.15,
-    "stale_weight": 0.63,
-    "frozen_weight": 0.1,
+    "fresh_weight": 0.71,
+    "stale_weight": 0.07,
+    "frozen_weight": 0.0,
     "unstamped_weight": 0.0,
-    "fresh_share_of_effective": 0.17,
+    "awaiting_weight": 0.1,
+    "actionable_weight": 0.78,
+    "fresh_share_of_effective": 0.807,
+    "fresh_share_of_actionable": 0.91,
+    "reliability": "ok",
+    "caveat": "",
     "unstamped_signals": [],
+    "unstamped_items": [],
+    "awaiting_signals": [
+      "s6"
+    ],
+    "awaiting_items": [
+      {
+        "signal": "s6b",
+        "parent": "s6",
+        "next_due": "2026-10-01",
+        "waiting_for": "Micron FQ4 FY26 財報（美東 2026-09-30 盤後，台灣時間 10/01）",
+        "days_to_due": 29
+      },
+      {
+        "signal": "s6c",
+        "parent": "s6",
+        "next_due": "2026-10-01",
+        "waiting_for": "Micron FQ4 FY26 財報揭露的 HBM 營收",
+        "days_to_due": 29
+      },
+      {
+        "signal": "s6a(auto:micron)",
+        "parent": "s6",
+        "next_due": "2026-10-01",
+        "waiting_for": "Micron FQ4 FY26 財報（與 6b 同一場，毛利率序列要等新的 10-Q/10-K）",
+        "days_to_due": 29
+      },
+      {
+        "signal": "s4b",
+        "parent": "s4",
+        "next_due": "2026-11-03",
+        "waiting_for": "Hyperscaler Q3 財報季（Alphabet／MSFT／Meta／AMZN，10 月下旬陸續開牌）",
+        "days_to_due": 62
+      },
+      {
+        "signal": "s4c",
+        "parent": "s4",
+        "next_due": "2026-11-03",
+        "waiting_for": "Hyperscaler Q3 財報季（backlog 與 capex 同時公布）",
+        "days_to_due": 62
+      },
+      {
+        "signal": "s4d",
+        "parent": "s4",
+        "next_due": "2026-11-03",
+        "waiting_for": "Hyperscaler Q3 capex 公告後的股價反應",
+        "days_to_due": 62
+      }
+    ],
+    "overdue_items": [],
+    "stale_items": [
+      {
+        "signal": "s8d",
+        "parent": "s8",
+        "updated": "2026-08-01",
+        "age_days": 32
+      },
+      {
+        "signal": "s8e",
+        "parent": "s8",
+        "updated": "2026-08-03",
+        "age_days": 30
+      }
+    ],
     "by_signal": {
       "s1": {
         "weight": 0.15,
         "source": "auto+manual",
         "as_of": "2026-08-05",
         "age_days": 28,
-        "bucket": "fresh"
+        "bucket": "fresh",
+        "oldest_item": "s1c",
+        "items": [
+          "s1c",
+          "s1a(auto:spot)"
+        ]
       },
       "s2": {
         "weight": 0.15,
         "source": "manual",
-        "as_of": "2026-07-31",
-        "age_days": 33,
-        "bucket": "stale"
+        "as_of": "2026-09-02",
+        "age_days": 0,
+        "bucket": "fresh",
+        "oldest_item": "s2",
+        "items": [
+          "s2"
+        ]
       },
       "s4": {
         "weight": 0.2,
         "source": "manual",
-        "as_of": "2026-07-31",
-        "age_days": 33,
-        "bucket": "stale"
+        "as_of": "2026-08-27",
+        "age_days": 6,
+        "bucket": "fresh",
+        "oldest_item": "s4f",
+        "items": [
+          "s4a",
+          "s4b",
+          "s4c",
+          "s4d",
+          "s4e",
+          "s4f"
+        ]
       },
       "s5": {
         "weight": 0.1,
         "source": "manual",
-        "as_of": "2026-07-31",
-        "age_days": 33,
-        "bucket": "stale"
+        "as_of": "2026-08-10",
+        "age_days": 23,
+        "bucket": "fresh",
+        "oldest_item": "s5",
+        "items": [
+          "s5"
+        ]
       },
       "s6": {
         "weight": 0.1,
         "source": "auto+manual",
-        "as_of": "2026-06-25",
-        "age_days": 69,
-        "bucket": "frozen"
+        "as_of": null,
+        "age_days": null,
+        "bucket": "awaiting",
+        "next_due": "2026-10-01",
+        "items": [
+          "s6b",
+          "s6c",
+          "s6a(auto:micron)"
+        ]
       },
       "s7": {
         "weight": 0.08,
         "source": "manual",
-        "as_of": "2026-07-31",
-        "age_days": 33,
-        "bucket": "stale"
+        "as_of": "2026-09-02",
+        "age_days": 0,
+        "bucket": "fresh",
+        "oldest_item": "s7",
+        "items": [
+          "s7"
+        ]
       },
       "s8": {
         "weight": 0.07,
         "source": "manual",
-        "as_of": "2026-07-31",
-        "age_days": 33,
-        "bucket": "stale"
+        "as_of": "2026-08-01",
+        "age_days": 32,
+        "bucket": "stale",
+        "oldest_item": "s8d",
+        "items": [
+          "s8a",
+          "s8b",
+          "s8c",
+          "s8d",
+          "s8e"
+        ]
       },
       "s9": {
         "weight": 0.03,
         "source": "manual",
-        "as_of": "2026-07-31",
-        "age_days": 33,
-        "bucket": "stale"
+        "as_of": "2026-09-02",
+        "age_days": 0,
+        "bucket": "fresh",
+        "oldest_item": "s9",
+        "items": [
+          "s9"
+        ]
       }
     },
     "thresholds": {
       "warn_days": 30,
-      "red_days": 60
+      "red_days": 60,
+      "reliability_ok": 0.7,
+      "reliability_degraded": 0.4
     }
   },
   "events": [
@@ -143,7 +243,7 @@
       "event": "Hyperscaler Q2 財報季",
       "signal": "4a",
       "status": "done",
-      "note": "已過；s4 六個子項未逐項重驗，仍為 5/27 值 → 下次 capex 修正時補"
+      "note": "已過；2026-09-02 已逐項覆核 s4：4a／4e／4f 更新，4b／4c／4d 無新資料源改掛 next_due 至 Q3 財報季"
     },
     {
       "date": "2026-07-29",
@@ -160,25 +260,60 @@
       "note": "營益 89.5 兆韓元(+1814% YoY)、DS 部門營益 89.2 兆≈集團全部；HBM4 放量、HBM4E 送樣"
     },
     {
+      "date": "2026-08-07",
+      "event": "SK hynix 核准 $38B 新廠投資",
+      "signal": "s9",
+      "status": "done",
+      "note": "宣布當日股價 -5%；8/13 再宣布 $720B 廠網計畫。供給側擴產由傳聞變成已核准資本支出 → s9 由 5.0 上調 5.5"
+    },
+    {
+      "date": "2026-08-10",
+      "event": "Samsung HBM4 良率達 80%（提前四個月）",
+      "signal": "s5",
+      "status": "done",
+      "note": "HBM4E 亦過 70%；SK hynix 同進 80% 區間 → s5 由 4.0 上調 5.5"
+    },
+    {
       "date": "2026-08-15",
       "event": "TrendForce 3Q26 合約價定案（估）",
       "signal": "s2",
-      "lock_before_h": 24,
-      "note": "驗證 +13~18% 是否落地；若下修＝動能見頂再確認"
+      "status": "partial",
+      "note": "★3Q26 **定案值未取得一手來源**（TrendForce 完整報告需付費會員）。已取得的是 6/30 的上修：3Q26 PC DRAM 15-20%、4Q26 PC DRAM 3-8%。s2 已依此更新為 4.0，缺口記在 s2 的 note。"
+    },
+    {
+      "date": "2026-08-24",
+      "event": "Apple 傳採購 CXMT DRAM／YMTC NAND，記憶體股重挫",
+      "signal": "8b",
+      "status": "done",
+      "note": "SNDK -9%／MU -7%／WDC -5%；商務部長 8/14 表態不贊成，傳 9 月川習會後定案 → 8b 由 6.0 上調 7.0"
     },
     {
       "date": "2026-08-27",
-      "event": "NVDA Q2 FY27 財報（估）",
+      "event": "NVDA Q2 FY27 財報",
       "signal": "4f",
+      "status": "done",
+      "note": "供應與產能承諾 $119B → $279B（一季翻倍以上），CFO 明言記憶體漲幅超出預期、明年更高"
+    },
+    {
+      "date": "2026-09-30",
+      "event": "Micron FQ4 FY26 財報（美東盤後，台灣 10/01）",
+      "signal": "6b",
       "lock_before_h": 24,
-      "note": "確認 supply commitments 是否維持 $119B+"
+      "note": "★指引營收約 $50B、非GAAP EPS 約 $31。6b／6c 已掛 next_due=2026-10-01，當天沒補會被判 overdue 紅燈"
     },
     {
       "date": "2026-10-15",
       "event": "4Q26 合約價談判（估）",
       "signal": "s2",
       "lock_before_h": 24,
-      "note": "★辯論定稿的關鍵驗證點：轉負＝價格水準見頂確認"
+      "note": "★辯論定稿的關鍵驗證點：轉負＝價格水準見頂確認（華邦電／SNXX 論點失效線）。同時是 s9 那 0.5 上調的否證點"
+    },
+    {
+      "date": "2026-11-03",
+      "event": "Hyperscaler Q3 財報季（收尾）",
+      "signal": "4b/4c/4d",
+      "lock_before_h": 24,
+      "note": "4b／4c／4d 的 next_due，逾期未補即 overdue 紅燈"
     }
   ],
   "contract_watch": {
@@ -252,16 +387,16 @@
         },
         "1c": {
           "score": 5.0,
-          "detail": "★前提被推翻，此分數目前無資訊量：原記『比值逆轉：5月底 ~2.2x → 7/30 變 0.63』兩個數字都不對。舊值取自 High 欄；回填 297 天正確均價後，DDR5 16Gb ÷ DDR4 16Gb 全期間落在 0.448~0.713（5/27 為 0.679、8/04 為 0.597），從未接近 2.2x，也從未穿越 1.0——DDR4 16Gb 自 2025-10 起就一直比 DDR5 16Gb 貴，根本沒有『逆轉』這個事件。2.2x 疑似是拿 DDR5 16Gb ÷ DDR4 8Gb（實測 1.09~1.98）算的，與程式比對的品項不同。★待 Jason 裁決兩件事：①這訊號要比哪一組品項 ②校準區間重訂。在那之前維持 5.0，且 calc_score 自動路徑已加防呆（比值<1.0 直接回 None，不吐假紅燈）。",
+          "detail": "★前提被推翻，此分數目前無資訊量：原記『比值逆轉：5月底 ~2.2x → 7/30 變 0.63』兩個數字都不對。舊值取自 High 欄；回填 297 天正確均價後，DDR5 16Gb ÷ DDR4 16Gb 全期間落在 0.448~0.713（5/27 為 0.679、8/04 為 0.597），從未接近 2.2x，也從未穿越 1.0——DDR4 16Gb 自 2025-10 起就一直比 DDR5 16Gb 貴，根本沒有『逆轉』這個事件。2.2x 疑似是拿 DDR5 16Gb ÷ DDR4 8Gb（實測 1.09~1.98）算的，與程式比對的品項不同。★待 Jason 裁決兩件事：①這訊號要比哪一組品項 ②校準區間重訂。在那之前維持 5.0，且 calc_score 自動路徑已加防呆（比值<1.0 直接回 None，不吐假紅燈）。★2026-09-02 覆核：仍卡在同兩個問題，刻意不給 next_due——這條是等人不是等事件，依 schema 規則必須繼續喊到裁決為止。",
           "status": "yellow"
         },
         "_note": "已排除 1b，權重在其餘子項間重新正規化"
       }
     },
     "s2": {
-      "score": 3.5,
+      "score": 4.0,
       "label": "DRAM/NAND 月合約價 QoQ",
-      "detail": "[manual] TrendForce 3Q26：傳統 DRAM 合約價 +13~18% QoQ（server +13~18%、PC 上修 8-13%→15-20%、NAND +10~15%）。序列 93-98→58-63→13-18＝漲價動能續降，與 7/15 辯論『動能已見頂』一致。給分依 calc_score S2 auto 階梯（QoQ>10% → 3.5），非主觀。"
+      "detail": "[manual] ★2026-09-02 更新，證據鏈與口徑寫清楚（上一版只寫一個數字）：①TrendForce 6/30 上修 3Q26 PC DRAM 由 8-13% → 15-20%，同時上修 4Q26 PC DRAM 由 0-5% → 3-8% ②7/03、7/09 給 3Q26 server DRAM 13-18% ③8/03 外部分析一致描述 4Q26 為『單位數％』。→ 動能序列（PC 口徑）1Q26 93-98% → 2Q26 58-63% → 3Q26 15-20% → 4Q26 3-8%＝**下一季直接降到單位數**。給分：當期（3Q26）仍在 13-20% 高檔對應階梯 3.5，下一季展望 3-8% 對應階梯 4.5，取中間值 4.0，反映『水準仍高但動能明確降檔』。★缺口誠實標註：4Q26 的 **server DRAM** 一手數字未取得（只有 PC 口徑），最初搜到的『4Q26 整體 8-13%』是搜尋摘要拼接、無一手來源支持，**已捨棄不用**。★下次驗證點＝10 月 4Q26 合約價談判（events 已列），轉負即為華邦電／SNXX 論點失效線觸發。"
     },
     "s3": {
       "score": null,
@@ -275,45 +410,51 @@
         "4a": {
           "score": 3.0,
           "status": "green",
-          "note": "MSFT/AMZN/GOOG/META 全部上修 capex",
-          "updated": "2026-07-31"
+          "updated": "2026-09-02",
+          "note": "capex 修訂方向仍全面向上：四大 2026 合計指引約 $700-725B（2025 約 $410B）；Alphabet 由 $175-185B 上修至 $180-190B，Meta 由 $115-135B 上修至 $125-145B，Amazon 約 $200B。無任何一家下修。"
         },
         "4b": {
           "score": 3.0,
           "status": "green",
-          "note": "Google Cloud +63%、AWS +28%、Azure +40%",
-          "updated": "2026-07-31"
+          "updated": "2026-07-31",
+          "next_due": "2026-11-03",
+          "due_reason": "Hyperscaler Q3 財報季（Alphabet／MSFT／Meta／AMZN，10 月下旬陸續開牌）",
+          "note": "Google Cloud +63%、AWS +28%、Azure +40%（2026Q2 數據）。★2026-09-02 覆核：雲端營收成長率的唯一資料源是季報，Q3 財報季前沒有新數字可填，故掛 next_due 而非假裝更新。"
         },
         "4c": {
           "score": 3.0,
           "status": "green",
-          "note": "Google backlog QoQ 翻倍 vs capex +4-8%，backlog 跑贏",
-          "updated": "2026-07-31"
+          "updated": "2026-07-31",
+          "next_due": "2026-11-03",
+          "due_reason": "Hyperscaler Q3 財報季（backlog 與 capex 同時公布）",
+          "note": "Google backlog QoQ 翻倍 vs capex +4-8%，backlog 跑贏（2026Q2 數據）。同 4b，資料源是季報。"
         },
         "4d": {
           "score": 5.0,
           "status": "yellow",
-          "note": "Meta -6%、MSFT -2.5%，單一公司，未到觸發條件",
-          "updated": "2026-07-31"
+          "updated": "2026-07-31",
+          "next_due": "2026-11-03",
+          "due_reason": "Hyperscaler Q3 capex 公告後的股價反應",
+          "note": "Meta -6%、MSFT -2.5%，單一公司，未到觸發條件。★2026-09-02 覆核：8 月無 hyperscaler capex 公告，故無新反應可量。**但同型事件在供給端出現了**——SK hynix 8/07 核准 $38B 新廠當日股價 -5%，那筆記在 s9 不記這裡（本子項量的是需求端買家的公告反應）。"
         },
         "4e": {
           "score": 3.0,
           "status": "green",
-          "note": "Alphabet CFO 表態 2027 顯著增加，街上預估破 $1T",
-          "updated": "2026-07-31"
+          "updated": "2026-09-02",
+          "note": "2027 capex 指引續強且被外部量化：四大 2027 合計市場預估約 $934.5B（Google $284.8B／AMZN $256.5B／MSFT $207.6B／Meta $185.6B）；Goldman 估 $1.01T（較 2026 估值 $765B +32%）；NVDA CFO 於 8/27 法說引用第三方預估 2027 hyperscale capex 破 $1T。Alphabet CFO 先前已表態 2027 顯著增加。"
         },
         "4f": {
           "score": 3.0,
           "status": "green",
-          "note": "NVDA $119B supply commitments，鎖定產能到明年 → demand floor 最前瞻訊號",
-          "updated": "2026-07-31"
+          "updated": "2026-08-27",
+          "note": "★數字大幅上修：NVDA 供應與產能承諾由 Q1 底 $119B → **Q2 底 $279B**（一季翻倍以上），公司說主要為鎖記憶體。CFO 原話『我們正在經歷記憶體的極端價格環境，漲幅已超出先前預期，明年還會更高』。★這是買方在自己毛利率被吃掉的情況下喊貴（FQ2 75.0% → Q3 指引 74% → Q4 谷底 71~72%），屁股方向與利益不一致，故權重高於原廠說法。★反面同時記住：$279B 承諾＝給原廠的巨額長約＝擴產燃料，短期強化、12~24 個月後是下一輪過剩的種子（該筆記在 s9）。"
         }
       }
     },
     "s5": {
-      "score": 4.0,
+      "score": 5.5,
       "label": "Samsung HBM4 良率進度",
-      "detail": "[manual] 三星 Q2(7/30)：HBM4 已放量、HBM4E 首批樣品出貨給主要客戶；Micron Q3：HBM4 12-high 放量速度為 HBM3E 兩倍、良率優於預期、HBM4 營收已破 $10 億。三家 HBM4 同步推進＝供給端改善（對價格為壓力），由 3.0 上調 4.0。"
+      "detail": "[manual] ★由 4.0 上調 5.5——供給端改善速度超出預期：①Samsung HBM4 良率達 **80%**，較 2 月量產時的 <60% 大幅跳升，且比自訂的『2026 年底達 80%』目標**提前四個月**；長期弱點 TC-NCF 製程已突破 ②Samsung HBM4E 良率亦過 70% ③SK hynix HBM4 良率同樣進入 80% 區間，自述量產良率與品質已接近前代 HBM3E。★三家良率同步跳升＝HBM 供給瓶頸鬆動，對價格是壓力，這是本訊號的定義方向（高分＝供給改善＝週期後段風險升）。★反向平衡：2026 年 HBM4 市佔預估 SK hynix 54%／Samsung 28%／Micron 18%，Samsung 追上會加劇價格競爭，但也代表整體 HBM 供給量體上來。"
     },
     "s6": {
       "score": 2.5,
@@ -326,12 +467,12 @@
         },
         "6b": {
           "score": 2.0,
-          "detail": "Micron Q3 FY26（6/24 已開牌，原卡 pending 5 週）：營收 $41.46B vs 自家指引 $33.5B（超 24%）、非GAAP 毛利率 84.9% 雙創紀錄、Q4 指引 $50B 高於市場 15~22%。命中原定義『超預期』場景 → score 2。",
+          "detail": "Micron Q3 FY26（6/24 已開牌）：營收 $41.46B vs 自家指引 $33.5B（超 24%）、非GAAP 毛利率 84.9% 雙創紀錄、Q4 指引 $50B 高於市場 15~22%。命中原定義『超預期』場景 → score 2。★下一次事件已確認：**FQ4 於 2026-09-30 盤後公布**，指引為營收約 $50B、非GAAP EPS 約 $31，開牌後本項必須當天重評（逾期會被守門判 overdue 紅燈，沒有寬限期）。",
           "status": "done"
         },
         "6c": {
           "score": 3.0,
-          "detail": "HBM4 營收單季已破 $10 億並持續放量，需求續強。",
+          "detail": "HBM4 營收單季已破 $10 億並持續放量，需求續強（FQ3 數據）。下一個數字同樣要等 9/30 開牌。",
           "status": "green"
         }
       }
@@ -339,45 +480,48 @@
     "s7": {
       "score": 3.0,
       "label": "Samsung/SK Hynix 庫存週數",
-      "detail": "[manual] SK hynix 表示 2026 年 HBM/DRAM/NAND 產能 essentially sold out；Meritz 估 2H26 供給僅滿足需求 75-80%，2027 恐降至 60% 區間。維持 green（註：未取得逐週官方『庫存週數』數字，此為供給緊俏的替代證據）。"
+      "detail": "[manual] 維持 3.0（供給緊俏），但**證據品質與反向訊號都要標明**：①正向——多方報導稱三大廠 DRAM+NAND 庫存僅 2-4 週（正常安全水位 8-12 週），SK hynix DRAM 庫存降至約 2 週；Micron／SK hynix／Samsung 的 DRAM 與 HBM 供給已售罄至 2027 全年，明年產能分配談判大致談完；SK hynix 8 月 DRAM 報價環比約 +30%、Samsung 逾 +40%；三大廠逾 80% 先進製程產能配置給 AI 伺服器。②**這些是二手聚合來源，不是原廠揭露的逐週庫存週數**——本訊號自 5/27 以來從未取得一手數字，這個缺口第三次確認仍在。③★反向待查：DIGITIMES 於 2026-09-02 刊出標題『Samsung, SK Hynix inventories surge as valuation reserves fall』（庫存回升、評價準備下降），方向與上述完全相反，**內文在付費牆後未取得，故不列入評分**，但列為下次覆核第一順位——若庫存確實回升，本訊號應直接上調且 s9 時間軸要往前拉。"
     },
     "s8": {
-      "score": 5.7,
+      "score": 6.4,
       "label": "中國對手擴產進度",
       "sub": {
         "8a": {
           "score": 7.5,
           "status": "red",
-          "updated": "2026-07-31",
-          "note": "★CXMT 已完成上市（原記『5/27 上會審核中、結果待定』已過期兩個月）：5/27 過會，2026-07-27 於上交所科創板掛牌，募資 579.2 億人民幣（約 $86 億）＝2010 年農行以來 A股最大 IPO，首日 +466%，市值約 3.3 兆人民幣。取得巨額擴產彈藥，中國擴產威脅明確升級，由 6.0 上調 7.5。"
+          "updated": "2026-09-02",
+          "note": "CXMT 已於 2026-07-27 在上交所科創板掛牌，募資 579.2 億人民幣（約 $86 億）＝2010 年農行以來 A股最大 IPO，首日 +466%。★2026-09-02 更新後續：08-03 傳出正與北京亦莊洽談**第二座 12 吋 DRAM 廠**（早期階段，有地方政府支持）；市場估 2026 年底產能約 350 kwspm，合肥＋北京＋上海全數放量後可達約 420 kwspm＝全球 DRAM 產能約 17%（2025 年約 13%）。維持 7.5：IPO 彈藥已到位、擴產路徑具體化，但先進製程設備取得仍是瓶頸。"
         },
         "8b": {
-          "score": 6.0,
-          "status": "yellow",
-          "note": "Corsair DDR5 採用 CXMT 晶片，Tier 2 客戶擴大"
+          "score": 7.0,
+          "status": "red",
+          "updated": "2026-08-26",
+          "note": "★由 6.0 上調 7.0——客戶層級從 Tier 2 跳到 Tier 1：**Apple 正在測試 CXMT 的 DRAM、並與 YMTC 洽談 NAND**（主要供非美市場），6 月即向美國政府詢問可行性。★但尚未成交且政治阻力明確：7/29 兩黨參議員聯名要求 Apple 放棄；8/14 商務部長 Lutnick 表態『不贊成』；YMTC 自 2022 年在實體清單、CXMT 2025 年進五角大廈清單。★8/24 該消息使記憶體股重挫（SNDK -9%、MU -7%、WDC -5%），8/26 另有報導指川普可能將此當作對中談判籌碼、傳 9 月川習會後才會定案。★**不給 8.5 的理由是還沒成交**；若 Apple 正式下單，本項應直接跳 8.5 並連動 s9 往前拉。原 Tier 2 證據（Corsair DDR5 採用 CXMT 晶片）仍成立。"
         },
         "8c": {
           "score": 6.0,
           "status": "yellow",
-          "updated": "2026-07-31",
-          "note": "YMTC 5/19 已啟動 IPO 輔導備案；2026-07-31 查無後續進展，維持 6.0。"
+          "updated": "2026-09-02",
+          "note": "YMTC 5/19 已啟動 IPO 輔導備案；2026-09-02 再查仍無正式送件或過會進展，維持 6.0。★但需求端有變化：Apple 洽談 NAND 採購（見 8b），若成案將實質改善 YMTC 的上市故事。"
         },
         "8d": {
           "score": 3.0,
           "status": "green",
-          "note": "中國 HBM 仍落後 SK Hynix 約 4 年"
+          "updated": "2026-08-01",
+          "note": "中國 HBM 仍明顯落後（估落後 SK hynix 約 4 年）。★補強證據並補上戳記（本項原本完全沒有 updated，被守門的 fallback 當成 7/31 的新資料整整一個月）：CXMT 的 IPO 招股書中**沒有任何 HBM 項目**，募資用途集中在 DRAM 產線技術升級與前瞻研發。"
         },
         "8e": {
-          "score": 3.0,
-          "status": "green",
-          "note": "CXMT DDR4 產能從 2萬→1萬片/月，無明顯擴產跡象"
+          "score": 7.0,
+          "status": "red",
+          "updated": "2026-08-03",
+          "note": "★由 3.0 大幅上調 7.0——**原記述已被推翻**：舊 note 寫『CXMT DDR4 產能從 2萬→1萬片/月，無明顯擴產跡象』，實際上合肥／上海／北京三地同時建置，總產能規劃翻倍至**每月 60 萬片以上**；2026 年底約 350 kwspm、全數放量約 420 kwspm。★這條是本次補更新裡幅度最大的一項，也是原本最該叫卻叫不出來的一項（本子項與 8b、8d 一樣從來沒有 updated 戳記，永遠不會被判過期）。"
         }
       }
     },
     "s9": {
-      "score": 5.0,
+      "score": 5.5,
       "label": "Cycle Ending 時間軸校準",
-      "detail": "[manual] 業內共識仍為 2027 H2 ± 一季。★新增反向證據待 Jason 裁決是否調低（週期更長＝偏多）：SK hynix CEO 7 月表示資料中心吃掉全球約 7 成記憶體產出的情況恐持續至 2030 後；Meritz 估 2027 供需缺口更大。分數暫不擅改。"
+      "detail": "[manual] ★由 5.0 小幅上調 5.5，理由是**供給側擴產從『傳聞』變成『已核准的資本支出』**，這正是記憶體循環歷來的死因：①SK hynix 2026-08-07 核准 **$38B 新廠投資**，宣布當日股價 -5%（市場自己解讀成播種過剩）②08-13 宣布總額 **$720B** 的記憶體廠網絡計畫 ③CXMT 產能規劃翻倍（見 8e）④NVDA 的 $279B 供應承諾本身就是給原廠的擴產燃料（見 4f）。★反向證據同樣成立，故只上調 0.5 不多給：SK hynix CEO 稱 2027 將是『供給面史上最糟的一年』、客戶需求超過供給的情況恐延續至 2030 之後；Meritz 估 2H26 供給僅滿足需求 75-80%、2027 恐降至 60% 區間。★另記市場已先行反應：Micron／Samsung／SK hynix 於 8 月被拖入技術性熊市（8/18 因利率、8/24 因 Apple-CXMT 消息各殺一波），**股價轉弱與基本面仍緊俏同時存在**。★這 0.5 是我的判斷不是共識，否證條件寫死：若 4Q26 合約價談判（10 月）仍為正、且 Micron FQ4 指引不下修，應調回 5.0。★業內共識時間軸維持 2027 H2 ± 一季。"
     }
   }
 }

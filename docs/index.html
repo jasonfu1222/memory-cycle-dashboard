@@ -131,6 +131,7 @@
           <span class="badge" id="status-badge">—</span>
         </div>
         <div style="margin-top:8px; font-size:0.9rem;" id="status-text"></div>
+        <div style="margin-top:10px;" id="reliability-box"></div>
       </div>
     </div>
   </div>
@@ -390,6 +391,43 @@ async function init() {
     badge.textContent = color === "green" ? "● Green" : color === "yellow" ? "● Yellow" : "● Red";
     badge.className = "badge " + color;
     document.getElementById("status-text").textContent = sig.status_text;
+
+    // 資料可信度（2026-09-02 新增）：分數旁邊必須寫出「這個分數有多新」。
+    // 在此之前 freshness 只印在終端機，看板上只有一個綠色大字＋「可加碼」，
+    // 就算頭頂掛著紅色過期告警，人也只會看結論。
+    const f = sig.freshness || {};
+    const relBox = document.getElementById("reliability-box");
+    if (f.reliability) {
+      const relColor = { ok: "var(--green)", degraded: "var(--yellow)",
+                         unreliable: "var(--red)", overdue: "var(--red)",
+                         unknown: "var(--muted)" }[f.reliability] || "var(--muted)";
+      const relLabel = { ok: "資料新鮮", degraded: "可信度降級",
+                         unreliable: "分數不可用於決策", overdue: "已到期未補",
+                         unknown: "無有效資料" }[f.reliability] || f.reliability;
+      const share = f.fresh_share_of_actionable;
+      const parts = [];
+      parts.push(`<span style="color:${relColor}; font-weight:600;">● ${relLabel}</span>`);
+      if (share !== null && share !== undefined) {
+        parts.push(`可更新權重 ${(f.actionable_weight * 100).toFixed(0)}% 中，`
+                 + `${(share * 100).toFixed(0)}% 是 ${f.thresholds.warn_days} 天內的新資料`);
+      }
+      if (f.awaiting_weight) {
+        const due = (f.awaiting_items || []).map(a => `${a.signal}→${a.next_due}`).join("、");
+        parts.push(`等外部事件 ${(f.awaiting_weight * 100).toFixed(0)}%（${due}）`);
+      }
+      let html = `<div style="font-size:0.78rem; color:var(--muted); line-height:1.7;">`
+               + parts.join(" ｜ ") + `</div>`;
+      if (f.caveat) {
+        html += `<div style="font-size:0.8rem; color:${relColor}; margin-top:6px;">${f.caveat}</div>`;
+      }
+      (sig.disabled_signals || []).forEach(d => {
+        html += `<div style="font-size:0.75rem; color:var(--muted); margin-top:6px;">`
+              + `⏸ 停用中：${d.signal}（權重 ${(d.weight * 100).toFixed(0)}%`
+              + (d.days !== null ? `，已 ${d.days} 天` : "") + `）`
+              + (d.todo ? `　待辦：${d.todo}` : "") + `</div>`;
+      });
+      relBox.innerHTML = html;
+    }
 
     // Weights V3
     const weights = { s1:15, s2:15, s3:12, s4:20, s5:10, s6:10, s7:8, s8:7, s9:3 };

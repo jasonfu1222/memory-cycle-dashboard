@@ -647,50 +647,15 @@ def build_freshness(manual, auto_stamps, today, excluded_signals):
     """
     today_d = date.fromisoformat(today)
     per_signal, stale_items, unstamped_items = {}, [], []
-    awaiting_items, overdue_items = [], []
 
     # 先把葉節點與自動源歸到父訊號底下
-    collected = {
-        k: {"stamps": [], "sources": set(), "leaves": [], "awaiting": []}
-        for k in WEIGHTS_V3
-    }
+    collected = {k: {"stamps": [], "sources": set(), "leaves": []} for k in WEIGHTS_V3}
     for leaf_key, parent, entry in iter_manual_leaves(manual):
         if parent not in collected:
             continue
         d = _parse_date(entry.get("updated"))
         collected[parent]["sources"].add("manual")
         collected[parent]["leaves"].append(leaf_key)
-        # ★2026-09-02：「該來的資料還沒到」與「該更新卻沒更新」不是同一件事。
-        #   6b/6c 要等 Micron 開牌、4b/4c 要等雲端季報——在那之前天天喊過期，
-        #   結果就是所有告警一起被忽略（記憶索引那邊已經踩過這個坑：
-        #   守門天天喊、喊到沒人看）。允許葉節點宣告 next_due 暫緩，但有三條硬規則：
-        #     ① next_due 只能指向外部事件日（財報、公告、開牌），不能是「我下次想更新的日子」；
-        #     ② 過了 next_due 還沒更新 → 直接 overdue 紅燈，沒有 30 天寬限；
-        #     ③ 卡在人（等裁決、等決定）的項目不准用 next_due，那種就是該一直喊。
-        due = _parse_date(entry.get("next_due"))
-        if due and d and today_d < due and d <= due:
-            collected[parent]["awaiting"].append((leaf_key, due))
-            if parent not in excluded_signals:
-                awaiting_items.append(
-                    {
-                        "signal": leaf_key,
-                        "parent": parent,
-                        "next_due": due.isoformat(),
-                        "waiting_for": entry.get("due_reason", ""),
-                        "days_to_due": (due - today_d).days,
-                    }
-                )
-            continue
-        if due and d and d < due <= today_d and parent not in excluded_signals:
-            overdue_items.append(
-                {
-                    "signal": leaf_key,
-                    "parent": parent,
-                    "next_due": due.isoformat(),
-                    "waiting_for": entry.get("due_reason", ""),
-                    "days_overdue": (today_d - due).days,
-                }
-            )
         if d is None:
             # ★沒戳記就是沒戳記：不再 fallback 到 _last_updated
             collected[parent]["stamps"].append((leaf_key, None))
@@ -698,52 +663,18 @@ def build_freshness(manual, auto_stamps, today, excluded_signals):
                 unstamped_items.append(leaf_key)
         else:
             collected[parent]["stamps"].append((leaf_key, d))
-    for parent, rows in (auto_stamps or {}).items():
+    for parent, pairs in (auto_stamps or {}).items():
         if parent not in collected:
             continue
-        for row in rows:
-            # 自動源也可以宣告 next_due：Micron 的毛利率序列停在上一份 10-Q 不是
-            # 「抓取壞掉」，是下一份還沒發表。少了這個，s6a 會從財報隔天開始
-            # 一路喊到下次開牌，把真正壞掉的抓取淹沒在裡面。
-            label, d, due_raw, reason = (list(row) + [None, None, None])[:4]
-            due = _parse_date(due_raw)
+        for label, d in pairs:
             collected[parent]["sources"].add("auto")
             collected[parent]["leaves"].append(label)
-            if due and d and today_d < due and d <= due:
-                collected[parent]["awaiting"].append((label, due))
-                if parent not in excluded_signals:
-                    awaiting_items.append(
-                        {
-                            "signal": label,
-                            "parent": parent,
-                            "next_due": due.isoformat(),
-                            "waiting_for": reason or "",
-                            "days_to_due": (due - today_d).days,
-                        }
-                    )
-                continue
-            if due and d and d < due <= today_d and parent not in excluded_signals:
-                overdue_items.append(
-                    {
-                        "signal": label,
-                        "parent": parent,
-                        "next_due": due.isoformat(),
-                        "waiting_for": reason or "",
-                        "days_overdue": (today_d - due).days,
-                    }
-                )
             collected[parent]["stamps"].append((label, d))
             if d is None and parent not in excluded_signals:
                 unstamped_items.append(label)
 
-    buckets = {
-        "fresh": 0.0,
-        "stale": 0.0,
-        "frozen": 0.0,
-        "unstamped": 0.0,
-        "awaiting": 0.0,
-    }
-    unstamped_signals, awaiting_signals = [], []
+    buckets = {"fresh": 0.0, "stale": 0.0, "frozen": 0.0, "unstamped": 0.0}
+    unstamped_signals = []
     for k, w in WEIGHTS_V3.items():
         if k in excluded_signals:
             continue
@@ -751,21 +682,6 @@ def build_freshness(manual, auto_stamps, today, excluded_signals):
         src = "+".join(sorted(info["sources"])) or "?"
         dated = [(name, d) for name, d in info["stamps"] if d is not None]
         has_undated = any(d is None for _, d in info["stamps"])
-        if not dated and info["awaiting"]:
-            # 整支都在等外部事件（例如 s6 只剩財報要開）＝不是「沒更新」，是「還沒得更新」
-            nxt = min(d for _, d in info["awaiting"])
-            buckets["awaiting"] += w
-            per_signal[k] = {
-                "weight": w,
-                "source": src,
-                "as_of": None,
-                "age_days": None,
-                "bucket": "awaiting",
-                "next_due": nxt.isoformat(),
-                "items": info["leaves"],
-            }
-            awaiting_signals.append(k)
-            continue
         if not dated:
             buckets["unstamped"] += w
             per_signal[k] = {
@@ -812,38 +728,21 @@ def build_freshness(manual, auto_stamps, today, excluded_signals):
                 )
 
     eff_w = sum(w for k, w in WEIGHTS_V3.items() if k not in excluded_signals)
-    # ★可信度的分母是「現在就可以更新的權重」＝有效權重扣掉在等外部事件的部分。
-    #   拿等財報的權重去扣自己的分數，等於因為 Micron 還沒開牌而說儀表板不可信，
-    #   那是兩件事：一件是我沒去更新，一件是世界還沒產生新資料。
-    actionable_w = round(eff_w - buckets["awaiting"], 3)
     fresh_share = round(buckets["fresh"] / eff_w, 3) if eff_w else None
-    fresh_share_actionable = (
-        round(buckets["fresh"] / actionable_w, 3) if actionable_w else None
-    )
-    basis = fresh_share_actionable
-    if basis is None:
-        level, caveat = "unknown", "無可更新的有效權重，分數不成立"
-    elif overdue_items:
-        # 過了宣告的到期日還沒補＝比一般過期更嚴重：那是「說好要看的東西沒去看」
-        names = "、".join(
-            f"{o['signal']}（逾期 {o['days_overdue']} 天）" for o in overdue_items
-        )
-        level, caveat = (
-            "overdue",
-            f"★已宣告到期卻未更新：{names}。這些項目的資料早該有了，分數不得視為最新。",
-        )
-    elif basis >= RELIABILITY_OK:
+    if fresh_share is None:
+        level, caveat = "unknown", "無有效權重，分數不成立"
+    elif fresh_share >= RELIABILITY_OK:
         level, caveat = "ok", ""
-    elif basis >= RELIABILITY_DEGRADED:
+    elif fresh_share >= RELIABILITY_DEGRADED:
         level, caveat = (
             "degraded",
-            f"資料可信度降級：可更新的權重裡只有 {basis:.0%} 是 {STALE_WARN_DAYS} 天內的新資料，"
+            f"資料可信度降級：只有 {fresh_share:.0%} 的有效權重是 {STALE_WARN_DAYS} 天內的新資料，"
             "分數偏向歷史快照，可看方向但不宜當作進出依據。",
         )
     else:
         level, caveat = (
             "unreliable",
-            f"★分數不可用於決策：可更新的權重裡真正新的只佔 {basis:.0%}，"
+            f"★分數不可用於決策：真正新的資料只佔有效權重 {fresh_share:.0%}，"
             "其餘是過期或僵化的手填值。補完 manual 訊號前，這個燈號不代表現在的市況。",
         )
 
@@ -854,20 +753,13 @@ def build_freshness(manual, auto_stamps, today, excluded_signals):
         "stale_weight": round(buckets["stale"], 3),
         "frozen_weight": round(buckets["frozen"], 3),
         "unstamped_weight": round(buckets["unstamped"], 3),
-        "awaiting_weight": round(buckets["awaiting"], 3),
-        "actionable_weight": actionable_w,
         # ★這一格才是「這個分數有多少是真的新資訊」：分母用有效權重不是 1.0，
         #   否則被排除的訊號會被算成「不新鮮」，兩件事會混在一起。
         "fresh_share_of_effective": fresh_share,
-        # 可信度判定用的是這一格（分母再扣掉在等外部事件的權重）
-        "fresh_share_of_actionable": fresh_share_actionable,
         "reliability": level,
         "caveat": caveat,
         "unstamped_signals": unstamped_signals,
         "unstamped_items": sorted(set(unstamped_items)),
-        "awaiting_signals": awaiting_signals,
-        "awaiting_items": sorted(awaiting_items, key=lambda x: x["next_due"]),
-        "overdue_items": sorted(overdue_items, key=lambda x: -x["days_overdue"]),
         "stale_items": sorted(stale_items, key=lambda x: -x["age_days"]),
         "by_signal": per_signal,
         "thresholds": {
@@ -1109,19 +1001,9 @@ def main():
         for e in micron_gross.get("entries", [])
     ]
     micron_dates = [d for d in micron_dates if d]
-    # s6a 的下一份資料與 6b 是同一場財報，直接沿用它宣告的 next_due，
-    # 免得兩邊各寫一個日期然後分岔（這支檔案的老毛病）。
-    micron_due = manual.get("s6_sub", {}).get("6b", {}).get("next_due")
     auto_stamps = {
         "s1": [("s1a(auto:spot)", _last_series_date(spot_history))],
-        "s6": [
-            (
-                "s6a(auto:micron)",
-                max(micron_dates) if micron_dates else None,
-                micron_due,
-                "Micron FQ4 FY26 財報（與 6b 同一場，毛利率序列要等新的 10-Q/10-K）",
-            )
-        ],
+        "s6": [("s6a(auto:micron)", max(micron_dates) if micron_dates else None)],
     }
     if manual.get("s2", {}).get("score") is None:
         auto_stamps["s2"] = [("s2(auto:contract)", _last_series_date(contract_history))]
@@ -1149,66 +1031,121 @@ def main():
             }
         )
 
-    if freshness["overdue_items"]:
-        names = "、".join(
-            f"{o['signal']}（{o['next_due']} 到期，已逾 {o['days_overdue']} 天"
-            + (f"｜等的是：{o['waiting_for']}" if o["waiting_for"] else "")
-            + "）"
-            for o in freshness["overdue_items"]
-        )
-        alerts.append(
-            {
-                "level": "red",
-                "msg": f"已到期未補：{names}。這是自己宣告過『那天會有資料』的項目，沒有寬限期。",
-            }
-        )
+    # ── 新鮮度權重（2026-08-17 新增，純加輸出、不動評分）──────────
+    # 背景：effective_weight 只回答「多少權重有分數」，回答不了「這些分數有多新」。
+    # 88% 的有效權重裡，可能有一半是兩個月前手填的——看的人會把「有分數」讀成「有資訊」。
+    # 這裡把有效權重按資料新鮮度拆桶。**取每個訊號各成分中最舊的那個**（保守）。
+    # ★兩個既有盲點在這裡才浮出來：
+    #   ①上面的過期偵測清單根本沒有 s4，而它是 0.20＝單一最大權重；
+    #     s4 的 4a~4f 也沒有任何 updated 戳記 → 歸為 unstamped，不當成新的。
+    #   ②只檢查了 s6b（手填），沒檢查 s6a 的自動來源 micron_gross。
+    def _dates(*vals):
+        out = []
+        for v in vals:
+            if not v:
+                continue
+            try:
+                out.append(date.fromisoformat(str(v)[:10]))
+            except ValueError:
+                pass
+        return out
 
-    if freshness["unstamped_items"]:
-        items = "/".join(freshness["unstamped_items"])
-        sig_note = (
-            f"整支無戳記：{'/'.join(freshness['unstamped_signals'])}"
-            f"（合計權重 {freshness['unstamped_weight']:.0%}）。"
-            if freshness["unstamped_signals"]
-            else ""
+    def _series_last(hist):
+        ds = [p.get("date") for s in hist.get("series", {}).values() for p in s[-1:]]
+        return max(_dates(*ds), default=None)
+
+    def _sub_stamps(d):
+        return _dates(*[v.get("updated") for v in d.values() if isinstance(v, dict)])
+
+    micron_last = max(
+        _dates(
+            *[e.get("filed") or e.get("date") for e in micron_gross.get("entries", [])]
+        ),
+        default=None,
+    )
+    s2_manual = manual.get("s2", {}).get("score") is not None
+    parts = {
+        "s1": (
+            _dates(_series_last(spot_history))
+            + _dates(manual.get("s1_sub", {}).get("1c", {}).get("updated")),
+            "auto+manual",
+        ),
+        "s2": (
+            (
+                _dates(manual.get("s2", {}).get("updated"))
+                if s2_manual
+                else _dates(_series_last(contract_history))
+            ),
+            "manual" if s2_manual else "auto",
+        ),
+        "s3": ([], "excluded"),
+        "s4": (_sub_stamps(manual.get("s4", {})), "manual"),
+        "s5": (_dates(manual.get("s5", {}).get("updated")), "manual"),
+        "s6": (
+            _dates(micron_last) + _sub_stamps(manual.get("s6_sub", {})),
+            "auto+manual",
+        ),
+        "s7": (_dates(manual.get("s7", {}).get("updated")), "manual"),
+        "s8": (_sub_stamps(manual.get("s8", {})), "manual"),
+        "s9": (_dates(manual.get("s9", {}).get("updated")), "manual"),
+    }
+    today_d = date.fromisoformat(today)
+    buckets = {"fresh": 0.0, "stale": 0.0, "frozen": 0.0, "unstamped": 0.0}
+    per_signal, unstamped = {}, []
+    for k, w in WEIGHTS_V3.items():
+        if k in excluded_signals:
+            continue
+        stamps, src = parts.get(k, ([], "?"))
+        if not stamps:
+            buckets["unstamped"] += w
+            per_signal[k] = {
+                "weight": w,
+                "source": src,
+                "as_of": None,
+                "age_days": None,
+                "bucket": "unstamped",
+            }
+            unstamped.append(k)
+            continue
+        as_of = min(stamps)  # 最舊成分決定整支訊號的新鮮度
+        age = (today_d - as_of).days
+        b = (
+            "fresh"
+            if age < STALE_WARN_DAYS
+            else ("stale" if age < STALE_RED_DAYS else "frozen")
         )
+        buckets[b] += w
+        per_signal[k] = {
+            "weight": w,
+            "source": src,
+            "as_of": as_of.isoformat(),
+            "age_days": age,
+            "bucket": b,
+        }
+
+    eff_w = sum(w for k, w in WEIGHTS_V3.items() if k not in excluded_signals)
+    freshness = {
+        "as_of": today,
+        "effective_weight": round(eff_w, 3),
+        "fresh_weight": round(buckets["fresh"], 3),
+        "stale_weight": round(buckets["stale"], 3),
+        "frozen_weight": round(buckets["frozen"], 3),
+        "unstamped_weight": round(buckets["unstamped"], 3),
+        # ★這一格才是「這個分數有多少是真的新資訊」：分母用有效權重不是 1.0，
+        #   否則被排除的訊號會被算成「不新鮮」，兩件事會混在一起。
+        "fresh_share_of_effective": (
+            round(buckets["fresh"] / eff_w, 3) if eff_w else None
+        ),
+        "unstamped_signals": unstamped,
+        "by_signal": per_signal,
+        "thresholds": {"warn_days": STALE_WARN_DAYS, "red_days": STALE_RED_DAYS},
+    }
+    if unstamped:
         alerts.append(
             {
                 "level": "yellow",
-                "msg": f"無更新戳記：{items}——過期偵測看不到它們，一律不採信為新資料。{sig_note}",
-            }
-        )
-
-    # ★2026-09-02 新增：守門要有效力，不能只有偵測。
-    # 之前的狀態是「紅色過期告警天天出現，分數照樣輸出 3.32 綠燈、旁邊寫著可加碼」——
-    # 告警與結論各說各話時，人只會看結論。這裡把可信度掛到結論本身（仍不動評分）。
-    if freshness["caveat"]:
-        alerts.append(
-            {
-                "level": "red" if freshness["reliability"] != "degraded" else "yellow",
-                "msg": freshness["caveat"],
-            }
-        )
-        status_text = f"【資料可信度：{freshness['reliability']}】{status_text}"
-
-    # 停用中的訊號：不進告警（會天天吵），改成常駐狀態塊。
-    # 「排除即遺忘」是上一版的另一個洞——s3 停用 33 天，待辦（找可分離現貨源／
-    # 重分配 12% 權重）沒有任何地方會再提起它。
-    disabled = []
-    for k in excluded_signals:
-        entry = manual.get(k, {}) if isinstance(manual.get(k), dict) else {}
-        # ★用 disabled_since 不用 updated：停用天數問的是「這支癱了多久」，
-        #   而 updated 會因為我今天去補了一句 note 就歸零，把積欠洗掉。
-        d = _parse_date(entry.get("disabled_since")) or _parse_date(
-            entry.get("updated")
-        )
-        disabled.append(
-            {
-                "signal": k,
-                "weight": WEIGHTS_V3.get(k),
-                "since": d.isoformat() if d else None,
-                "days": (date.fromisoformat(today) - d).days if d else None,
-                "todo": entry.get("todo")
-                or (entry.get("note", "").split("待辦：")[-1] if entry else ""),
+                "msg": f"無更新戳記：{'/'.join(unstamped)}（合計權重 {buckets['unstamped']:.0%}）"
+                f"——過期偵測看不到它們，新鮮度一律不予採信。",
             }
         )
 
@@ -1237,9 +1174,7 @@ def main():
         "manual_last_updated": manual.get("_last_updated"),
         "stale_signals": stale,
         "excluded_signals": excluded_signals,
-        "disabled_signals": disabled,
-        "effective_weight": freshness["effective_weight"],
-        "reliability": freshness["reliability"],
+        "effective_weight": round(eff_w, 3),
         "freshness": freshness,
         "events": manual.get("events", []),
         "contract_watch": contract_watch,
@@ -1286,39 +1221,21 @@ def main():
         f"  [新鮮度] 有效權重 {f['effective_weight']:.0%} 之中："
         f"新 {f['fresh_weight']:.0%}／過期 {f['stale_weight']:.0%}"
         f"／僵化 {f['frozen_weight']:.0%}／無戳記 {f['unstamped_weight']:.0%}"
-        f"／等外部事件 {f['awaiting_weight']:.0%}"
         + (
-            f"　→ 可更新的 {f['actionable_weight']:.0%} 裡，真正新的佔 {f['fresh_share_of_actionable']:.0%}"
-            if f["fresh_share_of_actionable"] is not None
-            else "　→ 無可更新權重"
+            f"　→ 真正新的只佔 {f['fresh_share_of_effective']:.0%}"
+            if f["fresh_share_of_effective"] is not None
+            else "　→ 無有效權重"
         )
-    )
-    for a in f["awaiting_items"]:
-        print(
-            f"  [等資料] {a['signal']} → {a['next_due']}（還有 {a['days_to_due']} 天）"
-            + (f"｜等的是：{a['waiting_for']}" if a["waiting_for"] else "")
-        )
-    print(
-        f"  [可信度] {f['reliability']}" + (f" — {f['caveat']}" if f["caveat"] else "")
     )
     for k, v in sorted(
         f["by_signal"].items(), key=lambda x: -(x[1]["age_days"] or 9999)
     )[:4]:
-        if v["bucket"] == "awaiting":
-            age = f"等外部事件 → {v.get('next_due')}"
-        elif v["age_days"] is None:
-            age = "無戳記"
-        else:
-            age = (
-                f"{v['age_days']}天前（{v['as_of']}，最舊＝{v.get('oldest_item', k)}）"
-            )
-        print(f"      {k} w={v['weight']:.0%} {v['source']:<11} {age}")
-    for d in disabled:
-        print(
-            f"  [停用中] {d['signal']} w={d['weight']:.0%}"
-            + (f"，已 {d['days']} 天" if d["days"] is not None else "")
-            + (f"｜待辦：{d['todo'][:60]}" if d["todo"] else "")
+        age = (
+            "無戳記"
+            if v["age_days"] is None
+            else f"{v['age_days']}天前（{v['as_of']}）"
         )
+        print(f"      {k} w={v['weight']:.0%} {v['source']:<11} {age}")
     if contract_watch:
         cw = contract_watch
         med = cw["period_change_median_pct"]
