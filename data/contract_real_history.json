@@ -110,6 +110,12 @@
         "price": 130.0,
         "change_pct": 13.04,
         "vintage": "2H Jul"
+      },
+      {
+        "date": "2026-09-09",
+        "price": 130.0,
+        "change_pct": 13.04,
+        "vintage": "2H Jul"
       }
     ],
     "DDR4 16GB SO-DIMM": [
@@ -219,6 +225,12 @@
       },
       {
         "date": "2026-09-08",
+        "price": 265.0,
+        "change_pct": 16.74,
+        "vintage": "2H Jul"
+      },
+      {
+        "date": "2026-09-09",
         "price": 265.0,
         "change_pct": 16.74,
         "vintage": "2H Jul"
@@ -334,6 +346,12 @@
         "price": 139.0,
         "change_pct": 16.81,
         "vintage": "2H Jul"
+      },
+      {
+        "date": "2026-09-09",
+        "price": 139.0,
+        "change_pct": 16.81,
+        "vintage": "2H Jul"
       }
     ],
     "DDR4 16Gb 2Gx8": [
@@ -443,6 +461,12 @@
       },
       {
         "date": "2026-09-08",
+        "price": 48.0,
+        "change_pct": 14.29,
+        "vintage": "2H Jul"
+      },
+      {
+        "date": "2026-09-09",
         "price": 48.0,
         "change_pct": 14.29,
         "vintage": "2H Jul"
@@ -558,6 +582,12 @@
         "price": 24.0,
         "change_pct": 14.29,
         "vintage": "2H Jul"
+      },
+      {
+        "date": "2026-09-09",
+        "price": 24.0,
+        "change_pct": 14.29,
+        "vintage": "2H Jul"
       }
     ],
     "DDR4 4Gb 256Mx16": [
@@ -667,6 +697,12 @@
       },
       {
         "date": "2026-09-08",
+        "price": 14.5,
+        "change_pct": 11.54,
+        "vintage": "2H Jul"
+      },
+      {
+        "date": "2026-09-09",
         "price": 14.5,
         "change_pct": 11.54,
         "vintage": "2H Jul"
@@ -782,10 +818,16 @@
         "price": 14.5,
         "change_pct": 16.0,
         "vintage": "2H Jul"
+      },
+      {
+        "date": "2026-09-09",
+        "price": 14.5,
+        "change_pct": 16.0,
+        "vintage": "2H Jul"
       }
     ]
   },
-  "updated": "2026-09-08T21:44:16.926025",
+  "updated": "2026-09-09T21:39:26.013567",
   "source_heading": "DRAM Contract Price (2H Jul)",
   "price_column": "Session Average",
   "note": "真・DRAM 合約價（TrendForce 頁內獨立表，半月報價）。★這是「期別價」不是日價：同一期別內每天抓到的數字必然相同，序列看起來平不等於市場沒動，要看 vintage 有沒有前進。顆粒項（DDR4 16Gb 2Gx8 等）與現貨同口徑可比；模組項（DDR5 8GB SO-DIMM 等）含 PCB/SPD 非純顆粒，不可與顆粒現貨相除。未接入 s1b/s3 評分，理由見 calc_score.score_signal_1b 註解。",
@@ -800,9 +842,9 @@
     {
       "period": "2H Jul",
       "first_seen": "2026-08-31",
-      "last_seen": "2026-09-08"
+      "last_seen": "2026-09-09"
     }
   ],
   "vintage": "2H Jul",
-  "vintage_span_days": 8
+  "vintage_span_days": 9
 }
