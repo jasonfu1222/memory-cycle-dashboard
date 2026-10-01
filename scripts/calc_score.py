@@ -1243,7 +1243,7 @@ def main():
                 "s6a(auto:micron)",
                 max(micron_dates) if micron_dates else None,
                 micron_due,
-                "Micron FQ4 FY26 財報（與 6b 同一場，毛利率序列要等新的 10-Q/10-K）",
+                "Micron 下一場財報（與 6b 同一場，毛利率序列要等新的 10-Q；10-K 只有全年數，FQ4 單季抓不到）",
             )
         ],
     }
