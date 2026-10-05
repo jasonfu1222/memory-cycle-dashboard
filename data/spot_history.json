@@ -1,12 +1,7 @@
 {
-  "updated": "2026-10-02T21:49:49.571125",
+  "updated": "2026-10-05T22:19:15.066272",
   "series": {
     "DDR5 16Gb (2Gx8) 4800/5600": [
-      {
-        "date": "2025-08-22",
-        "price": 6.05,
-        "change_pct": -0.54
-      },
       {
         "date": "2025-08-25",
         "price": 6.033,
@@ -1941,6 +1936,12 @@
         "price": 58.0,
         "price_high": 69.5,
         "change_pct": 0.12
+      },
+      {
+        "date": "2026-10-05",
+        "price": 58.067,
+        "price_high": 69.8,
+        "change_pct": 0.12
       }
     ],
     "DDR4 16Gb (2Gx8) 3200": [
@@ -3761,6 +3762,12 @@
         "price": 83.588,
         "price_high": 118.0,
         "change_pct": -0.09
+      },
+      {
+        "date": "2026-10-05",
+        "price": 83.588,
+        "price_high": 117.0,
+        "change_pct": 0.0
       }
     ],
     "DDR4 8Gb (1Gx8) 3200": [
@@ -5582,6 +5589,12 @@
         "price": 46.321,
         "price_high": 85.0,
         "change_pct": 0.0
+      },
+      {
+        "date": "2026-10-05",
+        "price": 46.321,
+        "price_high": 85.0,
+        "change_pct": 0.0
       }
     ],
     "GDDR6  8Gb": [
@@ -5842,6 +5855,12 @@
         "price": 11.844,
         "price_high": 18.0,
         "change_pct": 0.0
+      },
+      {
+        "date": "2026-10-05",
+        "price": 12.288,
+        "price_high": 18.0,
+        "change_pct": 3.75
       }
     ]
   },

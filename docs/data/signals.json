@@ -1,8 +1,8 @@
 {
-  "updated": "2026-10-02T21:49:53.297468",
-  "date": "2026-10-02",
+  "updated": "2026-10-05T22:19:19.550055",
+  "date": "2026-10-05",
   "methodology": "V3",
-  "cycle_score": 3.44,
+  "cycle_score": 3.36,
   "status_color": "green",
   "status_text": "【資料可信度：unreliable】Mid Cycle — 多數訊號正面，持有，密切監控",
   "alerts": [
@@ -12,80 +12,74 @@
     },
     {
       "level": "red",
-      "msg": "訊號過期：11 個項目逾 30 天未更新 → s8(62天／5 個子項), s5(53天), s4(36天／3 個子項), s2(30天), s9(30天)（含自動源）。分數可能沒有反映最新事件。"
+      "msg": "訊號過期：10 個項目逾 30 天未更新 → s8(65天／5 個子項), s5(56天), s4(39天／3 個子項), s9(33天)（含自動源）。分數可能沒有反映最新事件。"
     },
     {
       "level": "red",
-      "msg": "★分數不可用於決策：可更新的權重裡真正新的只佔 30%，其餘是過期或僵化的手填值。補完 manual 訊號前，這個燈號不代表現在的市況。"
+      "msg": "★分數不可用於決策：可更新的權重裡真正新的只佔 36%，其餘是過期或僵化的手填值。補完 manual 訊號前，這個燈號不代表現在的市況。"
     }
   ],
-  "manual_last_updated": "2026-10-01",
+  "manual_last_updated": "2026-10-05",
   "stale_signals": [
     {
       "signal": "s8d",
       "parent": "s8",
       "updated": "2026-08-01",
-      "age_days": 62
+      "age_days": 65
     },
     {
       "signal": "s8e",
       "parent": "s8",
       "updated": "2026-08-03",
-      "age_days": 60
+      "age_days": 63
     },
     {
       "signal": "s5",
       "parent": "s5",
       "updated": "2026-08-10",
-      "age_days": 53
+      "age_days": 56
     },
     {
       "signal": "s8b",
       "parent": "s8",
       "updated": "2026-08-26",
-      "age_days": 37
+      "age_days": 40
     },
     {
       "signal": "s4f",
       "parent": "s4",
       "updated": "2026-08-27",
-      "age_days": 36
-    },
-    {
-      "signal": "s2",
-      "parent": "s2",
-      "updated": "2026-09-02",
-      "age_days": 30
+      "age_days": 39
     },
     {
       "signal": "s4a",
       "parent": "s4",
       "updated": "2026-09-02",
-      "age_days": 30
+      "age_days": 33
     },
     {
       "signal": "s4e",
       "parent": "s4",
       "updated": "2026-09-02",
-      "age_days": 30
+      "age_days": 33
     },
     {
       "signal": "s8a",
       "parent": "s8",
       "updated": "2026-09-02",
-      "age_days": 30
+      "age_days": 33
     },
     {
       "signal": "s8c",
       "parent": "s8",
       "updated": "2026-09-02",
-      "age_days": 30
+      "age_days": 33
     },
     {
       "signal": "s9",
       "parent": "s9",
       "updated": "2026-09-02",
-      "age_days": 30
+      "age_days": 33
     }
   ],
   "excluded_signals": [
@@ -97,7 +91,7 @@
       "level": "signal",
       "weight": 0.12,
       "since": "2026-07-31",
-      "days": 63,
+      "days": 66,
       "todo": "★2026-09-02 Jason 已裁決：**維持停用、繼續累積，2026-11-10 重新校準門檻**（trigger memory-dashboard-s3-recalibrate）。解除條件①期別恢復前進＝9/02 已達成，②真合約比值累積 ≥60 個交易日＝自 8/10 起算，9/02 時 17 個。★判定紀律寫死：若那 60 天全落在同一種市況（一路漲、無回檔），那是樣本不夠而不是可以定門檻，寧可再等。過渡期改用 contract_watch.spot_vs_contract 的現貨 vs 合約變動率並排觀察（不相除、不評分）。"
     },
     {
@@ -106,28 +100,29 @@
       "parent": "s1",
       "weight": 0.03,
       "since": "2026-08-05",
-      "days": 58,
+      "days": 61,
       "todo": "累積乾淨的 DDR5/DDR4 比值序列（觀測層 ratio_watch 自 2026-09-02 起每日累積），樣本足夠後才決定：①比哪一組品項 ②門檻區間。★樣本要求＝跨越一次 DDR4 價格轉折，不是只累積天數——現有 297 天全在 DDR4 因停產而稀缺的同一種狀態裡。"
     }
   ],
   "effective_weight": 0.88,
   "reliability": "unreliable",
   "freshness": {
-    "as_of": "2026-10-02",
+    "as_of": "2026-10-05",
     "effective_weight": 0.88,
     "fresh_weight": 0.23,
-    "stale_weight": 0.48,
+    "stale_weight": 0.33,
     "frozen_weight": 0.07,
     "unstamped_weight": 0.0,
-    "awaiting_weight": 0.1,
-    "actionable_weight": 0.78,
+    "awaiting_weight": 0.25,
+    "actionable_weight": 0.63,
     "fresh_share_of_effective": 0.261,
-    "fresh_share_of_actionable": 0.295,
+    "fresh_share_of_actionable": 0.365,
     "reliability": "unreliable",
-    "caveat": "★分數不可用於決策：可更新的權重裡真正新的只佔 30%，其餘是過期或僵化的手填值。補完 manual 訊號前，這個燈號不代表現在的市況。",
+    "caveat": "★分數不可用於決策：可更新的權重裡真正新的只佔 36%，其餘是過期或僵化的手填值。補完 manual 訊號前，這個燈號不代表現在的市況。",
     "unstamped_signals": [],
     "unstamped_items": [],
     "awaiting_signals": [
+      "s2",
       "s6"
     ],
     "awaiting_items": [
@@ -136,42 +131,49 @@
         "parent": "s4",
         "next_due": "2026-11-03",
         "waiting_for": "Hyperscaler Q3 財報季（Alphabet／MSFT／Meta／AMZN，10 月下旬陸續開牌）",
-        "days_to_due": 32
+        "days_to_due": 29
       },
       {
         "signal": "s4c",
         "parent": "s4",
         "next_due": "2026-11-03",
         "waiting_for": "Hyperscaler Q3 財報季（backlog 與 capex 同時公布）",
-        "days_to_due": 32
+        "days_to_due": 29
       },
       {
         "signal": "s4d",
         "parent": "s4",
         "next_due": "2026-11-03",
         "waiting_for": "Hyperscaler Q3 capex 公告後的股價反應",
-        "days_to_due": 32
+        "days_to_due": 29
+      },
+      {
+        "signal": "s2",
+        "parent": "s2",
+        "next_due": "2026-12-15",
+        "waiting_for": "TrendForce 1Q27 合約價預估（慣例 12 月中下旬發布；trigger memory-trendforce-1q27-contract 同日）。12/15 未發布就順延到 12/29。",
+        "days_to_due": 71
       },
       {
         "signal": "s6b",
         "parent": "s6",
         "next_due": "2026-12-17",
         "waiting_for": "Micron FQ1 FY27 財報（★日期為估值＝去年 FQ1 FY26 於 2025-12-17 公布；官方公告後改成正式日）",
-        "days_to_due": 76
+        "days_to_due": 73
       },
       {
         "signal": "s6c",
         "parent": "s6",
         "next_due": "2026-12-17",
         "waiting_for": "Micron FQ1 FY27 財報揭露的 HBM 營收（★日期為估值，同 6b）",
-        "days_to_due": 76
+        "days_to_due": 73
       },
       {
         "signal": "s6a(auto:micron)",
         "parent": "s6",
         "next_due": "2026-12-17",
         "waiting_for": "Micron 下一場財報（與 6b 同一場，毛利率序列要等新的 10-Q；10-K 只有全年數，FQ4 單季抓不到）",
-        "days_to_due": 76
+        "days_to_due": 73
       }
     ],
     "overdue_items": [],
@@ -180,74 +182,68 @@
         "signal": "s8d",
         "parent": "s8",
         "updated": "2026-08-01",
-        "age_days": 62
+        "age_days": 65
       },
       {
         "signal": "s8e",
         "parent": "s8",
         "updated": "2026-08-03",
-        "age_days": 60
+        "age_days": 63
       },
       {
         "signal": "s5",
         "parent": "s5",
         "updated": "2026-08-10",
-        "age_days": 53
+        "age_days": 56
       },
       {
         "signal": "s8b",
         "parent": "s8",
         "updated": "2026-08-26",
-        "age_days": 37
+        "age_days": 40
       },
       {
         "signal": "s4f",
         "parent": "s4",
         "updated": "2026-08-27",
-        "age_days": 36
-      },
-      {
-        "signal": "s2",
-        "parent": "s2",
-        "updated": "2026-09-02",
-        "age_days": 30
+        "age_days": 39
       },
       {
         "signal": "s4a",
         "parent": "s4",
         "updated": "2026-09-02",
-        "age_days": 30
+        "age_days": 33
       },
       {
         "signal": "s4e",
         "parent": "s4",
         "updated": "2026-09-02",
-        "age_days": 30
+        "age_days": 33
       },
       {
         "signal": "s8a",
         "parent": "s8",
         "updated": "2026-09-02",
-        "age_days": 30
+        "age_days": 33
       },
       {
         "signal": "s8c",
         "parent": "s8",
         "updated": "2026-09-02",
-        "age_days": 30
+        "age_days": 33
       },
       {
         "signal": "s9",
         "parent": "s9",
         "updated": "2026-09-02",
-        "age_days": 30
+        "age_days": 33
       }
     ],
     "by_signal": {
       "s1": {
         "weight": 0.15,
         "source": "auto",
-        "as_of": "2026-10-02",
+        "as_of": "2026-10-05",
         "age_days": 0,
         "bucket": "fresh",
         "oldest_item": "s1a(auto:spot)",
@@ -258,10 +254,10 @@
       "s2": {
         "weight": 0.15,
         "source": "manual",
-        "as_of": "2026-09-02",
-        "age_days": 30,
-        "bucket": "stale",
-        "oldest_item": "s2",
+        "as_of": null,
+        "age_days": null,
+        "bucket": "awaiting",
+        "next_due": "2026-12-15",
         "items": [
           "s2"
         ]
@@ -270,7 +266,7 @@
         "weight": 0.2,
         "source": "manual",
         "as_of": "2026-08-27",
-        "age_days": 36,
+        "age_days": 39,
         "bucket": "stale",
         "oldest_item": "s4f",
         "items": [
@@ -286,7 +282,7 @@
         "weight": 0.1,
         "source": "manual",
         "as_of": "2026-08-10",
-        "age_days": 53,
+        "age_days": 56,
         "bucket": "stale",
         "oldest_item": "s5",
         "items": [
@@ -310,7 +306,7 @@
         "weight": 0.08,
         "source": "manual",
         "as_of": "2026-10-01",
-        "age_days": 1,
+        "age_days": 4,
         "bucket": "fresh",
         "oldest_item": "s7",
         "items": [
@@ -321,7 +317,7 @@
         "weight": 0.07,
         "source": "manual",
         "as_of": "2026-08-01",
-        "age_days": 62,
+        "age_days": 65,
         "bucket": "frozen",
         "oldest_item": "s8d",
         "items": [
@@ -336,7 +332,7 @@
         "weight": 0.03,
         "source": "manual",
         "as_of": "2026-09-02",
-        "age_days": 30,
+        "age_days": 33,
         "bucket": "stale",
         "oldest_item": "s9",
         "items": [
@@ -434,7 +430,8 @@
       "event": "4Q26 合約價談判（估）",
       "signal": "s2",
       "lock_before_h": 24,
-      "note": "★辯論定稿的關鍵驗證點：轉負＝價格水準見頂確認（華邦電／SNXX 論點失效線）。同時是 s9 那 0.5 上調的否證點"
+      "note": "★2026-10-05 提前結案：TrendForce 9/30 新聞稿已給 4Q26 預估（conventional DRAM +10~15%、NAND +15~20%），沒有轉負、沒有降到個位數＝華邦電／SNXX 失效線未觸發，s9 那 0.5 上調的否證點也未觸發。s2 由 4.0 改 3.5（理由見 s2.note）。下一個驗證點改掛 s2.next_due 2026-12-15（1Q27 預估）。原註：辯論定稿的關鍵驗證點：轉負＝價格水準見頂確認。",
+      "status": "done"
     },
     {
       "date": "2026-11-03",
@@ -445,14 +442,14 @@
     }
   ],
   "contract_watch": {
-    "as_of": "2026-10-02",
+    "as_of": "2026-10-05",
     "vintage": "2H Aug",
-    "vintage_span_days": 2,
+    "vintage_span_days": 5,
     "vintage_stalled": false,
     "period_change_median_pct": 4.17,
     "spot_vs_contract": {
       "spot_key": "DDR5 16Gb (2Gx8) 4800/5600",
-      "spot_chg_20d_pct": 7.24,
+      "spot_chg_20d_pct": 7.04,
       "contract_period_chg_pct": 4.17,
       "diverging": false,
       "spot_lagging": false,
@@ -495,47 +492,47 @@
         "spot": 83.588,
         "contract": 50.0,
         "ratio": 1.672,
-        "spot_date": "2026-10-02"
+        "spot_date": "2026-10-05"
       },
       {
         "pair": "DDR4 8Gb (1Gx8) 3200 ÷ DDR4 8Gb 1Gx8",
         "spot": 46.321,
         "contract": 25.0,
         "ratio": 1.853,
-        "spot_date": "2026-10-02"
+        "spot_date": "2026-10-05"
       }
     ],
     "scored": false,
     "note": "觀測不評分。期別價非日價，同期別內每日相同；期別變動%為 TrendForce 自報。die_ratios 為同口徑顆粒比值，累積 ≥60 個交易日後才具備重新校準 s1b 門檻的樣本。"
   },
   "ratio_watch": {
-    "as_of": "2026-10-02",
+    "as_of": "2026-10-05",
     "scored": false,
     "rows": [
       {
         "pair": "DDR5 16Gb (2Gx8) 4800/5600 ÷ DDR4 16Gb (2Gx8) 3200",
         "label": "同容量（原程式比的這組）",
-        "ratio": 0.694,
-        "as_of": "2026-10-02",
+        "ratio": 0.695,
+        "as_of": "2026-10-05",
         "window_days": 60,
         "window_min": 0.578,
-        "window_max": 0.694,
-        "n_total": 339
+        "window_max": 0.695,
+        "n_total": 340
       },
       {
         "pair": "DDR5 16Gb (2Gx8) 4800/5600 ÷ DDR4 8Gb (1Gx8) 3200",
         "label": "異容量（舊階梯疑似照這組校準）",
-        "ratio": 1.252,
-        "as_of": "2026-10-02",
+        "ratio": 1.254,
+        "as_of": "2026-10-05",
         "window_days": 60,
         "window_min": 1.195,
-        "window_max": 1.253,
-        "n_total": 339
+        "window_max": 1.254,
+        "n_total": 340
       }
     ],
     "ddr4_trend": {
       "price": 83.588,
-      "chg_20d_pct": -9.17,
+      "chg_20d_pct": -9.78,
       "direction": "下跌"
     },
     "release_condition": "樣本需跨越一次 DDR4 價格轉折（由漲轉跌或由跌轉漲）才具備重新校準門檻的條件；只累積天數不算——現有歷史全落在 DDR4 停產稀缺的同一種狀態。"
@@ -633,7 +630,7 @@
       "sub": {
         "1a": {
           "score": 1.0,
-          "detail": "DDR5 $58.0 | >$57.9 5MA ↑ | >$55.8 20MA ↑ | golden cross"
+          "detail": "DDR5 $58.1 | >$57.9 5MA ↑ | >$56.0 20MA ↑ | golden cross"
         },
         "1b": {
           "score": null,
@@ -651,9 +648,9 @@
       "subs_note": "1/3 個子項在運作（僅 1a 獨撐這支訊號的全部權重）"
     },
     "s2": {
-      "score": 4.0,
+      "score": 3.5,
       "label": "DRAM/NAND 月合約價 QoQ",
-      "detail": "[manual] ★2026-09-02 更新，證據鏈與口徑寫清楚（上一版只寫一個數字）：①TrendForce 6/30 上修 3Q26 PC DRAM 由 8-13% → 15-20%，同時上修 4Q26 PC DRAM 由 0-5% → 3-8% ②7/03、7/09 給 3Q26 server DRAM 13-18% ③8/03 外部分析一致描述 4Q26 為『單位數％』。→ 動能序列（PC 口徑）1Q26 93-98% → 2Q26 58-63% → 3Q26 15-20% → 4Q26 3-8%＝**下一季直接降到單位數**。給分：當期（3Q26）仍在 13-20% 高檔對應階梯 3.5，下一季展望 3-8% 對應階梯 4.5，取中間值 4.0，反映『水準仍高但動能明確降檔』。★缺口誠實標註：4Q26 的 **server DRAM** 一手數字未取得（只有 PC 口徑），最初搜到的『4Q26 整體 8-13%』是搜尋摘要拼接、無一手來源支持，**已捨棄不用**。★下次驗證點＝10 月 4Q26 合約價談判（events 已列），轉負即為華邦電／SNXX 論點失效線觸發。"
+      "detail": "[manual] ★2026-10-05 更新（依 TrendForce 2026-09-30 新聞稿一手：https://www.trendforce.com/presscenter/news/20260930-13258.html）：4Q26 conventional DRAM 合約價季增 **+10~15%**（3Q26 +13~18%）；NAND **+15~20%**（3Q26 +10~15%，**加速**）；Enterprise SSD 是唯一比上季漲幅更大的品類；Mobile／Consumer DRAM、Client SSD 原話「漲勢收斂」但無數字；Server DRAM 原話「供不應求延續、部分受 LTA 價格區間限制落後市場平均」無數字。→ 動能序列（整體口徑）：2Q26 約 +60% → 3Q26 +13~18% → 4Q26 +10~15%＝斜率略降，**但沒有降到個位數**；9/02 那版寫的「4Q26 3~8%＝下一季直接降到單位數」是 6/30 的 PC DRAM 舊預估，已被 9/30 新聞稿推翻（三個月內上修一檔），該判斷作廢。給分：當期 3Q26 13~18% 與下季 4Q26 10~15% 都落在階梯 10~20% 那一格（3.5），取 3.5；由 4.0 降到 3.5 是因為「下季降到個位數」的前提消失，不是水準變高。★口徑提醒：本季是 conventional DRAM 整體，9/02 是 PC DRAM；兩者不是同一條序列，不要拿 3~8% → 10~15% 當成「加速」解讀。★與 Micron 9/30 法說「FY27 漲價速度放緩」同一天、方向相反：原廠口頭說放緩、研調把數字往上調，用 hynix 10/27 的量指引與 1Q27 預估裁決。★下次驗證點＝1Q27 預估（12 月中下旬）；轉負仍是華邦電／SNXX 論點失效線。舊證據鏈保留：①6/30 上修 3Q26 PC DRAM 8-13% → 15-20%、4Q26 PC DRAM 0-5% → 3-8% ②7/03、7/09 3Q26 server DRAM 13-18%。"
     },
     "s3": {
       "score": null,
