@@ -1,6 +1,6 @@
 {
-  "updated": "2026-10-06T21:35:59.838208",
-  "date": "2026-10-06",
+  "updated": "2026-10-07T22:38:56.146496",
+  "date": "2026-10-07",
   "methodology": "V3",
   "cycle_score": 3.36,
   "status_color": "green",
@@ -12,7 +12,7 @@
     },
     {
       "level": "red",
-      "msg": "訊號過期：10 個項目逾 30 天未更新 → s8(66天／5 個子項), s5(57天), s4(40天／3 個子項), s9(34天)（含自動源）。分數可能沒有反映最新事件。"
+      "msg": "訊號過期：10 個項目逾 30 天未更新 → s8(67天／5 個子項), s5(58天), s4(41天／3 個子項), s9(35天)（含自動源）。分數可能沒有反映最新事件。"
     },
     {
       "level": "red",
@@ -25,61 +25,61 @@
       "signal": "s8d",
       "parent": "s8",
       "updated": "2026-08-01",
-      "age_days": 66
+      "age_days": 67
     },
     {
       "signal": "s8e",
       "parent": "s8",
       "updated": "2026-08-03",
-      "age_days": 64
+      "age_days": 65
     },
     {
       "signal": "s5",
       "parent": "s5",
       "updated": "2026-08-10",
-      "age_days": 57
+      "age_days": 58
     },
     {
       "signal": "s8b",
       "parent": "s8",
       "updated": "2026-08-26",
-      "age_days": 41
+      "age_days": 42
     },
     {
       "signal": "s4f",
       "parent": "s4",
       "updated": "2026-08-27",
-      "age_days": 40
+      "age_days": 41
     },
     {
       "signal": "s4a",
       "parent": "s4",
       "updated": "2026-09-02",
-      "age_days": 34
+      "age_days": 35
     },
     {
       "signal": "s4e",
       "parent": "s4",
       "updated": "2026-09-02",
-      "age_days": 34
+      "age_days": 35
     },
     {
       "signal": "s8a",
       "parent": "s8",
       "updated": "2026-09-02",
-      "age_days": 34
+      "age_days": 35
     },
     {
       "signal": "s8c",
       "parent": "s8",
       "updated": "2026-09-02",
-      "age_days": 34
+      "age_days": 35
     },
     {
       "signal": "s9",
       "parent": "s9",
       "updated": "2026-09-02",
-      "age_days": 34
+      "age_days": 35
     }
   ],
   "excluded_signals": [
@@ -91,7 +91,7 @@
       "level": "signal",
       "weight": 0.12,
       "since": "2026-07-31",
-      "days": 67,
+      "days": 68,
       "todo": "★2026-09-02 Jason 已裁決：**維持停用、繼續累積，2026-11-10 重新校準門檻**（trigger memory-dashboard-s3-recalibrate）。解除條件①期別恢復前進＝9/02 已達成，②真合約比值累積 ≥60 個交易日＝自 8/10 起算，9/02 時 17 個。★判定紀律寫死：若那 60 天全落在同一種市況（一路漲、無回檔），那是樣本不夠而不是可以定門檻，寧可再等。過渡期改用 contract_watch.spot_vs_contract 的現貨 vs 合約變動率並排觀察（不相除、不評分）。"
     },
     {
@@ -100,14 +100,14 @@
       "parent": "s1",
       "weight": 0.03,
       "since": "2026-08-05",
-      "days": 62,
+      "days": 63,
       "todo": "累積乾淨的 DDR5/DDR4 比值序列（觀測層 ratio_watch 自 2026-09-02 起每日累積），樣本足夠後才決定：①比哪一組品項 ②門檻區間。★樣本要求＝跨越一次 DDR4 價格轉折，不是只累積天數——現有 297 天全在 DDR4 因停產而稀缺的同一種狀態裡。"
     }
   ],
   "effective_weight": 0.88,
   "reliability": "unreliable",
   "freshness": {
-    "as_of": "2026-10-06",
+    "as_of": "2026-10-07",
     "effective_weight": 0.88,
     "fresh_weight": 0.23,
     "stale_weight": 0.33,
@@ -131,49 +131,49 @@
         "parent": "s4",
         "next_due": "2026-11-03",
         "waiting_for": "Hyperscaler Q3 財報季（Alphabet／MSFT／Meta／AMZN，10 月下旬陸續開牌）",
-        "days_to_due": 28
+        "days_to_due": 27
       },
       {
         "signal": "s4c",
         "parent": "s4",
         "next_due": "2026-11-03",
         "waiting_for": "Hyperscaler Q3 財報季（backlog 與 capex 同時公布）",
-        "days_to_due": 28
+        "days_to_due": 27
       },
       {
         "signal": "s4d",
         "parent": "s4",
         "next_due": "2026-11-03",
         "waiting_for": "Hyperscaler Q3 capex 公告後的股價反應",
-        "days_to_due": 28
+        "days_to_due": 27
       },
       {
         "signal": "s2",
         "parent": "s2",
         "next_due": "2026-12-15",
         "waiting_for": "TrendForce 1Q27 合約價預估（慣例 12 月中下旬發布；trigger memory-trendforce-1q27-contract 同日）。12/15 未發布就順延到 12/29。",
-        "days_to_due": 70
+        "days_to_due": 69
       },
       {
         "signal": "s6b",
         "parent": "s6",
         "next_due": "2026-12-17",
         "waiting_for": "Micron FQ1 FY27 財報（★日期為估值＝去年 FQ1 FY26 於 2025-12-17 公布；官方公告後改成正式日）",
-        "days_to_due": 72
+        "days_to_due": 71
       },
       {
         "signal": "s6c",
         "parent": "s6",
         "next_due": "2026-12-17",
         "waiting_for": "Micron FQ1 FY27 財報揭露的 HBM 營收（★日期為估值，同 6b）",
-        "days_to_due": 72
+        "days_to_due": 71
       },
       {
         "signal": "s6a(auto:micron)",
         "parent": "s6",
         "next_due": "2026-12-17",
         "waiting_for": "Micron 下一場財報（與 6b 同一場，毛利率序列要等新的 10-Q；10-K 只有全年數，FQ4 單季抓不到）",
-        "days_to_due": 72
+        "days_to_due": 71
       }
     ],
     "overdue_items": [],
@@ -182,68 +182,68 @@
         "signal": "s8d",
         "parent": "s8",
         "updated": "2026-08-01",
-        "age_days": 66
+        "age_days": 67
       },
       {
         "signal": "s8e",
         "parent": "s8",
         "updated": "2026-08-03",
-        "age_days": 64
+        "age_days": 65
       },
       {
         "signal": "s5",
         "parent": "s5",
         "updated": "2026-08-10",
-        "age_days": 57
+        "age_days": 58
       },
       {
         "signal": "s8b",
         "parent": "s8",
         "updated": "2026-08-26",
-        "age_days": 41
+        "age_days": 42
       },
       {
         "signal": "s4f",
         "parent": "s4",
         "updated": "2026-08-27",
-        "age_days": 40
+        "age_days": 41
       },
       {
         "signal": "s4a",
         "parent": "s4",
         "updated": "2026-09-02",
-        "age_days": 34
+        "age_days": 35
       },
       {
         "signal": "s4e",
         "parent": "s4",
         "updated": "2026-09-02",
-        "age_days": 34
+        "age_days": 35
       },
       {
         "signal": "s8a",
         "parent": "s8",
         "updated": "2026-09-02",
-        "age_days": 34
+        "age_days": 35
       },
       {
         "signal": "s8c",
         "parent": "s8",
         "updated": "2026-09-02",
-        "age_days": 34
+        "age_days": 35
       },
       {
         "signal": "s9",
         "parent": "s9",
         "updated": "2026-09-02",
-        "age_days": 34
+        "age_days": 35
       }
     ],
     "by_signal": {
       "s1": {
         "weight": 0.15,
         "source": "auto",
-        "as_of": "2026-10-06",
+        "as_of": "2026-10-07",
         "age_days": 0,
         "bucket": "fresh",
         "oldest_item": "s1a(auto:spot)",
@@ -266,7 +266,7 @@
         "weight": 0.2,
         "source": "manual",
         "as_of": "2026-08-27",
-        "age_days": 40,
+        "age_days": 41,
         "bucket": "stale",
         "oldest_item": "s4f",
         "items": [
@@ -282,7 +282,7 @@
         "weight": 0.1,
         "source": "manual",
         "as_of": "2026-08-10",
-        "age_days": 57,
+        "age_days": 58,
         "bucket": "stale",
         "oldest_item": "s5",
         "items": [
@@ -306,7 +306,7 @@
         "weight": 0.08,
         "source": "manual",
         "as_of": "2026-10-01",
-        "age_days": 5,
+        "age_days": 6,
         "bucket": "fresh",
         "oldest_item": "s7",
         "items": [
@@ -317,7 +317,7 @@
         "weight": 0.07,
         "source": "manual",
         "as_of": "2026-08-01",
-        "age_days": 66,
+        "age_days": 67,
         "bucket": "frozen",
         "oldest_item": "s8d",
         "items": [
@@ -332,7 +332,7 @@
         "weight": 0.03,
         "source": "manual",
         "as_of": "2026-09-02",
-        "age_days": 34,
+        "age_days": 35,
         "bucket": "stale",
         "oldest_item": "s9",
         "items": [
@@ -442,14 +442,14 @@
     }
   ],
   "contract_watch": {
-    "as_of": "2026-10-06",
+    "as_of": "2026-10-07",
     "vintage": "2H Aug",
-    "vintage_span_days": 6,
+    "vintage_span_days": 7,
     "vintage_stalled": false,
     "period_change_median_pct": 4.17,
     "spot_vs_contract": {
       "spot_key": "DDR5 16Gb (2Gx8) 4800/5600",
-      "spot_chg_20d_pct": 7.72,
+      "spot_chg_20d_pct": 8.01,
       "contract_period_chg_pct": 4.17,
       "diverging": false,
       "spot_lagging": false,
@@ -492,47 +492,47 @@
         "spot": 83.588,
         "contract": 50.0,
         "ratio": 1.672,
-        "spot_date": "2026-10-06"
+        "spot_date": "2026-10-07"
       },
       {
         "pair": "DDR4 8Gb (1Gx8) 3200 ÷ DDR4 8Gb 1Gx8",
-        "spot": 46.321,
+        "spot": 46.357,
         "contract": 25.0,
-        "ratio": 1.853,
-        "spot_date": "2026-10-06"
+        "ratio": 1.854,
+        "spot_date": "2026-10-07"
       }
     ],
     "scored": false,
     "note": "觀測不評分。期別價非日價，同期別內每日相同；期別變動%為 TrendForce 自報。die_ratios 為同口徑顆粒比值，累積 ≥60 個交易日後才具備重新校準 s1b 門檻的樣本。"
   },
   "ratio_watch": {
-    "as_of": "2026-10-06",
+    "as_of": "2026-10-07",
     "scored": false,
     "rows": [
       {
         "pair": "DDR5 16Gb (2Gx8) 4800/5600 ÷ DDR4 16Gb (2Gx8) 3200",
         "label": "同容量（原程式比的這組）",
-        "ratio": 0.696,
-        "as_of": "2026-10-06",
+        "ratio": 0.699,
+        "as_of": "2026-10-07",
         "window_days": 60,
         "window_min": 0.578,
-        "window_max": 0.696,
-        "n_total": 341
+        "window_max": 0.699,
+        "n_total": 342
       },
       {
         "pair": "DDR5 16Gb (2Gx8) 4800/5600 ÷ DDR4 8Gb (1Gx8) 3200",
         "label": "異容量（舊階梯疑似照這組校準）",
-        "ratio": 1.256,
-        "as_of": "2026-10-06",
+        "ratio": 1.26,
+        "as_of": "2026-10-07",
         "window_days": 60,
         "window_min": 1.195,
-        "window_max": 1.256,
-        "n_total": 341
+        "window_max": 1.26,
+        "n_total": 342
       }
     ],
     "ddr4_trend": {
       "price": 83.588,
-      "chg_20d_pct": -10.04,
+      "chg_20d_pct": -10.6,
       "direction": "下跌"
     },
     "release_condition": "樣本需跨越一次 DDR4 價格轉折（由漲轉跌或由跌轉漲）才具備重新校準門檻的條件；只累積天數不算——現有歷史全落在 DDR4 停產稀缺的同一種狀態。"
@@ -630,7 +630,7 @@
       "sub": {
         "1a": {
           "score": 1.0,
-          "detail": "DDR5 $58.2 | >$58.0 5MA ↑ | >$56.2 20MA ↑ | golden cross"
+          "detail": "DDR5 $58.4 | >$58.1 5MA ↑ | >$56.4 20MA ↑ | golden cross"
         },
         "1b": {
           "score": null,
