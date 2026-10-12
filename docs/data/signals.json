@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-12T02:48:18.491157",
+  "updated": "2026-10-12T21:36:08.090425",
   "date": "2026-10-12",
   "methodology": "V3",
   "cycle_score": 3.36,
@@ -243,8 +243,8 @@
       "s1": {
         "weight": 0.15,
         "source": "auto",
-        "as_of": "2026-10-11",
-        "age_days": 1,
+        "as_of": "2026-10-12",
+        "age_days": 0,
         "bucket": "fresh",
         "oldest_item": "s1a(auto:spot)",
         "items": [
@@ -449,7 +449,7 @@
     "period_change_median_pct": 4.17,
     "spot_vs_contract": {
       "spot_key": "DDR5 16Gb (2Gx8) 4800/5600",
-      "spot_chg_20d_pct": 8.41,
+      "spot_chg_20d_pct": 9.05,
       "contract_period_chg_pct": 4.17,
       "diverging": false,
       "spot_lagging": false,
@@ -489,17 +489,17 @@
     "die_ratios": [
       {
         "pair": "DDR4 16Gb (2Gx8) 3200 ÷ DDR4 16Gb 2Gx8",
-        "spot": 83.64,
+        "spot": 83.809,
         "contract": 50.0,
-        "ratio": 1.673,
-        "spot_date": "2026-10-11"
+        "ratio": 1.676,
+        "spot_date": "2026-10-12"
       },
       {
         "pair": "DDR4 8Gb (1Gx8) 3200 ÷ DDR4 8Gb 1Gx8",
-        "spot": 46.186,
+        "spot": 46.079,
         "contract": 25.0,
-        "ratio": 1.847,
-        "spot_date": "2026-10-11"
+        "ratio": 1.843,
+        "spot_date": "2026-10-12"
       }
     ],
     "scored": false,
@@ -512,27 +512,27 @@
       {
         "pair": "DDR5 16Gb (2Gx8) 4800/5600 ÷ DDR4 16Gb (2Gx8) 3200",
         "label": "同容量（原程式比的這組）",
-        "ratio": 0.704,
-        "as_of": "2026-10-11",
+        "ratio": 0.709,
+        "as_of": "2026-10-12",
         "window_days": 60,
         "window_min": 0.578,
-        "window_max": 0.704,
-        "n_total": 344
+        "window_max": 0.709,
+        "n_total": 345
       },
       {
         "pair": "DDR5 16Gb (2Gx8) 4800/5600 ÷ DDR4 8Gb (1Gx8) 3200",
         "label": "異容量（舊階梯疑似照這組校準）",
-        "ratio": 1.275,
-        "as_of": "2026-10-11",
+        "ratio": 1.29,
+        "as_of": "2026-10-12",
         "window_days": 60,
         "window_min": 1.195,
-        "window_max": 1.275,
-        "n_total": 344
+        "window_max": 1.29,
+        "n_total": 345
       }
     ],
     "ddr4_trend": {
-      "price": 83.64,
-      "chg_20d_pct": -8.84,
+      "price": 83.809,
+      "chg_20d_pct": -7.9,
       "direction": "下跌"
     },
     "release_condition": "樣本需跨越一次 DDR4 價格轉折（由漲轉跌或由跌轉漲）才具備重新校準門檻的條件；只累積天數不算——現有歷史全落在 DDR4 停產稀缺的同一種狀態。"
@@ -630,7 +630,7 @@
       "sub": {
         "1a": {
           "score": 1.0,
-          "detail": "DDR5 $58.9 | >$58.4 5MA ↑ | >$56.8 20MA ↑ | golden cross"
+          "detail": "DDR5 $59.4 | >$58.7 5MA ↑ | >$57.1 20MA ↑ | golden cross | +0.9%"
         },
         "1b": {
           "score": null,
