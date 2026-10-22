@@ -1,0 +1,22 @@
+{
+  "archived_at": "2026-10-22",
+  "reason": "V4：Jason 裁決手填訊號「改成自動化或直接移除」。s2／s4a／s4c／s6b／s7 改由程式自動計算（真合約價期別、SEC EDGAR XBRL），s1c／s4b／s4d／s4e／s4f／s5／s6c／s8／s9 移除（只能靠人讀新聞做質化判斷，沒有免費、可重現的一手數字）。s3 改讀真合約價比值水準。",
+  "successor": "data/manual_inputs.json 只剩 events 與更新紀錄；評分欄位全部移除。calc_score.py 不再讀 manual 的任何分數（填回去會觸發紅色告警而不是進總分）。",
+  "do_not_use_for": "任何計分或與 V4 分數直接比較（訊號組成不同）",
+  "may_use_for": "事後稽核：V3 最後一天（2026-10-22 早上，總分 3.36）每個手填項目的分數與理由；日後若要恢復某個質化訊號，先讀它當時的 note 與踩過的雷",
+  "files": {
+    "manual_inputs_20261022_retired.json": "V3 最後一版手填值原檔（含 s1c 至 s9 全部 note、events、_update_log）"
+  },
+  "v3_last_scores": {
+    "s1": 1.0,
+    "s2": 3.5,
+    "s3": null,
+    "s4": 3.2,
+    "s5": 5.5,
+    "s6": 2.5,
+    "s7": 3.0,
+    "s8": 6.4,
+    "s9": 5.0,
+    "cycle_score": 3.36
+  }
+}

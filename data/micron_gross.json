@@ -1,40 +1,33 @@
 {
-  "updated": "2026-10-21T22:16:45.847298",
+  "updated": "2026-10-22T23:29:19.902274",
   "entries": [
     {
-      "date": "2024-02-29",
-      "filed": "2025-03-21",
-      "gross_profit": 1079000000,
-      "revenue": 5824000000,
-      "margin_pct": 18.5
-    },
-    {
-      "date": "2024-05-30",
-      "filed": "2025-06-26",
-      "gross_profit": 1832000000,
-      "revenue": 6811000000,
-      "margin_pct": 26.9
-    },
-    {
       "date": "2024-11-28",
-      "filed": "2025-12-18",
+      "filed": "2024-12-19",
       "gross_profit": 3348000000,
       "revenue": 8709000000,
       "margin_pct": 38.4
     },
     {
       "date": "2025-02-27",
-      "filed": "2026-03-19",
+      "filed": "2025-03-21",
       "gross_profit": 2963000000,
       "revenue": 8053000000,
       "margin_pct": 36.8
     },
     {
       "date": "2025-05-29",
-      "filed": "2026-06-25",
+      "filed": "2025-06-26",
       "gross_profit": 3508000000,
       "revenue": 9301000000,
       "margin_pct": 37.7
+    },
+    {
+      "date": "2025-08-28",
+      "filed": "2025-10-03",
+      "gross_profit": 5054000000,
+      "revenue": 11315000000,
+      "margin_pct": 44.7
     },
     {
       "date": "2025-11-27",
@@ -56,6 +49,13 @@
       "gross_profit": 35056000000,
       "revenue": 41456000000,
       "margin_pct": 84.6
+    },
+    {
+      "date": "2026-09-03",
+      "filed": "2026-10-09",
+      "gross_profit": 47047000000,
+      "revenue": 54229000000,
+      "margin_pct": 86.8
     }
   ]
 }

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Memory Cycle Dashboard V3</title>
+<title>Memory Cycle Dashboard V4</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
   :root {
@@ -119,7 +119,7 @@
 
   <!-- Main Score -->
   <div class="card">
-    <div class="section-title">Cycle Position Score — V3</div>
+    <div class="section-title">Cycle Position Score — V4</div>
     <div id="v3-note" class="v3-note" style="display:none"></div>
     <div style="display:flex; align-items:flex-end; gap:20px; flex-wrap:wrap;">
       <div>
@@ -150,9 +150,9 @@
 
   <!-- DDR5/DDR4 ratio chart -->
   <div class="card">
-    <div class="section-title">DDR5 / DDR4 價格比值（Signal 1c）</div>
+    <div class="section-title">DDR5 / DDR4 價格比值（觀測，s1c 已於 2026-10-22 移除）</div>
     <div style="font-size:0.78rem; color:var(--muted); margin-bottom:8px;">
-      健康區間 1.8–2.5x｜黃線 = 1.8x 警示線｜比值縮窄代表 DDR5 溢價流失
+      不計分。DDR4 因停產減量長期貴於 DDR5，這條線量到的是 DDR4 退場速度，不是 DDR5 的週期位置｜黃線 = 舊 1.8x 警示線（已不適用，留作對照）
     </div>
     <canvas id="ratioChart"></canvas>
   </div>
@@ -167,8 +167,14 @@
 
   <!-- 9 Signals -->
   <div class="card">
-    <div class="section-title">9 個訊號（V3 權重）</div>
+    <div class="section-title" id="signals-title">訊號（V4 權重）</div>
     <div id="signals-list"></div>
+  </div>
+
+  <!-- 已移除的訊號（V4，2026-10-22） -->
+  <div class="card" id="retired-card" style="display:none">
+    <div class="section-title">已移除的訊號（V4，不計分）</div>
+    <div id="retired-list"></div>
   </div>
 
   <!-- 供給側擴產觀測（不評分，2026-09-02） -->
@@ -185,13 +191,13 @@
 
   <!-- 真合約價觀測（不評分） -->
   <div class="card" id="contract-watch-card" style="display:none">
-    <div class="section-title">合約價觀測（不評分）</div>
+    <div class="section-title">真合約價與現貨÷合約比值（s1b／s3 的量測層）</div>
     <div id="contract-watch"></div>
   </div>
 
   <!-- Signal 4 sub-metrics -->
   <div class="card">
-    <div class="section-title">Signal 4 — Hyperscaler Demand Floor（6 個子訊號）</div>
+    <div class="section-title">Signal 4 — Hyperscaler Demand Floor（4a capex＋4c RPO，SEC XBRL 自動）</div>
     <table class="sub-table" id="s4-table">
       <thead>
         <tr style="color:var(--muted)">
@@ -204,7 +210,7 @@
 
   <!-- Signal 6 sub-metrics -->
   <div class="card">
-    <div class="section-title">Signal 6 — Micron 財務指標（3 個子訊號）</div>
+    <div class="section-title">Signal 6 — Micron 財務指標（6a 毛利率＋6b 營收動能，自動）</div>
     <table class="sub-table" id="s6-table">
       <thead>
         <tr style="color:var(--muted)">
@@ -215,99 +221,56 @@
     </table>
   </div>
 
-  <!-- Signal 8 sub-metrics -->
-  <div class="card">
-    <div class="section-title">Signal 8 — 中國對手擴產進度（5 個子訊號）</div>
-    <table class="sub-table" id="s8-table">
-      <thead>
-        <tr style="color:var(--muted)">
-          <td style="width:28%">Sub-metric</td><td style="width:12%">狀態</td><td style="width:10%">分數</td><td>備註</td>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-
-  <!-- Signal 9 meta card -->
-  <div class="card" id="s9-card">
-    <div class="section-title">Signal 9 — Cycle Ending 時間軸校準 <span class="meta-tag">元指標</span></div>
-    <div id="s9-content" style="font-size:0.85rem; color:var(--muted); line-height:1.6;"></div>
-  </div>
-
   <!-- Signal Explanations -->
   <div class="card">
-    <div class="section-title">9 個訊號說明</div>
+    <div class="section-title">訊號說明（V4，2026-10-22 起全部自動）</div>
     <div>
 
       <div class="explain-item">
         <div class="explain-num">S1</div>
         <div>
-          <div class="explain-title">Daily 記憶體現貨報價（複合）<span class="weight-tag">15%</span></div>
-          <div class="explain-body">三個子訊號加權：1a DDR5 spot vs MA（50%）、1b spot/contract 比值（30%）、1c DDR5/DDR4 分化（20%）。現貨價是最領先的週期指標，通常領先合約價 3–6 個月轉向。<br><strong>黃燈觸發</strong>：5MA 反轉向下；spot/contract &lt;0.95；DDR5/DDR4 比值縮至 1.8x 以下。</div>
+          <div class="explain-title">Daily 記憶體現貨報價（複合）<span class="weight-tag" data-w="s1"></span></div>
+          <div class="explain-body">1a DDR5 現貨 vs 5MA／20MA（62.5%）＋1b 現貨÷合約比值「方向」（37.5%，最新一期對前兩期平均：≥+5%→2.5、±5%→4.5、−5~−15%→6.0、≤−15%→7.5；水準 &lt;1.05 又在往下→8.5）。1b 開關 11/10 前關著。現貨價是最領先的週期指標。</div>
         </div>
       </div>
 
       <div class="explain-item">
         <div class="explain-num">S2</div>
         <div>
-          <div class="explain-title">DRAM/NAND 月合約價 QoQ <span class="weight-tag">15%</span></div>
-          <div class="explain-body">TrendForce 月度合約均價季增率，領先市場認知 6–9 個月。動能強（QoQ &gt;+30%）= 早期，放緩到 +30% 以下觸發黃燈，+10% 以下觸發紅燈。</div>
+          <div class="explain-title">DRAM 合約價 3 個月變動（真合約價）<span class="weight-tag" data-w="s2"></span></div>
+          <div class="explain-body">TrendForce 免費合約表的期別價：DDR5 8GB SO-DIMM 與 DDR4 16Gb 顆粒，最新一期對 3 個月前同期（缺期改用 4、2、5 個月前並換算成 3 個月）。&gt;40%→2.0、&gt;20%→2.5、&gt;10%→3.5、&gt;0→4.5、&gt;−5%→5.5、&gt;−15%→7.0、其餘 8.5。★這是已成交的過去三個月（落後），不是研調機構的下一季預估。</div>
         </div>
       </div>
 
       <div class="explain-item">
         <div class="explain-num">S3</div>
         <div>
-          <div class="explain-title">Spot ÷ Contract Ratio <span class="weight-tag">12%</span></div>
-          <div class="explain-body">比值 &gt;1 代表現貨溢價（需求旺），&lt;1 代表現貨折價（供過於求）。領先週期轉折 3–6 個月。</div>
+          <div class="explain-title">現貨÷合約 比值水準 <span class="weight-tag" data-w="s3"></span></div>
+          <div class="explain-body">DDR4 16Gb 顆粒，同一期別期間的現貨均價 ÷ 該期合約價。≥1.50→2.0、1.20~1.50→3.0、1.05~1.20→5.0、0.95~1.05→6.5、&lt;0.95→8.5。現貨溢價 ≥20% 時合約價下一期幾乎必漲；跌破 1＝買方改買現貨、合約要降。開關 11/10 前關著，只列「若啟用」。</div>
         </div>
       </div>
 
       <div class="explain-item">
         <div class="explain-num">S4</div>
         <div>
-          <div class="explain-title">Hyperscaler Demand Floor（複合，6 個子訊號）<span class="weight-tag">20%</span></div>
-          <div class="explain-body">追蹤 MSFT/AMZN/GOOG/META 資本支出意願，是記憶體需求的最根本支撐。V3 新增 4f：NVDA supply commitments（$119B，佔 15%），這是比 capex 本身更前瞻的產能鎖定訊號。</div>
-        </div>
-      </div>
-
-      <div class="explain-item">
-        <div class="explain-num">S5</div>
-        <div>
-          <div class="explain-title">Samsung HBM4 良率進度 <span class="weight-tag">10%</span></div>
-          <div class="explain-body">良率突破 50% 代表三星進入 AI 記憶體市場，對 HBM ASP 造成結構性壓力。目前三星仍落後 SK Hynix，Micron 已量產 HBM4 12-high。屬結構性訊號，不看短期波動。</div>
+          <div class="explain-title">Hyperscaler Demand Floor（4a＋4c）<span class="weight-tag" data-w="s4"></span></div>
+          <div class="explain-body">SEC 申報（XBRL）自動抓。4a：GOOGL／MSFT／AMZN／META 單季 capex 合計 YoY（≥40%→2.0、≥20%→3.0、≥5%→4.5、≥−5%→6.0、其餘 8.0；QoQ 轉負加 0.5、跌逾 10% 加 1.0）。4c：MSFT＋GOOGL 剩餘履約義務（雲端合約積壓）YoY（≥50%→2.0、≥25%→3.0、≥10%→4.5、≥0→6.0、其餘 8.0；跑輸同兩家 capex 成長加 1.0）。AMZN／META 沒有可用的 RPO 標籤。</div>
         </div>
       </div>
 
       <div class="explain-item">
         <div class="explain-num">S6</div>
         <div>
-          <div class="explain-title">Micron 財務指標（複合，3 個子訊號）<span class="weight-tag">10%</span></div>
-          <div class="explain-body">6a GM 軌跡（50%）：上升中 = 低分，首季下滑觸發黃燈。6b Q3 FY26 財報 outcome（30%）：6/24-25 發布，miss 場景直接觸發 Red Alert。6c HBM revenue（20%）：月營收 $2B+ = 健康。</div>
+          <div class="explain-title">Micron 毛利率＋營收動能 <span class="weight-tag" data-w="s6"></span></div>
+          <div class="explain-body">6a 毛利率軌跡（62.5%，第四季用「全年 − 前三季」補出）＋6b 營收日均 QoQ（37.5%；用日均是因為 53 週年第四季多一週。≥20%→2.0、≥10%→3.0、≥0→4.5、≥−10%→6.5、其餘 8.0）。</div>
         </div>
       </div>
 
       <div class="explain-item">
         <div class="explain-num">S7</div>
         <div>
-          <div class="explain-title">Samsung / SK Hynix 庫存週數 <span class="weight-tag">8%</span></div>
-          <div class="explain-body">原廠成品庫存週數，是週期同步指標（非領先）。歷史低點 = 健康。回升到 8 週觸發黃燈，&gt;12 週觸發紅燈。</div>
-        </div>
-      </div>
-
-      <div class="explain-item">
-        <div class="explain-num">S8</div>
-        <div>
-          <div class="explain-title">中國對手擴產進度（複合，5 個子訊號）<span class="weight-tag">7%</span></div>
-          <div class="explain-body">追蹤 CXMT 和 YMTC 的 IPO 進程、客戶擴張、產能 ramp、HBM 研發進度。這是 V2 完全缺失的結構性風險維度，與 cyclical 訊號性質不同，需要單獨追蹤。中國 HBM 量產出貨 Tier 1 客戶 = 絕對紅燈。</div>
-        </div>
-      </div>
-
-      <div class="explain-item">
-        <div class="explain-num">S9</div>
-        <div>
-          <div class="explain-title">Cycle Ending 時間軸校準 <span class="weight-tag">3%</span><span class="meta-tag">元指標</span></div>
-          <div class="explain-body">追蹤業內人士和券商對週期反轉時間點的具體預測，用來校準 dashboard 整體閾值是否需要調整，而非直接影響部位決策。季度更新。目前共識：2027 H2 ± 一季。</div>
+          <div class="explain-title">Micron 存貨天數（DIO）<span class="weight-tag" data-w="s7"></span></div>
+          <div class="explain-body">（期初＋期末存貨）/2 × 當季天數 ÷ 銷貨成本，與 Micron 自報口徑一致。看季變化：≤−10 天→2.0、≤0→3.0、≤+10→4.5、≤+20→6.0、其餘 7.5；DIO ≥150 天（2023~24 過剩期水準）再加 1。三星／海力士不在 SEC 申報、沒有一手庫存數字，所以換成 Micron。</div>
         </div>
       </div>
 
@@ -379,7 +342,11 @@ async function init() {
       "最後更新：" + d.toLocaleString("zh-TW") + "　評分方法：" + ver;
 
     // V3 migration note
-    if (ver === "V3") {
+    if (ver === "V4") {
+      const note = document.getElementById("v3-note");
+      note.style.display = "block";
+      note.textContent = "V4 於 2026-10-22 上線：手填訊號全部改為自動（SEC 申報、TrendForce 期別合約價）或移除。移除的 s8／s5／s9 多是高分＝警訊的項目，總分因此變低＝少了資訊，不是週期變好。";
+    } else if (ver === "V3") {
       const note = document.getElementById("v3-note");
       note.style.display = "block";
       note.textContent = "V3 於 2026-05-27 升級：新增 Signal 8（中國擴產）、Signal 9（時間軸校準），評分方向修正（低分=早期/安全），舊分數 6.45 → 新方法論 35.5%，屬方法論差異，非週期惡化。分數以「距週期高峰比例」顯示（0% = 完全早期，100% = 週期高峰）。";
@@ -444,8 +411,25 @@ async function init() {
       relBox.innerHTML = html;
     }
 
-    // Weights V3
-    const weights = { s1:15, s2:15, s3:12, s4:20, s5:10, s6:10, s7:8, s8:7, s9:3 };
+    // 權重一律讀 signals.json（V4 起不再寫死，避免看板與計分各說各話）
+    const weights = {};
+    Object.entries(sig.weights || {}).forEach(([k, w]) => { weights[k] = +(w * 100).toFixed(2); });
+    document.querySelectorAll(".weight-tag[data-w]").forEach(el => {
+      const w = weights[el.dataset.w];
+      el.textContent = typeof w === "number" ? `${w}%` : "";
+    });
+    document.getElementById("signals-title").textContent = `訊號（${ver} 權重）`;
+
+    // 已移除的訊號：只列理由，不顯示分數
+    const retired = sig.retired_signals || [];
+    if (retired.length) {
+      document.getElementById("retired-card").style.display = "";
+      document.getElementById("retired-list").innerHTML =
+        (sig.retired_note ? `<div style="font-size:0.8rem;color:var(--yellow);margin-bottom:10px">${sig.retired_note}</div>` : "") +
+        `<table class="sub-table"><tr><th>訊號</th><th>移除日</th><th>理由</th></tr>` +
+        retired.map(r => `<tr><td><strong>${r.signal}</strong></td><td>${r.since}</td><td class="note-col">${r.reason}</td></tr>`).join("") +
+        `</table>`;
+    }
 
     // Signals list
     const sigList = document.getElementById("signals-list");
@@ -469,7 +453,7 @@ async function init() {
           <div style="display:flex;align-items:center;gap:6px">
             <span class="dot ${dotColor}"></span>
             <span style="font-size:0.9rem">${v.label}</span>
-            <span style="font-size:0.75rem;color:var(--muted)">(${weights[k]}%)</span>
+            <span style="font-size:0.75rem;color:var(--muted)">(${weights[k] ?? "—"}%)</span>
             ${subNote}
           </div>
           <div class="signal-bar-wrap" style="margin-top:6px">
@@ -492,17 +476,38 @@ async function init() {
       const stall = cw.vintage_stalled
         ? `<span style="color:var(--yellow)">（已 ${cw.vintage_span_days} 天未前進）</span>`
         : `（已 ${cw.vintage_span_days ?? "?"} 天）`;
+      // 2026-10-22：比值改為兩欄——期別對齊（同期間現貨均÷該期合約，評分只認這個）與即時（今天現貨÷最近一期合約）
+      const fx = v => typeof v === "number" ? v.toFixed(2) + "x" : "—";
       const rows = (cw.die_ratios || []).map(r =>
-        `<tr><td>${r.pair}</td><td>${r.spot} / ${r.contract}</td>` +
-        `<td style="font-weight:700">${(typeof r.ratio === "number" ? r.ratio.toFixed(2) : "—")}x</td></tr>`
+        `<tr><td>${r.pair}</td>` +
+        `<td style="font-weight:700">${fx(r.aligned_ratio)}</td>` +
+        `<td>${fx(r.ratio)}</td></tr>`
       ).join("");
+      const cr = sig.contract_ratio || {};
+      const cs = sig.contract_status || {};
+      const frCol = cr.freshness === "current" ? "var(--muted)" : (cr.freshness === "stale" ? "var(--yellow)" : "var(--red)");
+      const hist = (cr.history || []).filter(h => typeof h.ratio === "number")
+        .map(h => `${h.period_full || h.period} ${h.ratio.toFixed(2)}`).join("　");
+      const ia = cs.if_activated;
+      const num = v => typeof v === "number" ? v.toFixed(1) : "—";
       document.getElementById("contract-watch").innerHTML =
         `<div style="font-size:0.85rem;margin-bottom:8px">` +
-        `合約期別 <strong>${cw.vintage || "n/a"}</strong>${stall}　｜　期別變動中位數 <strong>${med}</strong></div>` +
-        (rows ? `<table class="sub-table">${rows}</table>` : "") +
+        `<strong>${cs.mode_text || "真合約價"}</strong>　｜　資料期別 <strong>${cw.vintage || "n/a"}</strong>` +
+        (cr.period_window ? `（${cr.period_window}）` : "") +
+        (typeof cr.data_age_days === "number"
+          ? `　<span style="color:${frCol}">距期末 ${cr.data_age_days} 天（${cr.freshness}）</span>` : "") +
+        `　｜　期別變動 <strong>${med}</strong>${stall}</div>` +
+        (rows ? `<table class="sub-table"><tr><th>顆粒配對</th><th>期別對齊</th><th>即時</th></tr>${rows}</table>` : "") +
+        (hist ? `<div style="font-size:0.8rem;margin-top:6px">期別對齊歷史：${hist}</div>` : "") +
+        (ia ? `<div id="if-activated" style="font-size:0.85rem;margin-top:8px;padding:8px;border:1px dashed var(--border);border-radius:6px">` +
+              `<strong>若啟用</strong>（開關 ${cs.scoring_active ? "開" : "關"}，此列${cs.scoring_active ? "已" : "不"}進總分）：` +
+              `s1b 方向 <strong>${num(ia.s1b)}</strong>　s3 水準 <strong>${num(ia.s3)}</strong>　S1 ${num(ia.s1)}　` +
+              `總分 ${num(sig.cycle_score)} → <strong>${num(ia.cycle_score)}</strong></div>` : "") +
+        (cs.s1b_preview?.detail ? `<div style="font-size:0.78rem;color:var(--muted);margin-top:4px">s1b：${cs.s1b_preview.detail}</div>` : "") +
+        (cs.s3_preview?.detail ? `<div style="font-size:0.78rem;color:var(--muted);margin-top:2px">s3：${cs.s3_preview.detail}</div>` : "") +
         `<div style="font-size:0.75rem;color:var(--muted);margin-top:8px">` +
-        `顆粒比值目前 2x 上下，落在 s1b 門檻表（0.90~1.10）之外，且合約為半月報價、` +
-        `期別不動時比值變動全部來自現貨端 → 觀測不評分，累積樣本後再議校準。</div>`;
+        `免費合約價每月月底才放上個月下半月那期，所以距期末 30~61 天是正常；超過 75 天標過期、105 天不再使用。` +
+        (cs.split_note || "") + `</div>`;
 
       // s3 停用期間的替代觀察：現貨與合約變動率並排（2026-09-02）
       const sv = cw.spot_vs_contract;
@@ -556,12 +561,8 @@ async function init() {
 
     // Signal 4 sub-table
     const s4Labels = {
-      "4a": "Capex Revision 方向",
-      "4b": "Cloud 營收成長",
-      "4c": "Backlog vs Capex",
-      "4d": "Capex 公告股價反應",
-      "4e": "2027 Capex Guidance",
-      "4f": "NVDA Supply Commitments ★",
+      "4a": "四大雲端單季 Capex（SEC）",
+      "4c": "MSFT＋GOOGL RPO vs Capex（SEC）",
     };
     renderSubTable(
       document.querySelector("#s4-table tbody"),
@@ -572,39 +573,13 @@ async function init() {
     // Signal 6 sub-table
     const s6Labels = {
       "6a": "Micron GM 軌跡（Auto）",
-      "6b": "Q3 FY26 財報 Outcome",
-      "6c": "HBM Revenue 揭露",
+      "6b": "Micron 營收日均 QoQ（SEC）",
     };
     renderSubTable(
       document.querySelector("#s6-table tbody"),
       sig.signals.s6?.sub || {},
       s6Labels
     );
-
-    // Signal 8 sub-table
-    const s8Labels = {
-      "8a": "CXMT IPO 進度",
-      "8b": "CXMT 客戶名單擴大",
-      "8c": "YMTC IPO 進度",
-      "8d": "中國 HBM 進度",
-      "8e": "CXMT/YMTC 月產能 Ramp",
-    };
-    renderSubTable(
-      document.querySelector("#s8-table tbody"),
-      sig.signals.s8?.sub || {},
-      s8Labels
-    );
-
-    // Signal 9
-    const s9 = sig.signals.s9 || {};
-    const s9Score = s9.score ?? "—";
-    const s9Status = s9Score <= 6 ? "green" : s9Score <= 8 ? "yellow" : "red";
-    document.getElementById("s9-content").innerHTML =
-      `<span class="dot ${s9Status}"></span>` +
-      `分數 <strong style="color:${scoreColor(s9Score)}">${typeof s9Score==="number"?s9Score.toFixed(1):s9Score}</strong>　` +
-      (s9.detail || "") + `<br><br>` +
-      `<span style="font-size:0.78rem">此為元指標（meta-signal），不直接影響部位決策。` +
-      `主要用途：當業內警告與 dashboard 推斷偏差 &gt;2 季時，觸發整體閾值校準。季度更新。</span>`;
 
     // Event calendar
     const eventsList = document.getElementById("events-list");

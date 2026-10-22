@@ -22,6 +22,7 @@ from calc_score import (  # noqa: E402
     RELIABILITY_DEGRADED,
     RELIABILITY_OK,
     STALE_WARN_DAYS,
+    WEIGHTS,
     build_freshness,
     iter_manual_leaves,
 )
@@ -70,12 +71,18 @@ leaves2 = dict((k, p) for k, p, _ in iter_manual_leaves(m))
 check("未來新增的 8z 自動納管（不必改白名單）", leaves2.get("s8z") == "s8")
 
 print("\n── 2. 無戳記不得繼承 _last_updated（舊版最大的洞）──")
+# ★2026-10-22 V4：s5/s8/s9 已移出權重表，原本拿 s8 當樣本的三條改用 s7（單層、仍在權重表）。
+#   權重改讀 WEIGHTS，不再寫死數字——權重表改版時測試跟著走，而不是跟著壞。
 m = base_manual()
-del m["s8"]["8a"]["updated"]  # 整支 s8 只有這個子項
+del m["s7"]["updated"]
 f = build_freshness(m, {}, TODAY, [])
-check("無戳記子項被點名", "s8a" in f["unstamped_items"], f["unstamped_items"])
-check("整支 s8 判 unstamped 不判 fresh", f["by_signal"]["s8"]["bucket"] == "unstamped")
-check("unstamped 權重 = s8 的 7%", abs(f["unstamped_weight"] - 0.07) < 1e-9)
+check("無戳記子項被點名", "s7" in f["unstamped_items"], f["unstamped_items"])
+check("整支 s7 判 unstamped 不判 fresh", f["by_signal"]["s7"]["bucket"] == "unstamped")
+check(
+    f"unstamped 權重 = s7 的 {WEIGHTS['s7']:.0%}",
+    abs(f["unstamped_weight"] - WEIGHTS["s7"]) < 1e-9,
+)
+check("已移除的訊號（s8）不進新鮮度", "s8" not in f["by_signal"])
 
 m = base_manual()
 del m["s4"]["4c"]["updated"]  # 只有一個子項沒戳記，其餘是新的
@@ -88,10 +95,10 @@ check(
 
 print("\n── 3. 過期偵測與可信度降級 ──")
 m = base_manual()
-for k in ("s2", "s5", "s7", "s9"):
+for k in ("s2", "s3", "s7"):
     m[k]["updated"] = "2026-06-01"  # 93 天前
 f = build_freshness(m, {}, TODAY, [])
-check("過期項目全數列出", len(f["stale_items"]) == 4, f["stale_items"])
+check("過期項目全數列出", len(f["stale_items"]) == 3, f["stale_items"])
 check(
     "可信度降級（fresh 佔比掉到門檻下）",
     f["reliability"] in ("degraded", "unreliable"),
@@ -137,7 +144,10 @@ check("到期後補了就不再算 overdue", not f["overdue_items"])
 print("\n── 5. 停用訊號不參與過期，但也不該從輸出消失 ──")
 f = build_freshness(base_manual(), {}, TODAY, ["s3"])
 check("排除訊號不進 by_signal", "s3" not in f["by_signal"])
-check("有效權重扣掉被排除的 12%", abs(f["effective_weight"] - 0.88) < 1e-9)
+check(
+    f"有效權重扣掉被排除的 s3（{WEIGHTS['s3']:.0%}）",
+    abs(f["effective_weight"] - (1 - WEIGHTS["s3"])) < 1e-3,
+)
 m = base_manual()
 del m["s3"]["updated"]
 f = build_freshness(m, {}, TODAY, ["s3"])

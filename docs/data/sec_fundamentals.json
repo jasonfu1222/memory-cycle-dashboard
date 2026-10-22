@@ -1,0 +1,966 @@
+{
+  "updated": "2026-10-22T23:29:24.668133",
+  "source": "SEC EDGAR XBRL companyfacts（https://data.sec.gov/api/xbrl/companyfacts/）",
+  "fetch": {
+    "date": "2026-10-22",
+    "ok": [
+      "GOOGL",
+      "MSFT",
+      "AMZN",
+      "META",
+      "MU"
+    ],
+    "failed": {}
+  },
+  "note": "單季值由同一起始日的累計值相減而來（10-Q 現金流量表只給年初至今、10-K 只給全年）；available＝該數字第一次出現的申報日。due＝下一份申報的法定期限（10-Q 40 天／10-K 60 天）。",
+  "companies": {
+    "GOOGL": {
+      "cik": 1652044,
+      "concepts": {
+        "capex": "PaymentsToAcquirePropertyPlantAndEquipment",
+        "rpo": "RevenueRemainingPerformanceObligation"
+      },
+      "quarterly": {
+        "capex": [
+          {
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "days": 92,
+            "val": 8055000000,
+            "available": "2023-10-25",
+            "method": "derived",
+            "fq": 3
+          },
+          {
+            "start": "2023-10-01",
+            "end": "2023-12-31",
+            "days": 92,
+            "val": 11019000000,
+            "available": "2024-01-31",
+            "method": "derived",
+            "fq": 4
+          },
+          {
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "days": 91,
+            "val": 12012000000,
+            "available": "2024-04-26",
+            "method": "direct",
+            "fq": 1
+          },
+          {
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "days": 91,
+            "val": 13186000000,
+            "available": "2024-07-24",
+            "method": "derived",
+            "fq": 2
+          },
+          {
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "days": 92,
+            "val": 13061000000,
+            "available": "2024-10-30",
+            "method": "derived",
+            "fq": 3
+          },
+          {
+            "start": "2024-10-01",
+            "end": "2024-12-31",
+            "days": 92,
+            "val": 14276000000,
+            "available": "2025-02-05",
+            "method": "derived",
+            "fq": 4
+          },
+          {
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "days": 90,
+            "val": 17197000000,
+            "available": "2025-04-25",
+            "method": "direct",
+            "fq": 1
+          },
+          {
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "days": 91,
+            "val": 22446000000,
+            "available": "2025-07-24",
+            "method": "derived",
+            "fq": 2
+          },
+          {
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "days": 92,
+            "val": 23953000000,
+            "available": "2025-10-30",
+            "method": "derived",
+            "fq": 3
+          },
+          {
+            "start": "2025-10-01",
+            "end": "2025-12-31",
+            "days": 92,
+            "val": 27851000000,
+            "available": "2026-02-05",
+            "method": "derived",
+            "fq": 4
+          },
+          {
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "days": 90,
+            "val": 35674000000,
+            "available": "2026-04-30",
+            "method": "direct",
+            "fq": 1
+          },
+          {
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "days": 91,
+            "val": 44924000000,
+            "available": "2026-07-23",
+            "method": "derived",
+            "fq": 2
+          }
+        ]
+      },
+      "instant": {
+        "rpo": [
+          {
+            "end": "2023-06-30",
+            "val": 60600000000,
+            "available": "2023-07-26"
+          },
+          {
+            "end": "2023-09-30",
+            "val": 64900000000,
+            "available": "2023-10-25"
+          },
+          {
+            "end": "2023-12-31",
+            "val": 74100000000,
+            "available": "2024-01-31"
+          },
+          {
+            "end": "2024-03-31",
+            "val": 72500000000,
+            "available": "2024-04-26"
+          },
+          {
+            "end": "2024-06-30",
+            "val": 78800000000,
+            "available": "2024-07-24"
+          },
+          {
+            "end": "2024-09-30",
+            "val": 86800000000,
+            "available": "2024-10-30"
+          },
+          {
+            "end": "2024-12-31",
+            "val": 93200000000,
+            "available": "2025-02-05"
+          },
+          {
+            "end": "2025-03-31",
+            "val": 92400000000,
+            "available": "2025-04-25"
+          },
+          {
+            "end": "2025-06-30",
+            "val": 108200000000,
+            "available": "2025-07-24"
+          },
+          {
+            "end": "2025-09-30",
+            "val": 157700000000,
+            "available": "2025-10-30"
+          },
+          {
+            "end": "2025-12-31",
+            "val": 242800000000,
+            "available": "2026-02-05"
+          },
+          {
+            "end": "2026-03-31",
+            "val": 467600000000,
+            "available": "2026-04-30"
+          },
+          {
+            "end": "2026-06-30",
+            "val": 519500000000,
+            "available": "2026-07-23"
+          }
+        ]
+      },
+      "latest_period_end": "2026-06-30",
+      "latest_available": "2026-07-23",
+      "next_period_end_est": "2026-09-30",
+      "next_form": "10-Q",
+      "due": "2026-11-09",
+      "fetched_at": "2026-10-22",
+      "stale_cache": false
+    },
+    "MSFT": {
+      "cik": 789019,
+      "concepts": {
+        "capex": "PaymentsToAcquirePropertyPlantAndEquipment",
+        "rpo": "RevenueRemainingPerformanceObligation"
+      },
+      "quarterly": {
+        "capex": [
+          {
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "days": 92,
+            "val": 9917000000,
+            "available": "2023-10-24",
+            "method": "direct",
+            "fq": 1
+          },
+          {
+            "start": "2023-10-01",
+            "end": "2023-12-31",
+            "days": 92,
+            "val": 9735000000,
+            "available": "2024-01-30",
+            "method": "direct",
+            "fq": 2
+          },
+          {
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "days": 91,
+            "val": 10952000000,
+            "available": "2024-04-25",
+            "method": "direct",
+            "fq": 3
+          },
+          {
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "days": 91,
+            "val": 13873000000,
+            "available": "2024-07-30",
+            "method": "derived",
+            "fq": 4
+          },
+          {
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "days": 92,
+            "val": 14923000000,
+            "available": "2024-10-30",
+            "method": "direct",
+            "fq": 1
+          },
+          {
+            "start": "2024-10-01",
+            "end": "2024-12-31",
+            "days": 92,
+            "val": 15804000000,
+            "available": "2025-01-29",
+            "method": "direct",
+            "fq": 2
+          },
+          {
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "days": 90,
+            "val": 16745000000,
+            "available": "2025-04-30",
+            "method": "direct",
+            "fq": 3
+          },
+          {
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "days": 91,
+            "val": 17079000000,
+            "available": "2025-07-30",
+            "method": "derived",
+            "fq": 4
+          },
+          {
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "days": 92,
+            "val": 19394000000,
+            "available": "2025-10-29",
+            "method": "direct",
+            "fq": 1
+          },
+          {
+            "start": "2025-10-01",
+            "end": "2025-12-31",
+            "days": 92,
+            "val": 29876000000,
+            "available": "2026-01-28",
+            "method": "direct",
+            "fq": 2
+          },
+          {
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "days": 90,
+            "val": 30876000000,
+            "available": "2026-04-29",
+            "method": "direct",
+            "fq": 3
+          },
+          {
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "days": 91,
+            "val": 35802000000,
+            "available": "2026-07-29",
+            "method": "derived",
+            "fq": 4
+          }
+        ]
+      },
+      "instant": {
+        "rpo": [
+          {
+            "end": "2023-06-30",
+            "val": 229000000000,
+            "available": "2023-07-27"
+          },
+          {
+            "end": "2023-09-30",
+            "val": 216000000000,
+            "available": "2023-10-24"
+          },
+          {
+            "end": "2023-12-31",
+            "val": 229000000000,
+            "available": "2024-01-30"
+          },
+          {
+            "end": "2024-03-31",
+            "val": 242000000000,
+            "available": "2024-04-25"
+          },
+          {
+            "end": "2024-06-30",
+            "val": 275000000000,
+            "available": "2024-07-30"
+          },
+          {
+            "end": "2024-09-30",
+            "val": 266000000000,
+            "available": "2024-10-30"
+          },
+          {
+            "end": "2024-12-31",
+            "val": 304000000000,
+            "available": "2025-01-29"
+          },
+          {
+            "end": "2025-03-31",
+            "val": 321000000000,
+            "available": "2025-04-30"
+          },
+          {
+            "end": "2025-06-30",
+            "val": 375000000000,
+            "available": "2025-07-30"
+          },
+          {
+            "end": "2025-09-30",
+            "val": 398000000000,
+            "available": "2025-10-29"
+          },
+          {
+            "end": "2025-12-31",
+            "val": 631000000000,
+            "available": "2026-01-28"
+          },
+          {
+            "end": "2026-03-31",
+            "val": 633000000000,
+            "available": "2026-04-29"
+          },
+          {
+            "end": "2026-06-30",
+            "val": 684000000000,
+            "available": "2026-07-29"
+          }
+        ]
+      },
+      "latest_period_end": "2026-06-30",
+      "latest_available": "2026-07-29",
+      "next_period_end_est": "2026-09-30",
+      "next_form": "10-Q",
+      "due": "2026-11-09",
+      "fetched_at": "2026-10-22",
+      "stale_cache": false
+    },
+    "AMZN": {
+      "cik": 1018724,
+      "concepts": {
+        "capex": "PaymentsToAcquireProductiveAssets"
+      },
+      "quarterly": {
+        "capex": [
+          {
+            "start": "2023-07-01",
+            "end": "2023-09-30",
+            "days": 92,
+            "val": 12479000000,
+            "available": "2023-10-27",
+            "method": "direct",
+            "fq": 3
+          },
+          {
+            "start": "2023-10-01",
+            "end": "2023-12-31",
+            "days": 92,
+            "val": 14588000000,
+            "available": "2024-02-02",
+            "method": "derived",
+            "fq": 4
+          },
+          {
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "days": 91,
+            "val": 14925000000,
+            "available": "2024-05-01",
+            "method": "direct",
+            "fq": 1
+          },
+          {
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "days": 91,
+            "val": 17620000000,
+            "available": "2024-08-02",
+            "method": "direct",
+            "fq": 2
+          },
+          {
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "days": 92,
+            "val": 22620000000,
+            "available": "2024-11-01",
+            "method": "direct",
+            "fq": 3
+          },
+          {
+            "start": "2024-10-01",
+            "end": "2024-12-31",
+            "days": 92,
+            "val": 27834000000,
+            "available": "2025-02-07",
+            "method": "derived",
+            "fq": 4
+          },
+          {
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "days": 90,
+            "val": 25019000000,
+            "available": "2025-05-02",
+            "method": "direct",
+            "fq": 1
+          },
+          {
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "days": 91,
+            "val": 32183000000,
+            "available": "2025-08-01",
+            "method": "direct",
+            "fq": 2
+          },
+          {
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "days": 92,
+            "val": 35095000000,
+            "available": "2025-10-31",
+            "method": "direct",
+            "fq": 3
+          },
+          {
+            "start": "2025-10-01",
+            "end": "2025-12-31",
+            "days": 92,
+            "val": 39522000000,
+            "available": "2026-02-06",
+            "method": "derived",
+            "fq": 4
+          },
+          {
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "days": 90,
+            "val": 44203000000,
+            "available": "2026-04-30",
+            "method": "direct",
+            "fq": 1
+          },
+          {
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "days": 91,
+            "val": 54208000000,
+            "available": "2026-07-31",
+            "method": "direct",
+            "fq": 2
+          }
+        ]
+      },
+      "instant": {},
+      "latest_period_end": "2026-06-30",
+      "latest_available": "2026-07-31",
+      "next_period_end_est": "2026-09-30",
+      "next_form": "10-Q",
+      "due": "2026-11-09",
+      "fetched_at": "2026-10-22",
+      "stale_cache": false
+    },
+    "META": {
+      "cik": 1326801,
+      "concepts": {
+        "capex": "PaymentsToAcquirePropertyPlantAndEquipment"
+      },
+      "quarterly": {
+        "capex": [
+          {
+            "start": "2023-10-01",
+            "end": "2023-12-31",
+            "days": 92,
+            "val": 7592000000,
+            "available": "2024-02-02",
+            "method": "derived",
+            "fq": 4
+          },
+          {
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "days": 91,
+            "val": 6400000000,
+            "available": "2024-04-25",
+            "method": "direct",
+            "fq": 1
+          },
+          {
+            "start": "2024-04-01",
+            "end": "2024-06-30",
+            "days": 91,
+            "val": 8173000000,
+            "available": "2024-08-01",
+            "method": "derived",
+            "fq": 2
+          },
+          {
+            "start": "2024-07-01",
+            "end": "2024-09-30",
+            "days": 92,
+            "val": 8258000000,
+            "available": "2024-10-31",
+            "method": "derived",
+            "fq": 3
+          },
+          {
+            "start": "2024-10-01",
+            "end": "2024-12-31",
+            "days": 92,
+            "val": 14425000000,
+            "available": "2025-01-30",
+            "method": "derived",
+            "fq": 4
+          },
+          {
+            "start": "2025-01-01",
+            "end": "2025-03-31",
+            "days": 90,
+            "val": 12941000000,
+            "available": "2025-05-01",
+            "method": "direct",
+            "fq": 1
+          },
+          {
+            "start": "2025-04-01",
+            "end": "2025-06-30",
+            "days": 91,
+            "val": 16538000000,
+            "available": "2025-07-31",
+            "method": "derived",
+            "fq": 2
+          },
+          {
+            "start": "2025-07-01",
+            "end": "2025-09-30",
+            "days": 92,
+            "val": 18829000000,
+            "available": "2025-10-30",
+            "method": "derived",
+            "fq": 3
+          },
+          {
+            "start": "2025-10-01",
+            "end": "2025-12-31",
+            "days": 92,
+            "val": 21383000000,
+            "available": "2026-01-29",
+            "method": "derived",
+            "fq": 4
+          },
+          {
+            "start": "2026-01-01",
+            "end": "2026-03-31",
+            "days": 90,
+            "val": 18997000000,
+            "available": "2026-04-30",
+            "method": "direct",
+            "fq": 1
+          },
+          {
+            "start": "2026-04-01",
+            "end": "2026-06-30",
+            "days": 91,
+            "val": 30116000000,
+            "available": "2026-07-30",
+            "method": "derived",
+            "fq": 2
+          },
+          {
+            "start": "2026-07-01",
+            "end": "2026-09-30",
+            "days": 92,
+            "val": 33942000000,
+            "available": "2026-10-22",
+            "method": "derived",
+            "fq": 3
+          }
+        ]
+      },
+      "instant": {},
+      "latest_period_end": "2026-09-30",
+      "latest_available": "2026-10-22",
+      "next_period_end_est": "2026-12-31",
+      "next_form": "10-K",
+      "due": "2027-03-01",
+      "fetched_at": "2026-10-22",
+      "stale_cache": false
+    },
+    "MU": {
+      "cik": 723125,
+      "concepts": {
+        "revenue": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "cogs": "CostOfGoodsAndServicesSold",
+        "inventory": "InventoryNet"
+      },
+      "quarterly": {
+        "revenue": [
+          {
+            "start": "2023-09-01",
+            "end": "2023-11-30",
+            "days": 91,
+            "val": 4726000000,
+            "available": "2023-12-21",
+            "method": "direct",
+            "fq": 1
+          },
+          {
+            "start": "2023-12-01",
+            "end": "2024-02-29",
+            "days": 91,
+            "val": 5824000000,
+            "available": "2024-03-21",
+            "method": "direct",
+            "fq": 2
+          },
+          {
+            "start": "2024-03-01",
+            "end": "2024-05-30",
+            "days": 91,
+            "val": 6811000000,
+            "available": "2024-06-27",
+            "method": "direct",
+            "fq": 3
+          },
+          {
+            "start": "2024-05-31",
+            "end": "2024-08-29",
+            "days": 91,
+            "val": 7750000000,
+            "available": "2024-10-04",
+            "method": "derived",
+            "fq": 4
+          },
+          {
+            "start": "2024-08-30",
+            "end": "2024-11-28",
+            "days": 91,
+            "val": 8709000000,
+            "available": "2024-12-19",
+            "method": "direct",
+            "fq": 1
+          },
+          {
+            "start": "2024-11-29",
+            "end": "2025-02-27",
+            "days": 91,
+            "val": 8053000000,
+            "available": "2025-03-21",
+            "method": "direct",
+            "fq": 2
+          },
+          {
+            "start": "2025-02-28",
+            "end": "2025-05-29",
+            "days": 91,
+            "val": 9301000000,
+            "available": "2025-06-26",
+            "method": "direct",
+            "fq": 3
+          },
+          {
+            "start": "2025-05-30",
+            "end": "2025-08-28",
+            "days": 91,
+            "val": 11315000000,
+            "available": "2025-10-03",
+            "method": "derived",
+            "fq": 4
+          },
+          {
+            "start": "2025-08-29",
+            "end": "2025-11-27",
+            "days": 91,
+            "val": 13643000000,
+            "available": "2025-12-18",
+            "method": "direct",
+            "fq": 1
+          },
+          {
+            "start": "2025-11-28",
+            "end": "2026-02-26",
+            "days": 91,
+            "val": 23860000000,
+            "available": "2026-03-19",
+            "method": "direct",
+            "fq": 2
+          },
+          {
+            "start": "2026-02-27",
+            "end": "2026-05-28",
+            "days": 91,
+            "val": 41456000000,
+            "available": "2026-06-25",
+            "method": "direct",
+            "fq": 3
+          },
+          {
+            "start": "2026-05-29",
+            "end": "2026-09-03",
+            "days": 98,
+            "val": 54229000000,
+            "available": "2026-10-09",
+            "method": "derived",
+            "fq": 4
+          }
+        ],
+        "cogs": [
+          {
+            "start": "2023-09-01",
+            "end": "2023-11-30",
+            "days": 91,
+            "val": 4761000000,
+            "available": "2023-12-21",
+            "method": "direct",
+            "fq": 1
+          },
+          {
+            "start": "2023-12-01",
+            "end": "2024-02-29",
+            "days": 91,
+            "val": 4745000000,
+            "available": "2024-03-21",
+            "method": "direct",
+            "fq": 2
+          },
+          {
+            "start": "2024-03-01",
+            "end": "2024-05-30",
+            "days": 91,
+            "val": 4979000000,
+            "available": "2024-06-27",
+            "method": "direct",
+            "fq": 3
+          },
+          {
+            "start": "2024-05-31",
+            "end": "2024-08-29",
+            "days": 91,
+            "val": 5013000000,
+            "available": "2024-10-04",
+            "method": "derived",
+            "fq": 4
+          },
+          {
+            "start": "2024-08-30",
+            "end": "2024-11-28",
+            "days": 91,
+            "val": 5361000000,
+            "available": "2024-12-19",
+            "method": "direct",
+            "fq": 1
+          },
+          {
+            "start": "2024-11-29",
+            "end": "2025-02-27",
+            "days": 91,
+            "val": 5090000000,
+            "available": "2025-03-21",
+            "method": "direct",
+            "fq": 2
+          },
+          {
+            "start": "2025-02-28",
+            "end": "2025-05-29",
+            "days": 91,
+            "val": 5793000000,
+            "available": "2025-06-26",
+            "method": "direct",
+            "fq": 3
+          },
+          {
+            "start": "2025-05-30",
+            "end": "2025-08-28",
+            "days": 91,
+            "val": 6261000000,
+            "available": "2025-10-03",
+            "method": "derived",
+            "fq": 4
+          },
+          {
+            "start": "2025-08-29",
+            "end": "2025-11-27",
+            "days": 91,
+            "val": 5997000000,
+            "available": "2025-12-18",
+            "method": "direct",
+            "fq": 1
+          },
+          {
+            "start": "2025-11-28",
+            "end": "2026-02-26",
+            "days": 91,
+            "val": 6105000000,
+            "available": "2026-03-19",
+            "method": "direct",
+            "fq": 2
+          },
+          {
+            "start": "2026-02-27",
+            "end": "2026-05-28",
+            "days": 91,
+            "val": 6400000000,
+            "available": "2026-06-25",
+            "method": "direct",
+            "fq": 3
+          },
+          {
+            "start": "2026-05-29",
+            "end": "2026-09-03",
+            "days": 98,
+            "val": 7182000000,
+            "available": "2026-10-09",
+            "method": "derived",
+            "fq": 4
+          }
+        ]
+      },
+      "instant": {
+        "inventory": [
+          {
+            "end": "2023-08-31",
+            "val": 8387000000,
+            "available": "2023-10-06"
+          },
+          {
+            "end": "2023-11-30",
+            "val": 8276000000,
+            "available": "2023-12-21"
+          },
+          {
+            "end": "2024-02-29",
+            "val": 8443000000,
+            "available": "2024-03-21"
+          },
+          {
+            "end": "2024-05-30",
+            "val": 8512000000,
+            "available": "2024-06-27"
+          },
+          {
+            "end": "2024-08-29",
+            "val": 8875000000,
+            "available": "2024-10-04"
+          },
+          {
+            "end": "2024-11-28",
+            "val": 8705000000,
+            "available": "2024-12-19"
+          },
+          {
+            "end": "2025-02-27",
+            "val": 9007000000,
+            "available": "2025-03-21"
+          },
+          {
+            "end": "2025-05-29",
+            "val": 8727000000,
+            "available": "2025-06-26"
+          },
+          {
+            "end": "2025-08-28",
+            "val": 8355000000,
+            "available": "2025-10-03"
+          },
+          {
+            "end": "2025-11-27",
+            "val": 8205000000,
+            "available": "2025-12-18"
+          },
+          {
+            "end": "2026-02-26",
+            "val": 8267000000,
+            "available": "2026-03-19"
+          },
+          {
+            "end": "2026-05-28",
+            "val": 8567000000,
+            "available": "2026-06-25"
+          },
+          {
+            "end": "2026-09-03",
+            "val": 10372000000,
+            "available": "2026-10-09"
+          }
+        ]
+      },
+      "latest_period_end": "2026-09-03",
+      "latest_available": "2026-10-09",
+      "next_period_end_est": "2026-12-03",
+      "next_form": "10-Q",
+      "due": "2027-01-12",
+      "fetched_at": "2026-10-22",
+      "stale_cache": false
+    }
+  }
+}

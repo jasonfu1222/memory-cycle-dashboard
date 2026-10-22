@@ -299,10 +299,17 @@
       "score": 3.36,
       "color": "green",
       "methodology": "V3"
+    },
+    {
+      "date": "2026-10-22",
+      "score": 2.27,
+      "color": "green",
+      "methodology": "V4"
     }
   ],
   "v3_start": "2026-08-05",
   "restarted_at": "2026-08-05",
   "predecessor": "_archive/score_history_20260805_high_deprecated.json",
-  "note": "價格口徑改為 Session Average 後重新累積；舊分數不可比"
+  "note": "價格口徑改為 Session Average 後重新累積；舊分數不可比",
+  "v4_start": "2026-10-22"
 }

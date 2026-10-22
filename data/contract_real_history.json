@@ -266,6 +266,12 @@
         "price": 133.0,
         "change_pct": 2.31,
         "vintage": "2H Aug"
+      },
+      {
+        "date": "2026-10-22",
+        "price": 133.0,
+        "change_pct": 2.31,
+        "vintage": "2H Aug"
       }
     ],
     "DDR4 16GB SO-DIMM": [
@@ -531,6 +537,12 @@
       },
       {
         "date": "2026-10-21",
+        "price": 270.0,
+        "change_pct": 1.89,
+        "vintage": "2H Aug"
+      },
+      {
+        "date": "2026-10-22",
         "price": 270.0,
         "change_pct": 1.89,
         "vintage": "2H Aug"
@@ -802,6 +814,12 @@
         "price": 142.0,
         "change_pct": 2.16,
         "vintage": "2H Aug"
+      },
+      {
+        "date": "2026-10-22",
+        "price": 142.0,
+        "change_pct": 2.16,
+        "vintage": "2H Aug"
       }
     ],
     "DDR4 16Gb 2Gx8": [
@@ -1067,6 +1085,12 @@
       },
       {
         "date": "2026-10-21",
+        "price": 50.0,
+        "change_pct": 4.17,
+        "vintage": "2H Aug"
+      },
+      {
+        "date": "2026-10-22",
         "price": 50.0,
         "change_pct": 4.17,
         "vintage": "2H Aug"
@@ -1338,6 +1362,12 @@
         "price": 25.0,
         "change_pct": 4.17,
         "vintage": "2H Aug"
+      },
+      {
+        "date": "2026-10-22",
+        "price": 25.0,
+        "change_pct": 4.17,
+        "vintage": "2H Aug"
       }
     ],
     "DDR4 4Gb 256Mx16": [
@@ -1603,6 +1633,12 @@
       },
       {
         "date": "2026-10-21",
+        "price": 15.2,
+        "change_pct": 4.83,
+        "vintage": "2H Aug"
+      },
+      {
+        "date": "2026-10-22",
         "price": 15.2,
         "change_pct": 4.83,
         "vintage": "2H Aug"
@@ -1874,13 +1910,19 @@
         "price": 15.2,
         "change_pct": 4.83,
         "vintage": "2H Aug"
+      },
+      {
+        "date": "2026-10-22",
+        "price": 15.2,
+        "change_pct": 4.83,
+        "vintage": "2H Aug"
       }
     ]
   },
-  "updated": "2026-10-21T22:16:44.131421",
+  "updated": "2026-10-22T23:29:18.587490",
   "source_heading": "DRAM Contract Price (2H Aug)",
   "price_column": "Session Average",
-  "note": "真・DRAM 合約價（TrendForce 頁內獨立表，半月報價）。★這是「期別價」不是日價：同一期別內每天抓到的數字必然相同，序列看起來平不等於市場沒動，要看 vintage 有沒有前進。顆粒項（DDR4 16Gb 2Gx8 等）與現貨同口徑可比；模組項（DDR5 8GB SO-DIMM 等）含 PCB/SPD 非純顆粒，不可與顆粒現貨相除。未接入 s1b/s3 評分，理由見 calc_score.score_signal_1b 註解。",
+  "note": "真・DRAM 合約價（TrendForce 頁內獨立表）。★免費層每月月底換一次期別、放的是上個月 2H，所以資料年齡（今天−期別結束日）正常就在 30~61 天；超過 75 天＝該來的月底更新沒來。★這是「期別價」不是日價：periods 一期一筆，series 是逐日快照（同期別內必然相同）。顆粒項（DDR4 16Gb 2Gx8 等）與現貨同口徑可比；模組項（DDR5 8GB SO-DIMM 等）含 PCB/SPD 非純顆粒，不可與顆粒現貨相除。s1b/s3 比值與位元代理自 2026-10-22 起讀 periods，規則見 scripts/contract_period.py。",
   "vintage_log": [
     {
       "period": "2H Jun",
@@ -1897,9 +1939,940 @@
     {
       "period": "2H Aug",
       "first_seen": "2026-09-30",
-      "last_seen": "2026-10-21"
+      "last_seen": "2026-10-22"
     }
   ],
   "vintage": "2H Aug",
-  "vintage_span_days": 21
+  "vintage_span_days": 22,
+  "periods": {
+    "2025-02-2H": {
+      "key": "2025-02-2H",
+      "label": "2H Feb",
+      "year": 2025,
+      "month": 2,
+      "half": "2H",
+      "start": "2025-02-16",
+      "end": "2025-02-28",
+      "first_seen": "2025-04-24",
+      "last_seen": "2025-04-24",
+      "source_updated": "2025-02-27",
+      "source": "wayback",
+      "snapshot_url": "https://web.archive.org/web/20250424161506/https://www.trendforce.com/price/dram/dram_contract",
+      "items": {
+        "DDR5 8GB SO-DIMM": {
+          "avg": 23.0,
+          "high": 24.0,
+          "low": 22.0,
+          "change_pct": null
+        },
+        "DDR4 16GB SO-DIMM": {
+          "avg": 32.0,
+          "high": 33.0,
+          "low": 31.0,
+          "change_pct": null
+        },
+        "DDR4 8GB SO-DIMM": {
+          "avg": 16.5,
+          "high": 17.0,
+          "low": 16.0,
+          "change_pct": null
+        },
+        "DDR4 16Gb 2Gx8": {
+          "avg": 2.55,
+          "high": 2.7,
+          "low": 2.4,
+          "change_pct": null
+        },
+        "DDR4 8Gb 1Gx8": {
+          "avg": 1.35,
+          "high": 1.45,
+          "low": 1.25,
+          "change_pct": null
+        },
+        "DDR4 4Gb 256Mx16": {
+          "avg": 1.1,
+          "high": 1.2,
+          "low": 1.05,
+          "change_pct": null
+        },
+        "DDR3 4Gb 256Mx16": {
+          "avg": 1.0,
+          "high": 1.2,
+          "low": 0.9,
+          "change_pct": null
+        }
+      }
+    },
+    "2025-04-2H": {
+      "key": "2025-04-2H",
+      "label": "2H Apr",
+      "year": 2025,
+      "month": 4,
+      "half": "2H",
+      "start": "2025-04-16",
+      "end": "2025-04-30",
+      "first_seen": "2025-06-09",
+      "last_seen": "2025-06-09",
+      "source_updated": "2025-04-30",
+      "source": "wayback",
+      "snapshot_url": "https://web.archive.org/web/20250609025243/https://www.trendforce.com/price/dram/dram_contract",
+      "items": {
+        "DDR5 8GB SO-DIMM": {
+          "avg": 24.5,
+          "high": 25.5,
+          "low": 23.5,
+          "change_pct": null
+        },
+        "DDR4 16GB SO-DIMM": {
+          "avg": 33.5,
+          "high": 34.5,
+          "low": 32.5,
+          "change_pct": null
+        },
+        "DDR4 8GB SO-DIMM": {
+          "avg": 17.25,
+          "high": 18.0,
+          "low": 16.5,
+          "change_pct": null
+        },
+        "DDR4 16Gb 2Gx8": {
+          "avg": 3.2,
+          "high": 3.4,
+          "low": 3.0,
+          "change_pct": null
+        },
+        "DDR4 8Gb 1Gx8": {
+          "avg": 1.65,
+          "high": 1.75,
+          "low": 1.5,
+          "change_pct": null
+        },
+        "DDR4 4Gb 256Mx16": {
+          "avg": 1.18,
+          "high": 1.3,
+          "low": 1.05,
+          "change_pct": null
+        },
+        "DDR3 4Gb 256Mx16": {
+          "avg": 1.0,
+          "high": 1.2,
+          "low": 0.9,
+          "change_pct": null
+        }
+      }
+    },
+    "2025-06-2H": {
+      "key": "2025-06-2H",
+      "label": "2H Jun",
+      "year": 2025,
+      "month": 6,
+      "half": "2H",
+      "start": "2025-06-16",
+      "end": "2025-06-30",
+      "first_seen": "2025-08-04",
+      "last_seen": "2025-08-04",
+      "source_updated": "2025-06-30",
+      "source": "wayback",
+      "snapshot_url": "https://web.archive.org/web/20250804214414/https://www.trendforce.com/price/dram/dram_contract",
+      "items": {
+        "DDR5 8GB SO-DIMM": {
+          "avg": 24.5,
+          "high": 25.5,
+          "low": 23.5,
+          "change_pct": null
+        },
+        "DDR4 16GB SO-DIMM": {
+          "avg": 38.0,
+          "high": 39.0,
+          "low": 37.0,
+          "change_pct": null
+        },
+        "DDR4 8GB SO-DIMM": {
+          "avg": 19.5,
+          "high": 20.0,
+          "low": 18.0,
+          "change_pct": null
+        },
+        "DDR4 16Gb 2Gx8": {
+          "avg": 5.5,
+          "high": 6.0,
+          "low": 5.0,
+          "change_pct": null
+        },
+        "DDR4 8Gb 1Gx8": {
+          "avg": 2.6,
+          "high": 3.0,
+          "low": 2.4,
+          "change_pct": null
+        },
+        "DDR4 4Gb 256Mx16": {
+          "avg": 1.25,
+          "high": 1.5,
+          "low": 1.1,
+          "change_pct": null
+        },
+        "DDR3 4Gb 256Mx16": {
+          "avg": 1.0,
+          "high": 1.2,
+          "low": 0.9,
+          "change_pct": null
+        }
+      }
+    },
+    "2025-07-2H": {
+      "key": "2025-07-2H",
+      "label": "2H Jul",
+      "year": 2025,
+      "month": 7,
+      "half": "2H",
+      "start": "2025-07-16",
+      "end": "2025-07-31",
+      "first_seen": "2025-09-13",
+      "last_seen": "2025-09-13",
+      "source_updated": "2025-07-31",
+      "source": "wayback",
+      "snapshot_url": "https://web.archive.org/web/20250913225932/https://www.trendforce.com/price/dram/dram_contract",
+      "items": {
+        "DDR5 8GB SO-DIMM": {
+          "avg": 25.5,
+          "high": 27.0,
+          "low": 24.3,
+          "change_pct": null
+        },
+        "DDR4 16GB SO-DIMM": {
+          "avg": 50.0,
+          "high": 55.0,
+          "low": 44.5,
+          "change_pct": null
+        },
+        "DDR4 8GB SO-DIMM": {
+          "avg": 26.5,
+          "high": 30.0,
+          "low": 23.5,
+          "change_pct": null
+        },
+        "DDR4 16Gb 2Gx8": {
+          "avg": 8.0,
+          "high": 8.5,
+          "low": 7.5,
+          "change_pct": null
+        },
+        "DDR4 8Gb 1Gx8": {
+          "avg": 3.9,
+          "high": 4.3,
+          "low": 3.5,
+          "change_pct": null
+        },
+        "DDR4 4Gb 256Mx16": {
+          "avg": 2.2,
+          "high": 2.83,
+          "low": 2.0,
+          "change_pct": null
+        },
+        "DDR3 4Gb 256Mx16": {
+          "avg": 1.2,
+          "high": 1.4,
+          "low": 1.1,
+          "change_pct": null
+        }
+      }
+    },
+    "2025-08-2H": {
+      "key": "2025-08-2H",
+      "label": "2H Aug",
+      "year": 2025,
+      "month": 8,
+      "half": "2H",
+      "start": "2025-08-16",
+      "end": "2025-08-31",
+      "first_seen": "2025-10-02",
+      "last_seen": "2025-10-02",
+      "source_updated": "2025-08-29",
+      "source": "wayback",
+      "snapshot_url": "https://web.archive.org/web/20251002173630/https://www.trendforce.com/price/dram/dram_contract",
+      "items": {
+        "DDR5 8GB SO-DIMM": {
+          "avg": 26.75,
+          "high": 28.0,
+          "low": 25.5,
+          "change_pct": null
+        },
+        "DDR4 16GB SO-DIMM": {
+          "avg": 51.0,
+          "high": 57.0,
+          "low": 46.0,
+          "change_pct": null
+        },
+        "DDR4 8GB SO-DIMM": {
+          "avg": 27.0,
+          "high": 30.0,
+          "low": 24.5,
+          "change_pct": null
+        },
+        "DDR4 16Gb 2Gx8": {
+          "avg": 12.0,
+          "high": 12.7,
+          "low": 11.3,
+          "change_pct": null
+        },
+        "DDR4 8Gb 1Gx8": {
+          "avg": 5.7,
+          "high": 6.2,
+          "low": 5.2,
+          "change_pct": null
+        },
+        "DDR4 4Gb 256Mx16": {
+          "avg": 2.4,
+          "high": 2.83,
+          "low": 2.0,
+          "change_pct": null
+        },
+        "DDR3 4Gb 256Mx16": {
+          "avg": 1.8,
+          "high": 2.0,
+          "low": 1.5,
+          "change_pct": null
+        }
+      }
+    },
+    "2025-09-2H": {
+      "key": "2025-09-2H",
+      "label": "2H Sep",
+      "year": 2025,
+      "month": 9,
+      "half": "2H",
+      "start": "2025-09-16",
+      "end": "2025-09-30",
+      "first_seen": "2025-11-08",
+      "last_seen": "2025-11-08",
+      "source_updated": "2025-09-30",
+      "source": "wayback",
+      "snapshot_url": "https://web.archive.org/web/20251108213418/https://www.trendforce.com/price/dram/dram_contract",
+      "items": {
+        "DDR5 8GB SO-DIMM": {
+          "avg": 26.75,
+          "high": 28.0,
+          "low": 25.5,
+          "change_pct": null
+        },
+        "DDR4 16GB SO-DIMM": {
+          "avg": 51.0,
+          "high": 57.0,
+          "low": 46.0,
+          "change_pct": null
+        },
+        "DDR4 8GB SO-DIMM": {
+          "avg": 27.0,
+          "high": 30.0,
+          "low": 24.5,
+          "change_pct": null
+        },
+        "DDR4 16Gb 2Gx8": {
+          "avg": 13.2,
+          "high": 14.0,
+          "low": 12.5,
+          "change_pct": null
+        },
+        "DDR4 8Gb 1Gx8": {
+          "avg": 6.3,
+          "high": 6.9,
+          "low": 5.7,
+          "change_pct": null
+        },
+        "DDR4 4Gb 256Mx16": {
+          "avg": 2.4,
+          "high": 2.83,
+          "low": 2.0,
+          "change_pct": null
+        },
+        "DDR3 4Gb 256Mx16": {
+          "avg": 1.8,
+          "high": 2.0,
+          "low": 1.6,
+          "change_pct": null
+        }
+      }
+    },
+    "2025-10-2H": {
+      "key": "2025-10-2H",
+      "label": "2H Oct",
+      "year": 2025,
+      "month": 10,
+      "half": "2H",
+      "start": "2025-10-16",
+      "end": "2025-10-31",
+      "first_seen": "2025-12-20",
+      "last_seen": "2025-12-20",
+      "source_updated": "2025-10-31",
+      "source": "wayback",
+      "snapshot_url": "https://web.archive.org/web/20251220222039/https://www.trendforce.com/price/dram/dram_contract",
+      "items": {
+        "DDR5 8GB SO-DIMM": {
+          "avg": 33.5,
+          "high": 37.0,
+          "low": 29.0,
+          "change_pct": null
+        },
+        "DDR4 16GB SO-DIMM": {
+          "avg": 60.0,
+          "high": 69.0,
+          "low": 49.0,
+          "change_pct": null
+        },
+        "DDR4 8GB SO-DIMM": {
+          "avg": 31.5,
+          "high": 36.0,
+          "low": 25.5,
+          "change_pct": null
+        },
+        "DDR4 16Gb 2Gx8": {
+          "avg": 14.8,
+          "high": 15.7,
+          "low": 14.0,
+          "change_pct": null
+        },
+        "DDR4 8Gb 1Gx8": {
+          "avg": 7.0,
+          "high": 7.7,
+          "low": 6.4,
+          "change_pct": null
+        },
+        "DDR4 4Gb 256Mx16": {
+          "avg": 2.7,
+          "high": 3.0,
+          "low": 2.4,
+          "change_pct": null
+        },
+        "DDR3 4Gb 256Mx16": {
+          "avg": 2.2,
+          "high": 2.4,
+          "low": 2.0,
+          "change_pct": null
+        }
+      }
+    },
+    "2025-11-2H": {
+      "key": "2025-11-2H",
+      "label": "2H Nov",
+      "year": 2025,
+      "month": 11,
+      "half": "2H",
+      "start": "2025-11-16",
+      "end": "2025-11-30",
+      "first_seen": "2026-01-16",
+      "last_seen": "2026-01-16",
+      "source_updated": "2025-11-28",
+      "source": "wayback",
+      "snapshot_url": "https://web.archive.org/web/20260116051254/https://www.trendforce.com/price/dram/dram_contract",
+      "items": {
+        "DDR5 8GB SO-DIMM": {
+          "avg": 36.5,
+          "high": 39.5,
+          "low": 34.0,
+          "change_pct": null
+        },
+        "DDR4 16GB SO-DIMM": {
+          "avg": 73.5,
+          "high": 80.0,
+          "low": 49.0,
+          "change_pct": null
+        },
+        "DDR4 8GB SO-DIMM": {
+          "avg": 39.0,
+          "high": 42.0,
+          "low": 25.5,
+          "change_pct": null
+        },
+        "DDR4 16Gb 2Gx8": {
+          "avg": 18.0,
+          "high": 19.0,
+          "low": 17.0,
+          "change_pct": null
+        },
+        "DDR4 8Gb 1Gx8": {
+          "avg": 8.1,
+          "high": 8.9,
+          "low": 7.4,
+          "change_pct": null
+        },
+        "DDR4 4Gb 256Mx16": {
+          "avg": 3.3,
+          "high": 3.6,
+          "low": 2.8,
+          "change_pct": null
+        },
+        "DDR3 4Gb 256Mx16": {
+          "avg": 2.7,
+          "high": 3.2,
+          "low": 2.4,
+          "change_pct": null
+        }
+      }
+    },
+    "2025-12-2H": {
+      "key": "2025-12-2H",
+      "label": "2H Dec",
+      "year": 2025,
+      "month": 12,
+      "half": "2H",
+      "start": "2025-12-16",
+      "end": "2025-12-31",
+      "first_seen": "2026-02-06",
+      "last_seen": "2026-02-06",
+      "source_updated": "2025-12-31",
+      "source": "wayback",
+      "snapshot_url": "https://web.archive.org/web/20260206104352/https://www.trendforce.com/price/dram/dram_contract",
+      "items": {
+        "DDR5 8GB SO-DIMM": {
+          "avg": 39.5,
+          "high": 42.5,
+          "low": 37.0,
+          "change_pct": null
+        },
+        "DDR4 16GB SO-DIMM": {
+          "avg": 87.0,
+          "high": 113.5,
+          "low": 49.0,
+          "change_pct": null
+        },
+        "DDR4 8GB SO-DIMM": {
+          "avg": 46.5,
+          "high": 57.0,
+          "low": 25.5,
+          "change_pct": null
+        },
+        "DDR4 16Gb 2Gx8": {
+          "avg": 21.0,
+          "high": 22.2,
+          "low": 19.8,
+          "change_pct": null
+        },
+        "DDR4 8Gb 1Gx8": {
+          "avg": 9.3,
+          "high": 10.2,
+          "low": 8.5,
+          "change_pct": null
+        },
+        "DDR4 4Gb 256Mx16": {
+          "avg": 4.5,
+          "high": 5.0,
+          "low": 4.0,
+          "change_pct": null
+        },
+        "DDR3 4Gb 256Mx16": {
+          "avg": 4.0,
+          "high": 4.5,
+          "low": 3.6,
+          "change_pct": null
+        }
+      }
+    },
+    "2026-01-2H": {
+      "key": "2026-01-2H",
+      "label": "2H Jan",
+      "year": 2026,
+      "month": 1,
+      "half": "2H",
+      "start": "2026-01-16",
+      "end": "2026-01-31",
+      "first_seen": "2026-03-12",
+      "last_seen": "2026-03-12",
+      "source_updated": "2026-01-30",
+      "source": "wayback",
+      "snapshot_url": "https://web.archive.org/web/20260312122957/https://www.trendforce.com/price/dram/dram_contract",
+      "items": {
+        "DDR5 8GB SO-DIMM": {
+          "avg": 75.0,
+          "high": 78.5,
+          "low": 72.5,
+          "change_pct": null
+        },
+        "DDR4 16GB SO-DIMM": {
+          "avg": 160.0,
+          "high": 175.0,
+          "low": 121.0,
+          "change_pct": null
+        },
+        "DDR4 8GB SO-DIMM": {
+          "avg": 85.0,
+          "high": 92.0,
+          "low": 70.5,
+          "change_pct": null
+        },
+        "DDR4 16Gb 2Gx8": {
+          "avg": 26.0,
+          "high": 27.5,
+          "low": 24.5,
+          "change_pct": null
+        },
+        "DDR4 8Gb 1Gx8": {
+          "avg": 11.5,
+          "high": 12.5,
+          "low": 10.5,
+          "change_pct": null
+        },
+        "DDR4 4Gb 256Mx16": {
+          "avg": 5.5,
+          "high": 6.0,
+          "low": 4.8,
+          "change_pct": null
+        },
+        "DDR3 4Gb 256Mx16": {
+          "avg": 5.0,
+          "high": 5.5,
+          "low": 4.5,
+          "change_pct": null
+        }
+      }
+    },
+    "2026-02-2H": {
+      "key": "2026-02-2H",
+      "label": "2H Feb",
+      "year": 2026,
+      "month": 2,
+      "half": "2H",
+      "start": "2026-02-16",
+      "end": "2026-02-28",
+      "first_seen": "2026-04-14",
+      "last_seen": "2026-04-14",
+      "source_updated": "2026-02-26",
+      "source": "wayback",
+      "snapshot_url": "https://web.archive.org/web/20260414180541/https://www.trendforce.com/price/dram/dram_contract",
+      "items": {
+        "DDR5 8GB SO-DIMM": {
+          "avg": 75.0,
+          "high": 78.5,
+          "low": 72.5,
+          "change_pct": null
+        },
+        "DDR4 16GB SO-DIMM": {
+          "avg": 165.0,
+          "high": 175.0,
+          "low": 130.0,
+          "change_pct": null
+        },
+        "DDR4 8GB SO-DIMM": {
+          "avg": 85.0,
+          "high": 92.0,
+          "low": 70.5,
+          "change_pct": null
+        },
+        "DDR4 16Gb 2Gx8": {
+          "avg": 29.5,
+          "high": 36.0,
+          "low": 27.0,
+          "change_pct": null
+        },
+        "DDR4 8Gb 1Gx8": {
+          "avg": 13.0,
+          "high": 17.0,
+          "low": 11.5,
+          "change_pct": null
+        },
+        "DDR4 4Gb 256Mx16": {
+          "avg": 6.0,
+          "high": 6.5,
+          "low": 5.2,
+          "change_pct": null
+        },
+        "DDR3 4Gb 256Mx16": {
+          "avg": 5.5,
+          "high": 6.0,
+          "low": 5.0,
+          "change_pct": null
+        }
+      }
+    },
+    "2026-03-2H": {
+      "key": "2026-03-2H",
+      "label": "2H Mar",
+      "year": 2026,
+      "month": 3,
+      "half": "2H",
+      "start": "2026-03-16",
+      "end": "2026-03-31",
+      "first_seen": "2026-05-21",
+      "last_seen": "2026-05-21",
+      "source_updated": "2026-03-31",
+      "source": "wayback",
+      "snapshot_url": "https://web.archive.org/web/20260521043014/https://www.trendforce.com/price/dram/dram_contract",
+      "items": {
+        "DDR5 8GB SO-DIMM": {
+          "avg": 75.0,
+          "high": 78.5,
+          "low": 72.5,
+          "change_pct": null
+        },
+        "DDR4 16GB SO-DIMM": {
+          "avg": 170.0,
+          "high": 175.0,
+          "low": 140.0,
+          "change_pct": null
+        },
+        "DDR4 8GB SO-DIMM": {
+          "avg": 85.0,
+          "high": 92.0,
+          "low": 70.5,
+          "change_pct": null
+        },
+        "DDR4 16Gb 2Gx8": {
+          "avg": 29.5,
+          "high": 36.0,
+          "low": 27.0,
+          "change_pct": null
+        },
+        "DDR4 8Gb 1Gx8": {
+          "avg": 13.0,
+          "high": 17.0,
+          "low": 11.5,
+          "change_pct": null
+        },
+        "DDR4 4Gb 256Mx16": {
+          "avg": 7.5,
+          "high": 10.0,
+          "low": 5.8,
+          "change_pct": null
+        },
+        "DDR3 4Gb 256Mx16": {
+          "avg": 7.5,
+          "high": 9.0,
+          "low": 7.0,
+          "change_pct": null
+        }
+      }
+    },
+    "2026-04-2H": {
+      "key": "2026-04-2H",
+      "label": "2H Apr",
+      "year": 2026,
+      "month": 4,
+      "half": "2H",
+      "start": "2026-04-16",
+      "end": "2026-04-30",
+      "first_seen": "2026-06-07",
+      "last_seen": "2026-06-07",
+      "source_updated": "2026-04-30",
+      "source": "wayback",
+      "snapshot_url": "https://web.archive.org/web/20260607164502/https://www.trendforce.com/price/dram/dram_contract",
+      "items": {
+        "DDR5 8GB SO-DIMM": {
+          "avg": 109.0,
+          "high": 120.0,
+          "low": 96.0,
+          "change_pct": null
+        },
+        "DDR4 16GB SO-DIMM": {
+          "avg": 227.0,
+          "high": 256.0,
+          "low": 192.0,
+          "change_pct": null
+        },
+        "DDR4 8GB SO-DIMM": {
+          "avg": 119.0,
+          "high": 128.0,
+          "low": 96.0,
+          "change_pct": null
+        },
+        "DDR4 16Gb 2Gx8": {
+          "avg": 33.5,
+          "high": 41.0,
+          "low": 31.0,
+          "change_pct": null
+        },
+        "DDR4 8Gb 1Gx8": {
+          "avg": 16.0,
+          "high": 23.0,
+          "low": 14.5,
+          "change_pct": null
+        },
+        "DDR4 4Gb 256Mx16": {
+          "avg": 10.0,
+          "high": 12.0,
+          "low": 8.0,
+          "change_pct": null
+        },
+        "DDR3 4Gb 256Mx16": {
+          "avg": 10.0,
+          "high": 12.0,
+          "low": 9.5,
+          "change_pct": null
+        }
+      }
+    },
+    "2026-06-2H": {
+      "key": "2026-06-2H",
+      "label": "2H Jun",
+      "year": 2026,
+      "month": 6,
+      "half": "2H",
+      "start": "2026-06-16",
+      "end": "2026-06-30",
+      "first_seen": "2026-08-10",
+      "last_seen": "2026-08-29",
+      "source_updated": null,
+      "backfilled": true,
+      "items": {
+        "DDR5 8GB SO-DIMM": {
+          "avg": 115.0,
+          "high": null,
+          "low": null,
+          "change_pct": 2.68
+        },
+        "DDR4 16GB SO-DIMM": {
+          "avg": 227.0,
+          "high": null,
+          "low": null,
+          "change_pct": 0.0
+        },
+        "DDR4 8GB SO-DIMM": {
+          "avg": 119.0,
+          "high": null,
+          "low": null,
+          "change_pct": 0.0
+        },
+        "DDR4 16Gb 2Gx8": {
+          "avg": 42.0,
+          "high": null,
+          "low": null,
+          "change_pct": 5.0
+        },
+        "DDR4 8Gb 1Gx8": {
+          "avg": 21.0,
+          "high": null,
+          "low": null,
+          "change_pct": 5.0
+        },
+        "DDR4 4Gb 256Mx16": {
+          "avg": 13.0,
+          "high": null,
+          "low": null,
+          "change_pct": 8.33
+        },
+        "DDR3 4Gb 256Mx16": {
+          "avg": 12.5,
+          "high": null,
+          "low": null,
+          "change_pct": 13.64
+        }
+      }
+    },
+    "2026-07-2H": {
+      "key": "2026-07-2H",
+      "label": "2H Jul",
+      "year": 2026,
+      "month": 7,
+      "half": "2H",
+      "start": "2026-07-16",
+      "end": "2026-07-31",
+      "first_seen": "2026-08-31",
+      "last_seen": "2026-09-29",
+      "source_updated": null,
+      "backfilled": true,
+      "items": {
+        "DDR5 8GB SO-DIMM": {
+          "avg": 130.0,
+          "high": null,
+          "low": null,
+          "change_pct": 13.04
+        },
+        "DDR4 16GB SO-DIMM": {
+          "avg": 265.0,
+          "high": null,
+          "low": null,
+          "change_pct": 16.74
+        },
+        "DDR4 8GB SO-DIMM": {
+          "avg": 139.0,
+          "high": null,
+          "low": null,
+          "change_pct": 16.81
+        },
+        "DDR4 16Gb 2Gx8": {
+          "avg": 48.0,
+          "high": null,
+          "low": null,
+          "change_pct": 14.29
+        },
+        "DDR4 8Gb 1Gx8": {
+          "avg": 24.0,
+          "high": null,
+          "low": null,
+          "change_pct": 14.29
+        },
+        "DDR4 4Gb 256Mx16": {
+          "avg": 14.5,
+          "high": null,
+          "low": null,
+          "change_pct": 11.54
+        },
+        "DDR3 4Gb 256Mx16": {
+          "avg": 14.5,
+          "high": null,
+          "low": null,
+          "change_pct": 16.0
+        }
+      }
+    },
+    "2026-08-2H": {
+      "key": "2026-08-2H",
+      "label": "2H Aug",
+      "year": 2026,
+      "month": 8,
+      "half": "2H",
+      "start": "2026-08-16",
+      "end": "2026-08-31",
+      "first_seen": "2026-09-30",
+      "last_seen": "2026-10-22",
+      "source_updated": "2026-08-31 14:00",
+      "items": {
+        "DDR5 8GB SO-DIMM": {
+          "avg": 133.0,
+          "high": 141.0,
+          "low": 118.0,
+          "change_pct": 2.31
+        },
+        "DDR4 16GB SO-DIMM": {
+          "avg": 270.0,
+          "high": 290.0,
+          "low": 245.0,
+          "change_pct": 1.89
+        },
+        "DDR4 8GB SO-DIMM": {
+          "avg": 142.0,
+          "high": 148.0,
+          "low": 125.0,
+          "change_pct": 2.16
+        },
+        "DDR4 16Gb 2Gx8": {
+          "avg": 50.0,
+          "high": 59.0,
+          "low": 47.0,
+          "change_pct": 4.17
+        },
+        "DDR4 8Gb 1Gx8": {
+          "avg": 25.0,
+          "high": 34.5,
+          "low": 22.5,
+          "change_pct": 4.17
+        },
+        "DDR4 4Gb 256Mx16": {
+          "avg": 15.2,
+          "high": 16.5,
+          "low": 14.0,
+          "change_pct": 4.83
+        },
+        "DDR3 4Gb 256Mx16": {
+          "avg": 15.2,
+          "high": 16.5,
+          "low": 14.0,
+          "change_pct": 4.83
+        }
+      },
+      "source": "live"
+    }
+  },
+  "source_updated": "2026-08-31 14:00",
+  "latest_period": "2026-08-2H",
+  "data_age_days": 52,
+  "freshness": "current"
 }

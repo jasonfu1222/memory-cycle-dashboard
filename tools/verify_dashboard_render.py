@@ -50,6 +50,9 @@ def main():
         page.goto(f"http://127.0.0.1:{port}/index.html", wait_until="networkidle")
         page.wait_for_selector("#app", state="visible", timeout=15000)
         body = page.inner_text("body")
+        n_signal_rows = page.locator("#signals-list .signal-row").count()
+        retired_text = page.inner_text("#retired-card")
+        weight_tags = page.locator(".weight-tag[data-w]").all_inner_texts()
         page.screenshot(path=str(ROOT / "tools" / "_render_check.png"), full_page=True)
         browser.close()
     httpd.shutdown()
@@ -94,6 +97,19 @@ def main():
     if sv.get("spot_chg_20d_pct") is not None:
         want("s3 替代觀察有顯示（現貨 vs 合約並排）", "s3 替代觀察" in body)
         want("替代觀察的狀態有顯示", (sv.get("state") or "###")[:6] in body)
+    # 2026-10-22：真合約價比值與資料期別要看得到，否則「比值不再恆為 1.00」只存在 JSON 裡
+    cr = sig.get("contract_ratio") or {}
+    if cr:
+        al = cr["primary"]["aligned"]["ratio"]
+        if al is not None:
+            want("期別對齊比值有顯示", f"{al:.2f}x" in body, f"{al:.2f}x")
+        want(
+            "合約資料期別與距期末天數有顯示", f"距期末 {cr['data_age_days']} 天" in body
+        )
+        want(
+            "合約價計分狀態有顯示",
+            (sig.get("contract_status") or {}).get("mode_text", "###") in body,
+        )
     rw = sig.get("ratio_watch") or {}
     if rw.get("rows"):
         want("DDR5/DDR4 比值觀測有顯示", f"{rw['rows'][0]['ratio']:.3f}" in body)
@@ -105,6 +121,40 @@ def main():
             "擴產的實際產出時間有顯示（不是只有宣布金額）",
             sx[0]["first_output_est"][:6] in body,
         )
+
+    # 2026-10-22 V4：已移除的訊號只准出現在「已移除」卡，不准有分數列；權重讀 JSON 不寫死
+    retired = sig.get("retired_signals") or []
+    active = sig.get("signals") or {}
+    want(
+        "已移除的訊號不在 signals 裡（不會有分數）",
+        not any(r["signal"] in active for r in retired),
+    )
+    want(
+        "訊號列數＝計分中的訊號數",
+        n_signal_rows == len(active),
+        f"{n_signal_rows} vs {len(active)}",
+    )
+    for r in retired:
+        want(f"已移除 {r['signal']} 有列出理由", r["signal"] in retired_text)
+    if sig.get("retired_note"):
+        want("移除說明（總分變低≠週期變好）有顯示", sig["retired_note"][:16] in body)
+    ws = sig.get("weights") or {}
+    want(
+        "說明區權重標籤全部有值（讀自 signals.json）",
+        weight_tags and all(t.strip().endswith("%") for t in weight_tags),
+        weight_tags,
+    )
+    for k, w in ws.items():
+        want(f"{k} 權重 {w:.2%} 有顯示", f"{round(w * 100, 2):g}%" in body)
+    ia = (sig.get("contract_status") or {}).get("if_activated")
+    if ia:
+        want("「若啟用」對照列有顯示", "若啟用" in body)
+        if isinstance(ia.get("cycle_score"), (int, float)):
+            want(
+                "若啟用總分有顯示",
+                f"{ia['cycle_score']:.1f}" in body,
+                f"{ia['cycle_score']:.1f}",
+            )
 
     for a in sig.get("alerts", []):
         want(f"告警有顯示：{a['msg'][:14]}…", a["msg"][:14] in body)

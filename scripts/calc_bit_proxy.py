@@ -28,7 +28,7 @@ BASE = Path(__file__).parent.parent
 DATA = BASE / "data"
 FX_FILE = DATA / "fx_usdtwd.json"
 OUT_FILE = DATA / "bit_proxy.json"
-CONTRACT = DATA / "contract_history.json"
+CONTRACT_REAL = DATA / "contract_real_history.json"
 KOREA = DATA / "korea_exports.json"
 GUIDANCE = DATA / "memory_guidance.json"
 REVENUE = Path(
@@ -45,7 +45,8 @@ FIRMS = {
     "2408": ("南亞科", "純 DRAM，利基型/DDR4 為主"),
     "2344": ("華邦電", "DRAM + NOR Flash"),
 }
-PRICE_KEYS = ["DDR4 16Gb (2Gx8) 3200", "DDR5 16Gb (2Gx8) 4800/5600"]
+# 真合約價的顆粒鍵（免費合約表沒有 DDR5 顆粒，只能跑 DDR4）
+PRICE_KEYS_REAL = ["DDR4 16Gb 2Gx8", "DDR4 8Gb 1Gx8"]
 
 
 def fetch_fx_monthly():
@@ -79,38 +80,48 @@ def fetch_fx_monthly():
 
 
 def contract_monthly():
-    d = json.loads(CONTRACT.read_text(encoding="utf-8-sig"))
-    # 2026-08-05：TrendForce 的 contract 頁與 spot 頁已合併，本檔存的其實是現貨。
-    # 分母是「合約價」是這個代理成立的前提，來源不對就不能算——寧可不出數字，
-    # 也不要在兩個月後資料湊齊時，靜默地拿現貨當合約價恢復輸出。
-    if d.get("data_integrity", {}).get("duplicate_of_spot"):
-        print(
-            "  [!! 停用] 合約檔與現貨同源，分母不是合約價。位元代理不計算。\n"
-            "      ★2026-08-19 覆核：真合約表已找到並自 8/10 起獨立累積"
-            "（data/contract_real_history.json），但仍不足以解除，還缺三件：\n"
-            "        ①月序列長度：算 MoM 至少要兩個完整月的合約月均，最早 2026-10 初才有；\n"
-            "        ②DDR5 沒得配：真合約表只有 DDR5 8GB SO-DIMM（模組，含 PCB/SPD），"
-            "沒有 DDR5 顆粒 → 解除後也只能跑 DDR4 一條，PRICE_KEYS 要砍半；\n"
-            "        ③分母會不會動：合約是半月報價且期別停在 2H Jun。"
-            "期別不前進時合約價MoM＝0，量MoM 會退化成美元營收MoM——"
-            "那是營收成長換個名字，不是位元量，比停用更危險。\n"
-            "      解除條件＝①②③同時成立；只滿足①就開，等於自欺。",
-            file=sys.stderr,
-        )
-        return None
-    out = {}
-    for key in PRICE_KEYS:
-        bym = {}
-        for row in d["series"].get(key, []):
-            bym.setdefault(row["date"][:7], []).append(row["price"])
-        out[key] = {ym: round(mean(v), 3) for ym, v in sorted(bym.items())}
-    return out
+    """2026-10-22 起：分母改用真合約價的期別紀錄（contract_real_history.periods）。
+
+    為什麼這樣就解掉了 8/19 的三個缺口：
+      ①月序列長度：periods 一期一筆，2H Jun／2H Jul／2H Aug 已有三個月（Wayback 回補後更多）；
+      ②DDR5 沒得配：仍然沒有——PRICE_KEYS_REAL 只放 DDR4 顆粒，誠實砍半；
+      ③分母不動退化成營收成長：舊寫法按「抓取日期」分月，期別沒換時同一個價格被分到兩個月，
+        合約價MoM＝0。現在按「期別所屬月份」分月、絕不往後補值：該月期別沒公布就是沒有，
+        那個月份直接不算，不會出現假的 0%。
+    口徑：免費層只有每月 2H（下半月）報價，所以「月合約價」＝當月 2H 價，不是全月均價；
+    同月若也有 1H（Wayback 偶見）就取兩期平均。
+    """
+    if CONTRACT_REAL.exists():
+        real = json.loads(CONTRACT_REAL.read_text(encoding="utf-8-sig"))
+        periods = real.get("periods") or {}
+        if periods:
+            out = {}
+            for key in PRICE_KEYS_REAL:
+                bym = {}
+                for p in periods.values():
+                    it = (p.get("items") or {}).get(key)
+                    if it and it.get("avg"):
+                        bym.setdefault(f"{p['year']}-{p['month']:02d}", []).append(
+                            it["avg"]
+                        )
+                out[key] = {ym: round(mean(v), 3) for ym, v in sorted(bym.items())}
+            return out, real
+    print(
+        "  [!! 停用] 找不到真合約價期別（contract_real_history.periods），位元代理不計算。",
+        file=sys.stderr,
+    )
+    return None, None
+
+
+def _prev_month(ym):
+    y, m = int(ym[:4]), int(ym[5:7])
+    return f"{y - 1}-12" if m == 1 else f"{y}-{m - 1:02d}"
 
 
 def main():
     print("抓 USD/TWD 月均 ...")
     fx = fetch_fx_monthly()
-    px = contract_monthly()
+    px, real = contract_monthly()
 
     rev = pd.read_parquet(REVENUE)
     rev["code"] = rev["code"].astype(str)
@@ -120,24 +131,34 @@ def main():
     print("位元出貨量代理（匯率已修正）")
     print(f"{'=' * 100}")
     if px is None:
-        print("  已停用：合約價來源失效，見上方訊息。對照 A／B 仍可看。")
+        print("  已停用：找不到真合約價期別，見上方訊息。對照 A／B 仍可看。")
         print("-" * 100)
-        _write_output([], disabled="合約價來源與現貨同源，分母無效")
+        _write_output([], disabled="無真合約價期別資料，分母不可用")
         _print_references()
         return
+    print(
+        f"  分母＝真合約價（{real.get('source_heading')}，每月取 2H 期別價；"
+        f"最近一期 {real.get('latest_period')}、距期末 {real.get('data_age_days')} 天）"
+    )
     print(
         f"{'公司':<12}{'期間':<18}{'台幣營收MoM':>12}{'匯率MoM':>10}{'美元營收MoM':>13}"
         f"{'合約價MoM':>11}{'→ 量MoM':>11}  口徑"
     )
     print("-" * 100)
 
+    pending = set()
     for code, (name, desc) in FIRMS.items():
         sub = rev[rev["code"] == code].sort_values("ym")
-        for key in PRICE_KEYS:
+        for key in PRICE_KEYS_REAL:
             pm = px[key]
-            months = sorted(set(pm) & set(sub["ym"]) & set(fx))
+            rev_months = set(sub["ym"])
+            # 營收已公布、合約價期別還沒放出來的月份＝等資料，不補值
+            pending |= {ym for ym in rev_months if ym > max(pm, default="")}
+            months = sorted(set(pm) & rev_months & set(fx))
             for i in range(1, len(months)):
                 cur, prv = months[i], months[i - 1]
+                if _prev_month(cur) != prv:
+                    continue  # 中間缺一個月的合約價就不跨月硬算
                 rc = sub.loc[sub["ym"] == cur, "revenue"]
                 rp = sub.loc[sub["ym"] == prv, "revenue"]
                 if rc.empty or rp.empty:
@@ -147,7 +168,7 @@ def main():
                 usd_mom = (1 + twd_mom) / (1 + fx_mom) - 1  # 貶值→美元營收成長被打折
                 p_mom = pm[cur] / pm[prv] - 1
                 q_mom = (1 + usd_mom) / (1 + p_mom) - 1
-                lbl = "DDR4" if "DDR4" in key else "DDR5"
+                lbl = key.rsplit(" ", 1)[0]
                 print(
                     f"{code} {name:<8}{prv}→{cur:<8}{twd_mom * 100:>11.1f}%{fx_mom * 100:>9.2f}%"
                     f"{usd_mom * 100:>12.1f}%{p_mom * 100:>10.1f}%{q_mom * 100:>10.1f}%   {lbl}"
@@ -169,8 +190,23 @@ def main():
 
     if not results:
         print("  （可對齊月份不足：合約價序列起點晚於營收，或營收尚未公布）")
+    recent_pending = sorted(ym for ym in pending if ym >= "2026-01")
+    if recent_pending:
+        print(
+            f"  [等資料] {', '.join(recent_pending)} 營收已公布，合約價期別尚未公開"
+            "（免費層每月月底才放上個月 2H），不補值、不算"
+        )
 
-    _write_output(results)
+    _write_output(
+        results,
+        meta={
+            "contract_source": "contract_real_history.periods（每月 2H 期別價）",
+            "contract_latest_period": real.get("latest_period"),
+            "contract_data_age_days": real.get("data_age_days"),
+            "contract_freshness": real.get("freshness"),
+            "pending_months": recent_pending,
+        },
+    )
 
     print(f"\n→ {OUT_FILE}")
     print(
@@ -181,13 +217,18 @@ def main():
     _print_references()
 
 
-def _write_output(results, disabled=None):
+def _write_output(results, disabled=None, meta=None):
     payload = {
         "updated": datetime.now().isoformat(),
         "method": "量MoM = (1+台幣營收MoM)/(1+USDTWD月均MoM)/(1+合約價MoM) - 1",
-        "caveat": "代理的是利基/消費端的量，非 AI 端；南亞科非純 DDR4，單一報價當分母有誤差",
+        "caveat": (
+            "代理的是利基/消費端的量，非 AI 端；南亞科非純 DDR4，單一報價當分母有誤差；"
+            "合約價取當月 2H 期別價（免費層無全月均價）"
+        ),
         "rows": results,
     }
+    if meta:
+        payload.update(meta)
     if disabled:
         payload["disabled"] = disabled
     OUT_FILE.write_text(

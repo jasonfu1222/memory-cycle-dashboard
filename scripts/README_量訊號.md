@@ -6,6 +6,13 @@ MU FQ3-2026 揭露的量價拆解是關鍵起點：DRAM 位元出貨量 QoQ 只�
 營收 QoQ +67% 裡價格佔了約 95%。要確認這是不是全行業現象、以及有沒有在改變，
 需要比季報更快的訊號。以下兩個工具就是為此建的。
 
+> **2026-10-22 V4 附記（評分腳本，不屬量訊號但同在本夾）**：儀表板手填訊號全部退場。新增
+> `fetch_sec_fundamentals.py`（SEC XBRL：四大雲端 capex／RPO、Micron 營收／銷貨成本／存貨 → `data/sec_fundamentals.json`，
+> 失敗沿用上一份、exit 0）與共用模組 `sec_xbrl.py`（累計值拆單季、法定申報期限）；`fetch_micron_gross.py` 改用
+> 同模組補出 FQ4。執行順序：fetch_spot → fetch_contract → fetch_micron_gross → fetch_sec_fundamentals → calc_score。
+> 測試：`test_v4_auto.py`、`test_freshness_gate.py`、`test_contract_gate.py`。規格與移除理由見上一層的
+> `守門與更新規格_freshness-gate.md` 五之四。本頁的位元代理（calc_bit_proxy）不受影響。
+
 ---
 
 ## 1. `fetch_korea_exports.py` — 韓國海關旬報（自動，已掛統一更新 Step 4.5）
