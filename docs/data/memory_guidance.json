@@ -28,6 +28,34 @@
       "nand_bit_qoq_guide_next": "低個位數 %（急鈍化）",
       "note": "營收 79.32 兆韓元(QoQ +51%/YoY +257%)、營益率 76%；HBM4 Q2 進入量產出貨；與約 10 家客戶簽多年期 LTA。Q3 明講積極回應伺服器需求。",
       "source": "SK hynix Q2 2026 法說"
+    },
+    {
+      "company": "Micron",
+      "quarter": "FY26Q4",
+      "period_end": "2026-08-27",
+      "reported_on": "2026-09-30",
+      "dram_bit_qoq_actual": "中個位數 %（由低個位數升上來）",
+      "dram_asp_qoq_actual": "（未記錄）",
+      "dram_bit_qoq_guide_next": "（未記錄）",
+      "nand_bit_qoq_actual": "（未記錄）",
+      "nand_asp_qoq_actual": "（未記錄）",
+      "nand_bit_qoq_guide_next": "（未記錄）",
+      "note": "營收 $54.23B 超指引上緣；FQ1 指引營收 $61.5B、EPS 37.84（QoQ 約 +13%）。2026-10-28 補登，細項當時沒記，只留 10/27 海力士部位報告引用的部分。",
+      "source": "MU FQ4-2026 財報（轉引自 SKhynix_Q3財報前_記憶體部位評估_2026-10-27）"
+    },
+    {
+      "company": "SK hynix",
+      "quarter": "2026Q3",
+      "period_end": "2026-09-30",
+      "reported_on": "2026-10-28",
+      "dram_bit_qoq_actual": "約 +10%（照指引）",
+      "dram_asp_qoq_actual": "高 20 幾 %",
+      "dram_bit_qoq_guide_next": "中 20 幾 %（大幅加速）",
+      "nand_bit_qoq_actual": "小幅下滑",
+      "nand_asp_qoq_actual": "中 20 幾 %（二手摘要，未對逐字稿）",
+      "nand_bit_qoq_guide_next": "中個位數 %",
+      "note": "營收 104.6 兆韓元（QoQ +32%）、營業利益 83.33 兆（LSEG 共識 76.72 兆）、營益率約 80%；伺服器 DDR5 出貨 QoQ +40% 以上；12-high HBM4 照客戶時程出貨，Q4 HBM4 出貨量與營收超越 HBM3E；2027 HBM 量價已與主要客戶談定；LTA 涵蓋 2027~28 產能逾 50%、14 家客戶；2027 capex 大幅高於 2026；股東回饋約 100 兆。Q4 ASP 未給數字指引。",
+      "source": "SK hynix 3Q26 新聞稿＋法說逐字稿（Investing.com）"
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-26T23:33:39.886141",
+  "updated": "2026-10-27T22:10:51.520524",
   "method": "量MoM = (1+台幣營收MoM)/(1+USDTWD月均MoM)/(1+合約價MoM) - 1",
   "caveat": "代理的是利基/消費端的量，非 AI 端；南亞科非純 DDR4，單一報價當分母有誤差；合約價取當月 2H 期別價（免費層無全月均價）",
   "rows": [
@@ -582,7 +582,7 @@
   ],
   "contract_source": "contract_real_history.periods（每月 2H 期別價）",
   "contract_latest_period": "2026-08-2H",
-  "contract_data_age_days": 56,
+  "contract_data_age_days": 57,
   "contract_freshness": "current",
   "pending_months": [
     "2026-09"
