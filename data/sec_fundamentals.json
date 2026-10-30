@@ -1,8 +1,8 @@
 {
-  "updated": "2026-10-29T21:37:27.494528",
+  "updated": "2026-10-30T21:52:27.187310",
   "source": "SEC EDGAR XBRL companyfacts（https://data.sec.gov/api/xbrl/companyfacts/）",
   "fetch": {
-    "date": "2026-10-29",
+    "date": "2026-10-30",
     "ok": [
       "GOOGL",
       "MSFT",
@@ -206,7 +206,7 @@
       "next_period_end_est": "2026-12-31",
       "next_form": "10-K",
       "due": "2027-03-01",
-      "fetched_at": "2026-10-29",
+      "fetched_at": "2026-10-30",
       "stale_cache": false
     },
     "MSFT": {
@@ -401,7 +401,7 @@
       "next_period_end_est": "2026-12-31",
       "next_form": "10-Q",
       "due": "2027-02-09",
-      "fetched_at": "2026-10-29",
+      "fetched_at": "2026-10-30",
       "stale_cache": false
     },
     "AMZN": {
@@ -411,15 +411,6 @@
       },
       "quarterly": {
         "capex": [
-          {
-            "start": "2023-07-01",
-            "end": "2023-09-30",
-            "days": 92,
-            "val": 12479000000,
-            "available": "2023-10-27",
-            "method": "direct",
-            "fq": 3
-          },
           {
             "start": "2023-10-01",
             "end": "2023-12-31",
@@ -518,16 +509,25 @@
             "available": "2026-07-31",
             "method": "direct",
             "fq": 2
+          },
+          {
+            "start": "2026-07-01",
+            "end": "2026-09-30",
+            "days": 92,
+            "val": 77259000000,
+            "available": "2026-10-30",
+            "method": "direct",
+            "fq": 3
           }
         ]
       },
       "instant": {},
-      "latest_period_end": "2026-06-30",
-      "latest_available": "2026-07-31",
-      "next_period_end_est": "2026-09-30",
-      "next_form": "10-Q",
-      "due": "2026-11-09",
-      "fetched_at": "2026-10-29",
+      "latest_period_end": "2026-09-30",
+      "latest_available": "2026-10-30",
+      "next_period_end_est": "2026-12-31",
+      "next_form": "10-K",
+      "due": "2027-03-01",
+      "fetched_at": "2026-10-30",
       "stale_cache": false
     },
     "META": {
@@ -653,7 +653,7 @@
       "next_period_end_est": "2026-12-31",
       "next_form": "10-K",
       "due": "2027-03-01",
-      "fetched_at": "2026-10-29",
+      "fetched_at": "2026-10-30",
       "stale_cache": false
     },
     "MU": {
@@ -959,7 +959,7 @@
       "next_period_end_est": "2026-12-03",
       "next_form": "10-Q",
       "due": "2027-01-12",
-      "fetched_at": "2026-10-29",
+      "fetched_at": "2026-10-30",
       "stale_cache": false
     }
   }
