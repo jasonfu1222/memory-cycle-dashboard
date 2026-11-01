@@ -56,6 +56,20 @@
       "nand_bit_qoq_guide_next": "中個位數 %",
       "note": "營收 104.6 兆韓元（QoQ +32%）、營業利益 83.33 兆（LSEG 共識 76.72 兆）、營益率約 80%；伺服器 DDR5 出貨 QoQ +40% 以上；12-high HBM4 照客戶時程出貨，Q4 HBM4 出貨量與營收超越 HBM3E；2027 HBM 量價已與主要客戶談定；LTA 涵蓋 2027~28 產能逾 50%、14 家客戶；2027 capex 大幅高於 2026；股東回饋約 100 兆。Q4 ASP 未給數字指引。",
       "source": "SK hynix 3Q26 新聞稿＋法說逐字稿（Investing.com）"
+    },
+    {
+      "company": "Samsung",
+      "quarter": "2026Q3",
+      "period_end": "2026-09-30",
+      "reported_on": "2026-10-29",
+      "dram_bit_qoq_actual": "低~中個位數 %（二手摘要，未對官方原文）",
+      "dram_asp_qoq_actual": "約 +20%（二手摘要，未對官方原文）",
+      "dram_bit_qoq_guide_next": "中~高十幾 %（加速；二手摘要原文 mid-to-high 10%，未對官方原文）",
+      "nand_bit_qoq_actual": "中個位數 %（二手摘要，未對官方原文）",
+      "nand_asp_qoq_actual": "高十幾 %（二手摘要，未對官方原文）",
+      "nand_bit_qoq_guide_next": "中十幾 %（二手摘要，未對官方原文）",
+      "note": "營收 195.3 兆韓元、營業利益 107.4 兆（首度破百兆）；DS 部門營收 147.1 兆、營業利益 106.5 兆；HBM4 銷售季增逾三倍、占 HBM 營收約 60%；2026 capex 約 84.4 兆（DS 76.8 兆）。★與海力士對照：兩家 Q4 DRAM 位元都指引加速（海力士中 20 幾 %、三星中~高十幾 %）＝總供給在增加，不是份額移轉；NAND 三星指引中十幾 % 明顯高於海力士中個位數。★位元數字只有 BigGo 單一來源，官方新聞稿 2026-10-31 兩次連線逾時未能核對。",
+      "source": "BigGo Finance 法說摘要（finance.biggo.com/news/KR_005930.KS_2026-10-29）＋三星新聞稿標題數字（多家轉載）"
     }
   ]
 }

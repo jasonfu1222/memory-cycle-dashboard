@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-29T21:58:24.477724",
+  "updated": "2026-10-30T22:10:59.353960",
   "method": "量MoM = (1+台幣營收MoM)/(1+USDTWD月均MoM)/(1+合約價MoM) - 1",
   "caveat": "代理的是利基/消費端的量，非 AI 端；南亞科非純 DDR4，單一報價當分母有誤差；合約價取當月 2H 期別價（免費層無全月均價）",
   "rows": [
@@ -150,6 +150,18 @@
     {
       "code": "2408",
       "name": "南亞科",
+      "from": "2026-08",
+      "to": "2026-09",
+      "price_key": "DDR4 16Gb 2Gx8",
+      "twd_rev_mom_pct": 0.9,
+      "fx_mom_pct": -0.91,
+      "usd_rev_mom_pct": 1.82,
+      "price_mom_pct": 4.0,
+      "bit_proxy_mom_pct": -2.1
+    },
+    {
+      "code": "2408",
+      "name": "南亞科",
       "from": "2025-06",
       "to": "2025-07",
       "price_key": "DDR4 8Gb 1Gx8",
@@ -290,6 +302,18 @@
       "usd_rev_mom_pct": 2.48,
       "price_mom_pct": 4.17,
       "bit_proxy_mom_pct": -1.62
+    },
+    {
+      "code": "2408",
+      "name": "南亞科",
+      "from": "2026-08",
+      "to": "2026-09",
+      "price_key": "DDR4 8Gb 1Gx8",
+      "twd_rev_mom_pct": 0.9,
+      "fx_mom_pct": -0.91,
+      "usd_rev_mom_pct": 1.82,
+      "price_mom_pct": 4.0,
+      "bit_proxy_mom_pct": -2.1
     },
     {
       "code": "2344",
@@ -438,6 +462,18 @@
     {
       "code": "2344",
       "name": "華邦電",
+      "from": "2026-08",
+      "to": "2026-09",
+      "price_key": "DDR4 16Gb 2Gx8",
+      "twd_rev_mom_pct": 3.44,
+      "fx_mom_pct": -0.91,
+      "usd_rev_mom_pct": 4.39,
+      "price_mom_pct": 4.0,
+      "bit_proxy_mom_pct": 0.37
+    },
+    {
+      "code": "2344",
+      "name": "華邦電",
       "from": "2025-06",
       "to": "2025-07",
       "price_key": "DDR4 8Gb 1Gx8",
@@ -578,13 +614,23 @@
       "usd_rev_mom_pct": 2.6,
       "price_mom_pct": 4.17,
       "bit_proxy_mom_pct": -1.5
+    },
+    {
+      "code": "2344",
+      "name": "華邦電",
+      "from": "2026-08",
+      "to": "2026-09",
+      "price_key": "DDR4 8Gb 1Gx8",
+      "twd_rev_mom_pct": 3.44,
+      "fx_mom_pct": -0.91,
+      "usd_rev_mom_pct": 4.39,
+      "price_mom_pct": 4.0,
+      "bit_proxy_mom_pct": 0.37
     }
   ],
   "contract_source": "contract_real_history.periods（每月 2H 期別價）",
-  "contract_latest_period": "2026-08-2H",
-  "contract_data_age_days": 59,
+  "contract_latest_period": "2026-09-2H",
+  "contract_data_age_days": 30,
   "contract_freshness": "current",
-  "pending_months": [
-    "2026-09"
-  ]
+  "pending_months": []
 }
