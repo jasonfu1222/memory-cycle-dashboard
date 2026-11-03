@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-02T21:41:05.602623",
-  "date": "2026-11-02",
+  "updated": "2026-11-03T21:40:37.934839",
+  "date": "2026-11-03",
   "methodology": "V4",
   "weights": {
     "s1": 0.1875,
@@ -39,7 +39,7 @@
       "level": "signal",
       "weight": 0.15,
       "since": "2026-07-31",
-      "days": 94,
+      "days": 95,
       "todo": "比值開關 RATIO_SCORING_ACTIVE 關著：11/10 決定是否開啟、門檻是否微調（trigger memory-dashboard-s3-recalibrate）。若啟用的分數見 contract_status.if_activated。"
     },
     {
@@ -48,7 +48,7 @@
       "parent": "s1",
       "weight": 0.0703,
       "since": "2026-08-05",
-      "days": 89,
+      "days": 90,
       "todo": "比值開關 RATIO_SCORING_ACTIVE 關著：11/10 決定是否開啟、門檻是否微調（trigger memory-dashboard-s3-recalibrate）。若啟用的分數見 contract_status.if_activated。"
     }
   ],
@@ -101,7 +101,7 @@
   ],
   "retired_note": "V4（2026-10-22）移除只能靠人讀新聞判斷的訊號。被移除的多半是高分＝警訊的項目（V3 最後一天 s8 6.4、s5 5.5、s9 5.0），所以總分變低是少了資訊，不是週期變好。",
   "sec_fetch": {
-    "date": "2026-11-02",
+    "date": "2026-11-03",
     "ok": [
       "GOOGL",
       "MSFT",
@@ -114,7 +114,7 @@
   "effective_weight": 0.85,
   "reliability": "ok",
   "freshness": {
-    "as_of": "2026-11-02",
+    "as_of": "2026-11-03",
     "effective_weight": 0.85,
     "fresh_weight": 0.188,
     "stale_weight": 0.0,
@@ -140,56 +140,56 @@
         "parent": "s2",
         "next_due": "2026-12-14",
         "waiting_for": "下一期合約價（免費層每月月底放上個月 2H；期限＝最近一期期末 + 75 天）",
-        "days_to_due": 42
+        "days_to_due": 41
       },
       {
         "signal": "s6a(auto:micron)",
         "parent": "s6",
         "next_due": "2027-01-12",
         "waiting_for": "Micron 下一份 10-Q 法定申報期限",
-        "days_to_due": 71
+        "days_to_due": 70
       },
       {
         "signal": "s6b(auto:MU營收)",
         "parent": "s6",
         "next_due": "2027-01-12",
         "waiting_for": "MU 下一份 10-Q 法定申報期限",
-        "days_to_due": 71
+        "days_to_due": 70
       },
       {
         "signal": "s7(auto:MU存貨)",
         "parent": "s7",
         "next_due": "2027-01-12",
         "waiting_for": "MU 下一份 10-Q 法定申報期限",
-        "days_to_due": 71
+        "days_to_due": 70
       },
       {
         "signal": "s4(MSFT)",
         "parent": "s4",
         "next_due": "2027-02-09",
         "waiting_for": "MSFT 下一份 10-Q 法定申報期限",
-        "days_to_due": 99
+        "days_to_due": 98
       },
       {
         "signal": "s4(GOOGL)",
         "parent": "s4",
         "next_due": "2027-03-01",
         "waiting_for": "GOOGL 下一份 10-K 法定申報期限",
-        "days_to_due": 119
+        "days_to_due": 118
       },
       {
         "signal": "s4(AMZN)",
         "parent": "s4",
         "next_due": "2027-03-01",
         "waiting_for": "AMZN 下一份 10-K 法定申報期限",
-        "days_to_due": 119
+        "days_to_due": 118
       },
       {
         "signal": "s4(META)",
         "parent": "s4",
         "next_due": "2027-03-01",
         "waiting_for": "META 下一份 10-K 法定申報期限",
-        "days_to_due": 119
+        "days_to_due": 118
       }
     ],
     "overdue_items": [],
@@ -198,7 +198,7 @@
       "s1": {
         "weight": 0.1875,
         "source": "auto",
-        "as_of": "2026-11-02",
+        "as_of": "2026-11-03",
         "age_days": 0,
         "bucket": "fresh",
         "oldest_item": "s1a(auto:spot)",
@@ -357,14 +357,14 @@
     }
   ],
   "contract_watch": {
-    "as_of": "2026-11-02",
+    "as_of": "2026-11-03",
     "vintage": "2H Sep",
-    "vintage_span_days": 3,
+    "vintage_span_days": 4,
     "vintage_stalled": false,
     "period_change_median_pct": 1.97,
     "spot_vs_contract": {
       "spot_key": "DDR5 16Gb (2Gx8) 4800/5600",
-      "spot_chg_20d_pct": 5.73,
+      "spot_chg_20d_pct": 5.31,
       "contract_period_chg_pct": 1.97,
       "diverging": false,
       "spot_lagging": false,
@@ -407,7 +407,7 @@
         "spot": 82.719,
         "contract": 52.0,
         "ratio": 1.591,
-        "spot_date": "2026-11-02",
+        "spot_date": "2026-11-03",
         "aligned_ratio": 1.633,
         "aligned_window": "2026-09-16~2026-09-30",
         "aligned_spot_mean": 84.931
@@ -417,7 +417,7 @@
         "spot": 46.821,
         "contract": 26.0,
         "ratio": 1.801,
-        "spot_date": "2026-11-02",
+        "spot_date": "2026-11-03",
         "aligned_ratio": 1.772,
         "aligned_window": "2026-09-16~2026-09-30",
         "aligned_spot_mean": 46.075
@@ -432,7 +432,7 @@
     "period_window": "2026-09-16~2026-09-30",
     "source_updated": "2026-09-30 17:00",
     "first_seen": "2026-10-30",
-    "data_age_days": 33,
+    "data_age_days": 34,
     "freshness": "current",
     "thresholds": {
       "warn_days": 75,
@@ -449,7 +449,7 @@
       },
       "live": {
         "spot": 82.719,
-        "spot_date": "2026-11-02",
+        "spot_date": "2026-11-03",
         "ratio": 1.591
       }
     },
@@ -465,7 +465,7 @@
         },
         "live": {
           "spot": 82.719,
-          "spot_date": "2026-11-02",
+          "spot_date": "2026-11-03",
           "ratio": 1.591
         }
       },
@@ -480,7 +480,7 @@
         },
         "live": {
           "spot": 46.821,
-          "spot_date": "2026-11-02",
+          "spot_date": "2026-11-03",
           "ratio": 1.801
         }
       }
@@ -703,7 +703,7 @@
       "score": 2.0,
       "status": "green",
       "level": 1.633,
-      "detail": "[green] 水準 1.63｜DDR4 16Gb 2Gx8 期別對齊 1.63（2H Sep 2026-09-16~2026-09-30 現貨均 84.931 ÷ 合約 52.0）｜即時 1.59｜資料期別 2H Sep，距期末 33 天（current）"
+      "detail": "[green] 水準 1.63｜DDR4 16Gb 2Gx8 期別對齊 1.63（2H Sep 2026-09-16~2026-09-30 現貨均 84.931 ÷ 合約 52.0）｜即時 1.59｜資料期別 2H Sep，距期末 34 天（current）"
     },
     "if_activated": {
       "basis": "照上面門檻計分、開關打開時的總分（目前開關關著，此列不進總分）",
@@ -714,28 +714,28 @@
     }
   },
   "ratio_watch": {
-    "as_of": "2026-11-02",
+    "as_of": "2026-11-03",
     "scored": false,
     "rows": [
       {
         "pair": "DDR5 16Gb (2Gx8) 4800/5600 ÷ DDR4 16Gb (2Gx8) 3200",
         "label": "同容量（原程式比的這組）",
         "ratio": 0.743,
-        "as_of": "2026-11-02",
+        "as_of": "2026-11-03",
         "window_days": 60,
         "window_min": 0.578,
         "window_max": 0.743,
-        "n_total": 361
+        "n_total": 362
       },
       {
         "pair": "DDR5 16Gb (2Gx8) 4800/5600 ÷ DDR4 8Gb (1Gx8) 3200",
         "label": "異容量（舊階梯疑似照這組校準）",
         "ratio": 1.314,
-        "as_of": "2026-11-02",
+        "as_of": "2026-11-03",
         "window_days": 60,
         "window_min": 1.195,
         "window_max": 1.319,
-        "n_total": 361
+        "n_total": 362
       }
     ],
     "ddr4_trend": {
@@ -838,7 +838,7 @@
       "sub": {
         "1a": {
           "score": 1.0,
-          "detail": "DDR5 $61.5 | >$61.4 5MA ↑ | >$60.5 20MA ↑ | golden cross"
+          "detail": "DDR5 $61.5 | >$61.5 5MA ↑ | >$60.7 20MA ↑ | golden cross"
         },
         "1b": {
           "score": null,
@@ -853,12 +853,12 @@
     "s2": {
       "score": 3.5,
       "label": "DRAM 合約價 3 個月變動（真合約價）",
-      "detail": "[auto] 合約價 3 個月變動 +19.7%（DDR5 8GB SO-DIMM 115.0→133.0（2H Jun 2026 起 3 個月 +15.7%）；DDR4 16Gb 2Gx8 42.0→52.0（2H Jun 2026 起 3 個月 +23.8%））｜資料期別 2H Sep 2026，距期末 33 天（current）",
+      "detail": "[auto] 合約價 3 個月變動 +19.7%（DDR5 8GB SO-DIMM 115.0→133.0（2H Jun 2026 起 3 個月 +15.7%）；DDR4 16Gb 2Gx8 42.0→52.0（2H Jun 2026 起 3 個月 +23.8%））｜資料期別 2H Sep 2026，距期末 34 天（current）",
       "data": {
         "period": "2H Sep 2026",
         "period_key": "2026-09-2H",
         "first_seen": "2026-10-30",
-        "data_age_days": 33,
+        "data_age_days": 34,
         "freshness": "current",
         "next_due": "2026-12-14",
         "rows": [
@@ -885,7 +885,7 @@
     "s3": {
       "score": null,
       "label": "現貨÷合約 比值水準",
-      "detail": "開關關閉（11/10 決定是否開啟）｜若啟用：2.0｜[green] 水準 1.63｜DDR4 16Gb 2Gx8 期別對齊 1.63（2H Sep 2026-09-16~2026-09-30 現貨均 84.931 ÷ 合約 52.0）｜即時 1.59｜資料期別 2H Sep，距期末 33 天（current）"
+      "detail": "開關關閉（11/10 決定是否開啟）｜若啟用：2.0｜[green] 水準 1.63｜DDR4 16Gb 2Gx8 期別對齊 1.63（2H Sep 2026-09-16~2026-09-30 現貨均 84.931 ÷ 合約 52.0）｜即時 1.59｜資料期別 2H Sep，距期末 34 天（current）"
     },
     "s4": {
       "score": 2.0,
