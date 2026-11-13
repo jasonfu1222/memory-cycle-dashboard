@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-12T21:31:32.773796",
-  "date": "2026-11-12",
+  "updated": "2026-11-13T21:31:41.578443",
+  "date": "2026-11-13",
   "methodology": "V4",
   "weights": {
     "s1": 0.1875,
@@ -27,12 +27,7 @@
   "cycle_score": 3.15,
   "status_color": "green",
   "status_text": "Mid Cycle — 多數訊號正面，持有，密切監控",
-  "alerts": [
-    {
-      "level": "yellow",
-      "msg": "Signal 1 Yellow：連續 3 天 DDR5 spot 跌破 5MA"
-    }
-  ],
+  "alerts": [],
   "manual_last_updated": "2026-10-22",
   "stale_signals": [],
   "excluded_signals": [
@@ -44,7 +39,7 @@
       "level": "signal",
       "weight": 0.15,
       "since": "2026-07-31",
-      "days": 104,
+      "days": 105,
       "todo": "比值開關 RATIO_SCORING_ACTIVE 關著：11/10 決定是否開啟、門檻是否微調（trigger memory-dashboard-s3-recalibrate）。若啟用的分數見 contract_status.if_activated。"
     },
     {
@@ -53,7 +48,7 @@
       "parent": "s1",
       "weight": 0.0703,
       "since": "2026-08-05",
-      "days": 99,
+      "days": 100,
       "todo": "比值開關 RATIO_SCORING_ACTIVE 關著：11/10 決定是否開啟、門檻是否微調（trigger memory-dashboard-s3-recalibrate）。若啟用的分數見 contract_status.if_activated。"
     }
   ],
@@ -106,7 +101,7 @@
   ],
   "retired_note": "V4（2026-10-22）移除只能靠人讀新聞判斷的訊號。被移除的多半是高分＝警訊的項目（V3 最後一天 s8 6.4、s5 5.5、s9 5.0），所以總分變低是少了資訊，不是週期變好。",
   "sec_fetch": {
-    "date": "2026-11-12",
+    "date": "2026-11-13",
     "ok": [
       "GOOGL",
       "MSFT",
@@ -119,7 +114,7 @@
   "effective_weight": 0.85,
   "reliability": "ok",
   "freshness": {
-    "as_of": "2026-11-12",
+    "as_of": "2026-11-13",
     "effective_weight": 0.85,
     "fresh_weight": 0.188,
     "stale_weight": 0.0,
@@ -145,56 +140,56 @@
         "parent": "s2",
         "next_due": "2026-12-14",
         "waiting_for": "下一期合約價（免費層每月月底放上個月 2H；期限＝最近一期期末 + 75 天）",
-        "days_to_due": 32
+        "days_to_due": 31
       },
       {
         "signal": "s6a(auto:micron)",
         "parent": "s6",
         "next_due": "2027-01-12",
         "waiting_for": "Micron 下一份 10-Q 法定申報期限",
-        "days_to_due": 61
+        "days_to_due": 60
       },
       {
         "signal": "s6b(auto:MU營收)",
         "parent": "s6",
         "next_due": "2027-01-12",
         "waiting_for": "MU 下一份 10-Q 法定申報期限",
-        "days_to_due": 61
+        "days_to_due": 60
       },
       {
         "signal": "s7(auto:MU存貨)",
         "parent": "s7",
         "next_due": "2027-01-12",
         "waiting_for": "MU 下一份 10-Q 法定申報期限",
-        "days_to_due": 61
+        "days_to_due": 60
       },
       {
         "signal": "s4(MSFT)",
         "parent": "s4",
         "next_due": "2027-02-09",
         "waiting_for": "MSFT 下一份 10-Q 法定申報期限",
-        "days_to_due": 89
+        "days_to_due": 88
       },
       {
         "signal": "s4(GOOGL)",
         "parent": "s4",
         "next_due": "2027-03-01",
         "waiting_for": "GOOGL 下一份 10-K 法定申報期限",
-        "days_to_due": 109
+        "days_to_due": 108
       },
       {
         "signal": "s4(AMZN)",
         "parent": "s4",
         "next_due": "2027-03-01",
         "waiting_for": "AMZN 下一份 10-K 法定申報期限",
-        "days_to_due": 109
+        "days_to_due": 108
       },
       {
         "signal": "s4(META)",
         "parent": "s4",
         "next_due": "2027-03-01",
         "waiting_for": "META 下一份 10-K 法定申報期限",
-        "days_to_due": 109
+        "days_to_due": 108
       }
     ],
     "overdue_items": [],
@@ -203,7 +198,7 @@
       "s1": {
         "weight": 0.1875,
         "source": "auto",
-        "as_of": "2026-11-12",
+        "as_of": "2026-11-13",
         "age_days": 0,
         "bucket": "fresh",
         "oldest_item": "s1a(auto:spot)",
@@ -362,14 +357,14 @@
     }
   ],
   "contract_watch": {
-    "as_of": "2026-11-12",
+    "as_of": "2026-11-13",
     "vintage": "2H Sep",
-    "vintage_span_days": 13,
+    "vintage_span_days": 14,
     "vintage_stalled": false,
     "period_change_median_pct": 1.97,
     "spot_vs_contract": {
       "spot_key": "DDR5 16Gb (2Gx8) 4800/5600",
-      "spot_chg_20d_pct": -0.61,
+      "spot_chg_20d_pct": -0.6,
       "contract_period_chg_pct": 1.97,
       "diverging": true,
       "spot_lagging": false,
@@ -409,20 +404,20 @@
     "die_ratios": [
       {
         "pair": "DDR4 16Gb (2Gx8) 3200 ÷ DDR4 16Gb 2Gx8",
-        "spot": 79.75,
+        "spot": 79.5,
         "contract": 52.0,
-        "ratio": 1.534,
-        "spot_date": "2026-11-12",
+        "ratio": 1.529,
+        "spot_date": "2026-11-13",
         "aligned_ratio": 1.633,
         "aligned_window": "2026-09-16~2026-09-30",
         "aligned_spot_mean": 84.931
       },
       {
         "pair": "DDR4 8Gb (1Gx8) 3200 ÷ DDR4 8Gb 1Gx8",
-        "spot": 44.714,
+        "spot": 44.536,
         "contract": 26.0,
-        "ratio": 1.72,
-        "spot_date": "2026-11-12",
+        "ratio": 1.713,
+        "spot_date": "2026-11-13",
         "aligned_ratio": 1.772,
         "aligned_window": "2026-09-16~2026-09-30",
         "aligned_spot_mean": 46.075
@@ -437,7 +432,7 @@
     "period_window": "2026-09-16~2026-09-30",
     "source_updated": "2026-09-30 17:00",
     "first_seen": "2026-10-30",
-    "data_age_days": 43,
+    "data_age_days": 44,
     "freshness": "current",
     "thresholds": {
       "warn_days": 75,
@@ -453,9 +448,9 @@
         "ratio": 1.633
       },
       "live": {
-        "spot": 79.75,
-        "spot_date": "2026-11-12",
-        "ratio": 1.534
+        "spot": 79.5,
+        "spot_date": "2026-11-13",
+        "ratio": 1.529
       }
     },
     "pairs": [
@@ -469,9 +464,9 @@
           "ratio": 1.633
         },
         "live": {
-          "spot": 79.75,
-          "spot_date": "2026-11-12",
-          "ratio": 1.534
+          "spot": 79.5,
+          "spot_date": "2026-11-13",
+          "ratio": 1.529
         }
       },
       {
@@ -484,9 +479,9 @@
           "ratio": 1.772
         },
         "live": {
-          "spot": 44.714,
-          "spot_date": "2026-11-12",
-          "ratio": 1.72
+          "spot": 44.536,
+          "spot_date": "2026-11-13",
+          "ratio": 1.713
         }
       }
     ],
@@ -708,7 +703,7 @@
       "score": 2.0,
       "status": "green",
       "level": 1.633,
-      "detail": "[green] 水準 1.63｜DDR4 16Gb 2Gx8 期別對齊 1.63（2H Sep 2026-09-16~2026-09-30 現貨均 84.931 ÷ 合約 52.0）｜即時 1.53｜資料期別 2H Sep，距期末 43 天（current）"
+      "detail": "[green] 水準 1.63｜DDR4 16Gb 2Gx8 期別對齊 1.63（2H Sep 2026-09-16~2026-09-30 現貨均 84.931 ÷ 合約 52.0）｜即時 1.53｜資料期別 2H Sep，距期末 44 天（current）"
     },
     "if_activated": {
       "basis": "照上面門檻計分、開關打開時的總分（目前開關關著，此列不進總分）",
@@ -719,33 +714,33 @@
     }
   },
   "ratio_watch": {
-    "as_of": "2026-11-12",
+    "as_of": "2026-11-13",
     "scored": false,
     "rows": [
       {
         "pair": "DDR5 16Gb (2Gx8) 4800/5600 ÷ DDR4 16Gb (2Gx8) 3200",
         "label": "同容量（原程式比的這組）",
-        "ratio": 0.755,
-        "as_of": "2026-11-12",
+        "ratio": 0.758,
+        "as_of": "2026-11-13",
         "window_days": 60,
         "window_min": 0.578,
-        "window_max": 0.755,
+        "window_max": 0.758,
         "n_total": 365
       },
       {
         "pair": "DDR5 16Gb (2Gx8) 4800/5600 ÷ DDR4 8Gb (1Gx8) 3200",
         "label": "異容量（舊階梯疑似照這組校準）",
-        "ratio": 1.347,
-        "as_of": "2026-11-12",
+        "ratio": 1.353,
+        "as_of": "2026-11-13",
         "window_days": 60,
         "window_min": 1.195,
-        "window_max": 1.347,
+        "window_max": 1.353,
         "n_total": 365
       }
     ],
     "ddr4_trend": {
-      "price": 79.75,
-      "chg_20d_pct": -4.67,
+      "price": 79.5,
+      "chg_20d_pct": -4.69,
       "direction": "下跌"
     },
     "release_condition": "s1c 已於 2026-10-22 移除，本層只觀測。若日後要恢復計分，條件是樣本跨越一次 DDR4 價格轉折（由漲轉跌或由跌轉漲）；只累積天數不算——現有歷史全落在 DDR4 停產稀缺的同一種狀態。"
@@ -754,7 +749,8 @@
     "_comment": "供給側擴產觀察層（2026-09-02 新增，Jason 裁決：不評分，獨立觀察）。記憶體循環歷來的死因是供給，但 9 個訊號沒有一條在盯它——8/28 的筆記自己列了這個缺口。",
     "_why_not_scored": "擴產轉成供給有 12~36 個月的時間差，而我們沒有校準依據可以把『宣布金額』換算成『分數』。硬要評分只會製造一個沒人知道對不對的數字。這裡只做一件事：把每筆擴產的**產出時間**釘在時間軸上，讓你自己看它會不會撞到你的持有區間。",
     "_key_insight": "★★2026-09-02 查證後的關鍵分辨：**宣布日與產出日差 2~3 年，兩者不可混為一談**。SK hynix 8/07 核准的 380 億美元，第一座無塵室要到 2028-12（M17）與 2029-06（Y2），2029 年前一顆都出不來。真正會在 2027~2028 加供給的是**已經在蓋的** M15X 與龍仁一期。所以：新核准的擴產**不是**把週期終點往前拉的證據（它落在 2029 之後），該盯的是已在進行的那批。",
-    "_last_updated": "2026-09-02",
+    "_last_updated": "2026-11-13",
+    "_detail_log": "完整條目、來源與每月更新在 擴產紀錄_capacity-log.md（2026-11-13 起取代 s9，每月更新）。本檔只放看板摘要。",
     "items": [
       {
         "id": "skhynix-y2-yongin",
@@ -790,7 +786,7 @@
         "amount": "—",
         "status": "施工中",
         "groundbreaking": "已動土",
-        "first_cleanroom": "龍仁一期無塵室 2027 年初開放",
+        "first_cleanroom": "龍仁一期無塵室 2027-02 開放（10/28 法說仍維持）；M15X 2026 年底滿產",
         "first_output_est": "2027H2 ~ 2028",
         "output_date_source": "外部報導轉述公司說法；無塵室開放到實際量產通常再 6~12 個月＝此欄為估計",
         "note": "★★**這才是該盯的那一筆**。SK hynix 在 2029 年前能加的供給全部來自這兩個案子。它的產出時間（2027H2~2028）正好撞上業內共識的週期終點 2027H2±一季——若量產進度超前，共識的終點就要往前修。"
@@ -818,6 +814,74 @@
         "first_output_est": "—",
         "output_date_source": "—",
         "note": "★放在供給側觀察是因為它的**第二層效果**：這筆巨額長約是原廠擴產的融資與底氣，等於替上面那幾座廠背書。短期是需求利多，中期是供給燃料。"
+      },
+      {
+        "id": "samsung-p5-ph1",
+        "date": "2026-09-28",
+        "company": "Samsung",
+        "item": "平澤 P5 第一期（DRAM／HBM）設備搬入洽談由 2027 年 7~8 月提前到 5~6 月",
+        "amount": "—",
+        "status": "無塵室施工中（2026Q3 動工）",
+        "groundbreaking": "已動工",
+        "first_cleanroom": "設備搬入 2027Q2（洽談中）",
+        "first_output_est": "2028H2（媒體引業界）",
+        "output_date_source": "ZDNet Korea 9/28 經轉述；三星法說未提廠名",
+        "note": "提前約一季但未定案。第二期較可能做 NAND。"
+      },
+      {
+        "id": "samsung-capex-2027",
+        "date": "2026-10-29",
+        "company": "Samsung",
+        "item": "2026 資本支出 84.4 兆韓元（DS 76.8 兆）；2027 將大幅增加，但公司稱不太可能讓 2028 位元產出有意義增加",
+        "amount": "84.4 兆韓元（2026）",
+        "status": "法說指引",
+        "first_output_est": "2028 年後（公司說法）",
+        "output_date_source": "Q3 法說逐字稿",
+        "note": "預先投資無塵室＝錢先花在廠房，產能後到。"
+      },
+      {
+        "id": "samsung-onyang-hbm-pkg",
+        "date": "2026-11",
+        "company": "Samsung",
+        "item": "溫陽 HBM 封裝新廠動土（原報 9~10 月，延至 11 月）",
+        "amount": "報導不一（1.3 兆／6 兆韓元）",
+        "status": "動土（是否已舉行未驗證）",
+        "first_output_est": "2029-05",
+        "output_date_source": "韓國媒體轉述公司與地方政府",
+        "note": "動土延後、量產目標不變。"
+      },
+      {
+        "id": "skhynix-capex-2027",
+        "date": "2026-10-28",
+        "company": "SK hynix",
+        "item": "2027 資本支出隨龍仁一期啟動大幅增加（未給金額）；長約覆蓋 2027~2028 產能 50% 以上",
+        "amount": "未揭露",
+        "status": "法說指引",
+        "first_output_est": "2027H2~2028（龍仁一期）",
+        "output_date_source": "公司財報資料經媒體整理",
+        "note": "另有『龍仁與 M17 廠房外殼提前』一說，僅 AI 摘要單一來源，未驗證。"
+      },
+      {
+        "id": "micron-fy27-capex",
+        "date": "2026-09-30",
+        "company": "Micron",
+        "item": "FY27 資本支出上調，增加部分主要是無塵室土建；FQ1 約 115 億、上半年約 250 億美元",
+        "amount": "FY26 273.7 億美元；FY27 未給全年",
+        "status": "法說指引",
+        "first_output_est": "2028 年底之後（新增無塵室）",
+        "output_date_source": "公司法說",
+        "note": "公告當晚盤後股價因資本支出回落。"
+      },
+      {
+        "id": "micron-id1-id2-japan-sg",
+        "date": "2026-09-30",
+        "company": "Micron",
+        "item": "愛達荷 ID1／ID2、日本新廠、新加坡 NAND 時程重申",
+        "amount": "—",
+        "status": "施工中",
+        "first_output_est": "ID1 2027 年中；ID2 與日本 2028 年底；新加坡 NAND 2028H2",
+        "output_date_source": "公司法說",
+        "note": "與 6 月 FQ3 說法相同，不變。"
       }
     ],
     "watch_rules": {
@@ -832,7 +896,7 @@
         "資本支出年增率（同一筆錢會攤在 3 年，年增率會重複計算同一件事）"
       ],
       "escalate_to_scored_when": "當『已在進行的產能』出現可量化的月度序列（例如龍仁一期無塵室開放後的設備搬入進度、或 CXMT 月產能實測值），且累積到能定門檻時，再考慮把這層轉成評分訊號。在那之前維持觀察。",
-      "next_review": "2027-01（龍仁一期無塵室預定開放）；期間若三星或美光宣布同級別新廠則提前"
+      "next_review": "每月更新（2026-11-13 起，細節見 擴產紀錄_capacity-log.md）；2027-01~02 龍仁一期無塵室預定開放為重點"
     }
   },
   "signals": {
@@ -843,7 +907,7 @@
       "sub": {
         "1a": {
           "score": 4.0,
-          "detail": "DDR5 $60.2 | >$60.2 5MA ↑ | <60.9 20MA ↓ | death cross"
+          "detail": "DDR5 $60.3 | >$60.2 5MA ↑ | <60.9 20MA ↓ | death cross"
         },
         "1b": {
           "score": null,
@@ -858,12 +922,12 @@
     "s2": {
       "score": 3.5,
       "label": "DRAM 合約價 3 個月變動（真合約價）",
-      "detail": "[auto] 合約價 3 個月變動 +19.7%（DDR5 8GB SO-DIMM 115.0→133.0（2H Jun 2026 起 3 個月 +15.7%）；DDR4 16Gb 2Gx8 42.0→52.0（2H Jun 2026 起 3 個月 +23.8%））｜資料期別 2H Sep 2026，距期末 43 天（current）",
+      "detail": "[auto] 合約價 3 個月變動 +19.7%（DDR5 8GB SO-DIMM 115.0→133.0（2H Jun 2026 起 3 個月 +15.7%）；DDR4 16Gb 2Gx8 42.0→52.0（2H Jun 2026 起 3 個月 +23.8%））｜資料期別 2H Sep 2026，距期末 44 天（current）",
       "data": {
         "period": "2H Sep 2026",
         "period_key": "2026-09-2H",
         "first_seen": "2026-10-30",
-        "data_age_days": 43,
+        "data_age_days": 44,
         "freshness": "current",
         "next_due": "2026-12-14",
         "rows": [
@@ -890,7 +954,7 @@
     "s3": {
       "score": null,
       "label": "現貨÷合約 比值水準",
-      "detail": "開關關閉（11/10 決定是否開啟）｜若啟用：2.0｜[green] 水準 1.63｜DDR4 16Gb 2Gx8 期別對齊 1.63（2H Sep 2026-09-16~2026-09-30 現貨均 84.931 ÷ 合約 52.0）｜即時 1.53｜資料期別 2H Sep，距期末 43 天（current）"
+      "detail": "開關關閉（11/10 決定是否開啟）｜若啟用：2.0｜[green] 水準 1.63｜DDR4 16Gb 2Gx8 期別對齊 1.63（2H Sep 2026-09-16~2026-09-30 現貨均 84.931 ÷ 合約 52.0）｜即時 1.53｜資料期別 2H Sep，距期末 44 天（current）"
     },
     "s4": {
       "score": 2.0,
