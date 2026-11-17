@@ -2717,7 +2717,7 @@
       }
     ]
   },
-  "updated": "2026-11-17T00:28:58.259497",
+  "updated": "2026-11-17T21:31:28.014392",
   "source_heading": "DRAM Contract Price (2H Sep)",
   "price_column": "Session Average",
   "note": "真・DRAM 合約價（TrendForce 頁內獨立表）。★免費層每月月底換一次期別、放的是上個月 2H，所以資料年齡（今天−期別結束日）正常就在 30~61 天；超過 75 天＝該來的月底更新沒來。★這是「期別價」不是日價：periods 一期一筆，series 是逐日快照（同期別內必然相同）。顆粒項（DDR4 16Gb 2Gx8 等）與現貨同口徑可比；模組項（DDR5 8GB SO-DIMM 等）含 PCB/SPD 非純顆粒，不可與顆粒現貨相除。s1b/s3 比值與位元代理自 2026-10-22 起讀 periods，規則見 scripts/contract_period.py。",

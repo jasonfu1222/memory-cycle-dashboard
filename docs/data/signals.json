@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-17T00:29:05.261910",
+  "updated": "2026-11-17T21:31:33.590091",
   "date": "2026-11-17",
   "methodology": "V4",
   "weights": {
@@ -198,8 +198,8 @@
       "s1": {
         "weight": 0.1875,
         "source": "auto",
-        "as_of": "2026-11-16",
-        "age_days": 1,
+        "as_of": "2026-11-17",
+        "age_days": 0,
         "bucket": "fresh",
         "oldest_item": "s1a(auto:spot)",
         "items": [
@@ -364,7 +364,7 @@
     "period_change_median_pct": 1.97,
     "spot_vs_contract": {
       "spot_key": "DDR5 16Gb (2Gx8) 4800/5600",
-      "spot_chg_20d_pct": -0.88,
+      "spot_chg_20d_pct": -1.26,
       "contract_period_chg_pct": 1.97,
       "diverging": true,
       "spot_lagging": false,
@@ -404,20 +404,20 @@
     "die_ratios": [
       {
         "pair": "DDR4 16Gb (2Gx8) 3200 ÷ DDR4 16Gb 2Gx8",
-        "spot": 79.375,
+        "spot": 79.125,
         "contract": 52.0,
-        "ratio": 1.526,
-        "spot_date": "2026-11-16",
+        "ratio": 1.522,
+        "spot_date": "2026-11-17",
         "aligned_ratio": 1.633,
         "aligned_window": "2026-09-16~2026-09-30",
         "aligned_spot_mean": 84.931
       },
       {
         "pair": "DDR4 8Gb (1Gx8) 3200 ÷ DDR4 8Gb 1Gx8",
-        "spot": 44.357,
+        "spot": 44.25,
         "contract": 26.0,
-        "ratio": 1.706,
-        "spot_date": "2026-11-16",
+        "ratio": 1.702,
+        "spot_date": "2026-11-17",
         "aligned_ratio": 1.772,
         "aligned_window": "2026-09-16~2026-09-30",
         "aligned_spot_mean": 46.075
@@ -448,9 +448,9 @@
         "ratio": 1.633
       },
       "live": {
-        "spot": 79.375,
-        "spot_date": "2026-11-16",
-        "ratio": 1.526
+        "spot": 79.125,
+        "spot_date": "2026-11-17",
+        "ratio": 1.522
       }
     },
     "pairs": [
@@ -464,9 +464,9 @@
           "ratio": 1.633
         },
         "live": {
-          "spot": 79.375,
-          "spot_date": "2026-11-16",
-          "ratio": 1.526
+          "spot": 79.125,
+          "spot_date": "2026-11-17",
+          "ratio": 1.522
         }
       },
       {
@@ -479,9 +479,9 @@
           "ratio": 1.772
         },
         "live": {
-          "spot": 44.357,
-          "spot_date": "2026-11-16",
-          "ratio": 1.706
+          "spot": 44.25,
+          "spot_date": "2026-11-17",
+          "ratio": 1.702
         }
       }
     ],
@@ -558,10 +558,10 @@
         "period_key": "2025-10-2H",
         "source": "wayback",
         "window": "2025-10-16~2025-10-31",
-        "spot_mean": 20.75,
-        "spot_days": 14,
+        "spot_mean": 20.969,
+        "spot_days": 13,
         "contract": 14.8,
-        "ratio": 1.402
+        "ratio": 1.417
       },
       {
         "period": "2H Nov",
@@ -703,7 +703,7 @@
       "score": 2.0,
       "status": "green",
       "level": 1.633,
-      "detail": "[green] 水準 1.63｜DDR4 16Gb 2Gx8 期別對齊 1.63（2H Sep 2026-09-16~2026-09-30 現貨均 84.931 ÷ 合約 52.0）｜即時 1.53｜資料期別 2H Sep，距期末 48 天（current）"
+      "detail": "[green] 水準 1.63｜DDR4 16Gb 2Gx8 期別對齊 1.63（2H Sep 2026-09-16~2026-09-30 現貨均 84.931 ÷ 合約 52.0）｜即時 1.52｜資料期別 2H Sep，距期末 48 天（current）"
     },
     "if_activated": {
       "basis": "照上面門檻計分、開關打開時的總分（目前開關關著，此列不進總分）",
@@ -720,27 +720,27 @@
       {
         "pair": "DDR5 16Gb (2Gx8) 4800/5600 ÷ DDR4 16Gb (2Gx8) 3200",
         "label": "同容量（原程式比的這組）",
-        "ratio": 0.76,
-        "as_of": "2026-11-16",
+        "ratio": 0.763,
+        "as_of": "2026-11-17",
         "window_days": 60,
         "window_min": 0.578,
-        "window_max": 0.76,
+        "window_max": 0.763,
         "n_total": 365
       },
       {
         "pair": "DDR5 16Gb (2Gx8) 4800/5600 ÷ DDR4 8Gb (1Gx8) 3200",
         "label": "異容量（舊階梯疑似照這組校準）",
-        "ratio": 1.36,
-        "as_of": "2026-11-16",
+        "ratio": 1.363,
+        "as_of": "2026-11-17",
         "window_days": 60,
         "window_min": 1.195,
-        "window_max": 1.36,
+        "window_max": 1.363,
         "n_total": 365
       }
     ],
     "ddr4_trend": {
-      "price": 79.375,
-      "chg_20d_pct": -4.5,
+      "price": 79.125,
+      "chg_20d_pct": -4.8,
       "direction": "下跌"
     },
     "release_condition": "s1c 已於 2026-10-22 移除，本層只觀測。若日後要恢復計分，條件是樣本跨越一次 DDR4 價格轉折（由漲轉跌或由跌轉漲）；只累積天數不算——現有歷史全落在 DDR4 停產稀缺的同一種狀態。"
@@ -907,7 +907,7 @@
       "sub": {
         "1a": {
           "score": 4.0,
-          "detail": "DDR5 $60.3 | >$60.3 5MA ↑ | <60.9 20MA ↓ | death cross"
+          "detail": "DDR5 $60.3 | >$60.3 5MA ↑ | <60.8 20MA ↓ | death cross"
         },
         "1b": {
           "score": null,
@@ -954,7 +954,7 @@
     "s3": {
       "score": null,
       "label": "現貨÷合約 比值水準",
-      "detail": "開關關閉（11/10 決定是否開啟）｜若啟用：2.0｜[green] 水準 1.63｜DDR4 16Gb 2Gx8 期別對齊 1.63（2H Sep 2026-09-16~2026-09-30 現貨均 84.931 ÷ 合約 52.0）｜即時 1.53｜資料期別 2H Sep，距期末 48 天（current）"
+      "detail": "開關關閉（11/10 決定是否開啟）｜若啟用：2.0｜[green] 水準 1.63｜DDR4 16Gb 2Gx8 期別對齊 1.63（2H Sep 2026-09-16~2026-09-30 現貨均 84.931 ÷ 合約 52.0）｜即時 1.52｜資料期別 2H Sep，距期末 48 天（current）"
     },
     "s4": {
       "score": 2.0,
