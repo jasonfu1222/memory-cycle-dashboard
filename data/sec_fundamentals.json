@@ -1,8 +1,8 @@
 {
-  "updated": "2026-11-17T21:31:33.414107",
+  "updated": "2026-11-18T22:26:50.246715",
   "source": "SEC EDGAR XBRL companyfacts（https://data.sec.gov/api/xbrl/companyfacts/）",
   "fetch": {
-    "date": "2026-11-17",
+    "date": "2026-11-18",
     "ok": [
       "GOOGL",
       "MSFT",
@@ -206,7 +206,7 @@
       "next_period_end_est": "2026-12-31",
       "next_form": "10-K",
       "due": "2027-03-01",
-      "fetched_at": "2026-11-17",
+      "fetched_at": "2026-11-18",
       "stale_cache": false
     },
     "MSFT": {
@@ -401,7 +401,7 @@
       "next_period_end_est": "2026-12-31",
       "next_form": "10-Q",
       "due": "2027-02-09",
-      "fetched_at": "2026-11-17",
+      "fetched_at": "2026-11-18",
       "stale_cache": false
     },
     "AMZN": {
@@ -527,7 +527,7 @@
       "next_period_end_est": "2026-12-31",
       "next_form": "10-K",
       "due": "2027-03-01",
-      "fetched_at": "2026-11-17",
+      "fetched_at": "2026-11-18",
       "stale_cache": false
     },
     "META": {
@@ -653,7 +653,7 @@
       "next_period_end_est": "2026-12-31",
       "next_form": "10-K",
       "due": "2027-03-01",
-      "fetched_at": "2026-11-17",
+      "fetched_at": "2026-11-18",
       "stale_cache": false
     },
     "MU": {
@@ -959,7 +959,7 @@
       "next_period_end_est": "2026-12-03",
       "next_form": "10-Q",
       "due": "2027-01-12",
-      "fetched_at": "2026-11-17",
+      "fetched_at": "2026-11-18",
       "stale_cache": false
     }
   }
